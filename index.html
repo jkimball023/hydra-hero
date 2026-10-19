@@ -327,19 +327,26 @@ function netCount(x0,y0,x1,y1){const m=8;x0-=m;y0-=m;x1+=m;y1+=m;let c=0;
     const g=grid.get(key(gx,gy));if(!g)continue;for(const j of g)if(nx[j]>=x0&&nx[j]<=x1&&ny[j]>=y0&&ny[j]<=y1&&++c>40)return c}return c}
 function textRects(){const r=stage.getBoundingClientRect(),pad=14;
   return [...document.querySelectorAll('h1,.sub,.cta')].map(e=>{const b=e.getBoundingClientRect();return[b.left-r.left-pad,b.top-r.top-pad,b.right-r.left+pad,b.bottom-r.top+pad]})}
+// the corner crosses: neither the text nor the arms may touch them
+function markRects(){const r=stage.getBoundingClientRect(),pad=16;
+  return [...document.querySelectorAll('.marks i')].filter(e=>e.offsetParent!==null).map(e=>{const b=e.getBoundingClientRect(),cx=(b.left+b.right)/2-r.left,cy=(b.top+b.bottom)/2-r.top;return[cx-pad,cy-pad,cx+pad,cy+pad]})}
+function segHits(ax,ay,bx,by,q){for(let k=0;k<=12;k++){const t=k/12,x=ax+(bx-ax)*t,y=ay+(by-ay)*t;if(x>q[0]&&x<q[2]&&y>q[1]&&y<q[3])return true}return false}
+function legsClear(x,y,kx,ky,ex,marks){return !marks.some(q=>segHits(x,y,kx,ky,q)||segHits(kx,ky,ex,ky,q))}
 // pick the nearest spot around the hover point (left, right, above or below) that keeps the text off the copy and, where possible, off the net
-function spotCost(x,y,bw,bh,sp,rects){const kx=x+sp.dir*sp.L,ky=y+sp.up*sp.L,ex=kx+sp.dir*sp.R,bx=sp.dir>0?ex+9:ex-9-bw,by=ky-bh/2;
+function spotCost(x,y,bw,bh,sp,rects,marks){marks=marks||markRects();const kx=x+sp.dir*sp.L,ky=y+sp.up*sp.L,ex=kx+sp.dir*sp.R,bx=sp.dir>0?ex+9:ex-9-bw,by=ky-bh/2;
   if(bx<16||bx+bw>W-16||by<88||by+bh>H-44)return 1e9;
-  if(rects.some(q=>bx<q[2]&&bx+bw>q[0]&&by<q[3]&&by+bh>q[1]))return 1e9;
-  return sp.L*1.41+sp.R+netCount(bx,by,bx+bw,by+bh)*28}
-function bestSpot(x,y,bw,bh){const rects=textRects();let best=null;
-  for(const L of [26,46,70,100,135,175,220])for(const R of [24,48,80,120,170])for(const dir of [1,-1])for(const up of [-1,1]){
+  if(rects.concat(marks).some(q=>bx<q[2]&&bx+bw>q[0]&&by<q[3]&&by+bh>q[1]))return 1e9;
+  if(!legsClear(x,y,kx,ky,ex,marks))return 1e9;
+  return sp.L*1.41+sp.R*.45+netCount(bx,by,bx+bw,by+bh)*28}
+function bestSpot(x,y,bw,bh){const marks=markRects(),rects=textRects().concat(marks);let best=null;
+  for(const L of [26,46,70,100,135,175,220])for(const R of [90,120,155,200])for(const dir of [1,-1])for(const up of [-1,1]){
     const kx=x+dir*L,ky=y+up*L,ex=kx+dir*R,bx=dir>0?ex+9:ex-9-bw,by=ky-bh/2;
     if(bx<16||bx+bw>W-16||by<88||by+bh>H-44)continue;
     if(rects.some(q=>bx<q[2]&&bx+bw>q[0]&&by<q[3]&&by+bh>q[1]))continue;
-    const n=netCount(bx,by,bx+bw,by+bh),cost=L*1.41+R+n*28;
+    if(!legsClear(x,y,kx,ky,ex,marks))continue;
+    const n=netCount(bx,by,bx+bw,by+bh),cost=L*1.41+R*.45+n*28;
     if(!best||cost<best.cost)best={L,R,dir,up,cost}}
-  return best||{L:46,R:60,dir:x>=W/2?-1:1,up:-1,cost:1e9}}
+  return best||{L:46,R:90,dir:x>=W/2?-1:1,up:-1,cost:1e9}}
 function annGeom(li,node,st){const l=lobes[li],a=node>=0?node:l.anchor,x=nx[a],y=ny[a],{bw,bh}=annBox(li);
   const t=performance.now();
   if(!st)return(sp=>geomFrom(x,y,bw,bh,sp.dir*sp.L,sp.up*sp.L,sp.dir*sp.R,sp.dir))(bestSpot(x,y,bw,bh));
@@ -413,7 +420,7 @@ function frame(now){
   if(ann.out){ann.out.a-=dt/260;if(ann.out.a<=0)ann.out=null}
 
   {const on=!reduce&&now-lastMove<1500,e=1-Math.exp(-dt/700);
-    const dir=px>=Cx?1:-1;vY+=((on?.42*dir:0)-vY)*e;
+    const dir=px>=Cx?1:-1;vY+=((on?.26*dir:0)-vY)*e;
     let nY=rY;if(on||Math.abs(vY)>.03)nY=rY+vY*dt/1000;else{const tg=Math.round(rY/6.2832)*6.2832;nY=rY+(tg-rY)*(1-Math.exp(-dt/900))}
     const tX=on?-clamp((py-Cy)/(H*.5),-1,1)*.18:0,nX=rX+(tX-rX)*e;
     if(Math.abs(nY-rY)+Math.abs(nX-rX)>1e-5){rY=nY;rX=nX;project();drawStatic()}}
