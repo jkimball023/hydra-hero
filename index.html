@@ -1,0 +1,467 @@
+<title>Hydra Hero Teaser</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arimo:wght@400&family=Atkinson+Hyperlegible:wght@400;700&family=Atkinson+Hyperlegible+Mono:wght@400&display=swap">
+<style>
+/* Layout: single-screen teaser. The organism fills the stage, centered; hero copy sits centered over it on a soft radial scrim. Dark-first, Hydra palette. */
+:root{
+  --bg:#151514; --fg:#f7f6f6; --muted:#9a968f;
+  --accent:#c8cf36; --accent-ink:#151514; --ghost:#c8cf36;
+  --net-line:#f7f6f6; --net-node:#f7f6f6; --net-signal:#c8cf36;
+  --scrim:rgba(21,21,20,.78); --scrim-0:rgba(21,21,20,0);
+  --f-display:"Arimo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,sans-serif;
+  --f-mono:"Atkinson Hyperlegible Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --bg:#f7f6f6; --fg:#232424; --muted:#65625d;
+  --accent:#c8cf36; --accent-ink:#232424;
+  --net-line:#232424; --net-node:#232424; --net-signal:#656722; --ghost:#656722;
+  --scrim:rgba(247,246,246,.82); --scrim-0:rgba(247,246,246,0);
+  color-scheme:light;
+}}
+:root[data-theme="light"]{
+  --bg:#f7f6f6; --fg:#232424; --muted:#65625d;
+  --accent:#c8cf36; --accent-ink:#232424;
+  --net-line:#232424; --net-node:#232424; --net-signal:#656722; --ghost:#656722;
+  --scrim:rgba(247,246,246,.82); --scrim-0:rgba(247,246,246,0);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.gutter{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+
+.stage{position:relative;height:100%;min-height:600px;overflow:hidden;background:var(--bg);touch-action:pan-y;cursor:crosshair}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.grain{position:absolute;inset:-80px;pointer-events:none;opacity:.075;mix-blend-mode:screen;background-size:80px 80px;animation:grain .8s steps(1) infinite}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .grain{mix-blend-mode:multiply;opacity:.06}}
+:root[data-theme="light"] .grain{mix-blend-mode:multiply;opacity:.06}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-31px,17px)}40%{transform:translate(23px,-41px)}60%{transform:translate(-47px,-11px)}80%{transform:translate(13px,37px)}}
+@media (prefers-reduced-motion: reduce){.grain{animation:none}}
+.scrim{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 34% 30% at 50% 52%,var(--scrim) 0%,var(--scrim) 35%,var(--scrim-0) 100%)}
+@media (max-width:700px){.scrim{background:radial-gradient(ellipse 70% 32% at 50% 52%,var(--scrim) 0%,var(--scrim) 40%,var(--scrim-0) 100%)}}
+
+.nav{position:absolute;inset:0 0 auto;display:flex;justify-content:space-between;align-items:center;padding-block:22px;z-index:2;pointer-events:none}
+.brand{display:flex;color:var(--fg)}
+.brand svg{display:block;width:102px;height:39px}
+.nav-links{display:flex;gap:28px;align-items:center;color:var(--muted);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.nav-cta{pointer-events:auto;background:transparent;color:var(--ghost);border:1px solid var(--ghost);border-radius:3px;padding:10px 16px;font:inherit;font-weight:400;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
+.nav-cta:hover{background:color-mix(in srgb,var(--ghost) 12%,transparent)}
+.nav-cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (max-width:700px){.nav-links span{display:none}}
+
+.copy{position:absolute;inset:0;z-index:2;display:grid;place-content:center;justify-items:center;text-align:center;gap:22px;pointer-events:none}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px);line-height:1.03;letter-spacing:-.02em;margin:0;max-width:17ch;text-wrap:balance;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.sub{font-weight:400;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:clamp(17px,1.6vw,20px);color:var(--muted);margin:0;max-width:40ch;text-wrap:balance}
+.cta{pointer-events:auto;background:var(--accent);color:var(--accent-ink);border:0;border-radius:3px;padding:15px 22px;font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:clamp(28px,4.5vh,48px)}
+.cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.theme{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:3;display:flex;align-items:center;gap:10px;
+  background:none;border:0;padding:4px;color:var(--muted);cursor:pointer;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.theme .track{position:relative;width:38px;height:20px;border-radius:10px;border:1px solid var(--muted);transition:border-color .25s}
+.theme .knob{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:var(--fg);transition:transform .25s ease}
+.theme[aria-checked="false"] .knob{transform:translateX(18px)}
+.theme:hover .track{border-color:var(--fg)}
+.theme:focus{outline:none}
+.theme:focus-visible .track{outline:1px solid var(--fg);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){.theme .knob,.theme .track{transition:none}}
+.marks{position:absolute;inset:0;z-index:1;pointer-events:none}
+.marks i{position:absolute;width:15px;height:15px;transform:translate(-50%,-50%);opacity:.38}
+.marks i::before,.marks i::after{content:"";position:absolute;background:var(--muted)}
+.marks i::before{left:0;right:0;top:7px;height:1px}
+.marks i::after{top:0;bottom:0;left:7px;width:1px}
+@media (max-width:700px){.marks i.c{display:none}}
+.hint{position:absolute;left:0;right:0;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:2;text-align:center;color:var(--muted);pointer-events:none;transition:opacity .6s}
+</style>
+
+<section class="stage" id="stage" aria-label="Interactive nerve net. Move the pointer across it to send signal through the organism.">
+  <canvas id="netStatic"></canvas>
+  <canvas id="netLive"></canvas>
+  <div class="grain" id="grain"></div>
+  <div class="scrim"></div>
+  <div class="marks" aria-hidden="true">
+    <i style="left:6%;top:17%"></i><i class="c" style="left:50%;top:17%"></i><i style="left:94%;top:17%"></i>
+    <i style="left:6%;top:52%"></i><i style="left:94%;top:52%"></i>
+    <i style="left:6%;top:87%"></i><i class="c" style="left:50%;top:87%"></i>
+  </div>
+
+  <header class="nav gutter">
+    <span class="brand" role="img" aria-label="Hydra"><svg viewBox="0 0 102 39" width="102" height="39" aria-hidden="true" focusable="false"><g fill="#C8CF36"><path d="M16.5501 16.4434H10.4494V22.5566H16.5501V16.4434Z"/><path d="M28.7509 16.4434H22.6503V22.5566H28.7509V16.4434Z"/><path d="M21.6449 11.4592C21.0015 9.93451 20.0805 8.56539 18.9079 7.39077C17.7357 6.21616 16.3694 5.29328 14.8478 4.64807C13.4467 4.05427 11.9697 3.72116 10.449 3.65409V9.7789C13.8616 10.0722 16.5496 12.9491 16.5496 16.4434H22.6503C22.6503 14.7166 22.312 13.0394 21.6449 11.4592Z"/><path d="M33.8458 11.4592C33.2023 9.93451 32.2813 8.56539 31.1087 7.39077C29.9365 6.21616 28.5702 5.29328 27.0486 4.64807C25.6475 4.05427 24.1705 3.72116 22.6503 3.65409V9.7789C26.0629 10.0722 28.7509 12.9491 28.7509 16.4434H34.8515C34.8515 14.7166 34.5133 13.0394 33.8462 11.4592H33.8458Z"/><path d="M16.5501 29.2211C13.1374 28.9278 10.4494 26.0509 10.4494 22.5566H4.3488C4.3488 24.2834 4.68703 25.9606 5.35412 27.5408C5.99756 29.0655 6.91855 30.4346 8.0912 31.6092C9.2634 32.7838 10.6297 33.7067 12.1513 34.3519C13.5524 34.9457 15.0294 35.2788 16.5501 35.3459V29.2211Z"/><path d="M28.7509 29.2211C25.3382 28.9278 22.6503 26.0509 22.6503 22.5566H16.5496C16.5496 24.2834 16.8879 25.9606 17.5549 27.5408C18.1984 29.0655 19.1194 30.4346 20.292 31.6092C21.4642 32.7838 22.8305 33.7067 24.3521 34.3519C25.7532 34.9457 27.2302 35.2788 28.7509 35.3459V29.2211Z"/></g><g fill="currentColor"><path d="M44.0966 12.4295H46.1099V18.3732H54.5081V12.4295H56.5036V26.5709H54.5081V20.2275H46.1099V26.5709H44.0966V12.4295Z"/><path d="M58.8257 28.6792H60.3495C61.4195 28.6792 61.6373 28.4976 62.0545 27.4979L62.399 26.6979L58.1546 16.5556H60.2045L63.3427 24.3898H63.3789L66.4626 16.5556H68.4581L63.6876 28.2066C63.0527 29.7335 62.3454 30.2423 60.6221 30.2423H58.8266V28.6792H58.8257Z"/><path d="M69.0453 21.5541C69.0453 17.6824 69.9525 16.4282 73.3986 16.4282C75.9197 16.4282 76.5546 16.9554 77.0263 18.0643H77.0624V12.4295H78.949V26.5709H77.099V25.044H77.0629C76.6457 26.1345 75.9201 26.6979 73.3986 26.6979C69.952 26.6979 69.0453 25.4437 69.0453 21.5541ZM74.0335 24.9711C76.5002 24.9711 77.0807 24.3348 77.0807 22.2266V20.8995C77.0807 18.773 76.5002 18.1367 74.0335 18.1367C71.4397 18.1367 70.9681 18.7184 70.9681 21.5537C70.9681 24.3889 71.4397 24.9707 74.0335 24.9707V24.9711Z"/><path d="M81.525 16.5556H83.3933V18.1917H83.4295C83.8284 17.0828 84.79 16.5378 86.3861 16.5378H87.4927V18.2284H86.3499C84.0827 18.2284 83.4116 18.8646 83.4116 21.0274V26.5714H81.525V16.5556Z"/><path d="M88.382 23.6261C88.382 21.3905 89.6698 20.5181 92.7897 20.5181H95.7825V19.991C95.7825 18.4278 95.1658 18.0097 93.1703 18.0097C91.3203 18.0097 90.5943 18.3003 90.5943 19.6637V19.7182H88.726V19.5367C88.726 17.1374 90.0682 16.4103 93.152 16.4103C96.4897 16.4103 97.6503 17.301 97.6503 19.8819V26.5709H95.782V25.1531H95.7637C95.3648 26.08 94.8021 26.6979 92.2627 26.6979C89.56 26.6979 88.3811 25.8072 88.3811 23.6261H88.382ZM92.8258 25.0802C95.0208 25.0802 95.8007 24.5714 95.8007 22.9174V22.1175H92.8258C90.8848 22.1175 90.2681 22.481 90.2681 23.5899C90.2681 24.6988 90.921 25.0802 92.8258 25.0802Z"/></g></svg></span>
+    <nav class="nav-links mono"><span>Blog</span><span>Docs</span><button class="nav-cta" type="button">Request early access</button></nav>
+  </header>
+
+  <div class="copy gutter">
+    <h1>Build the system, not just the software.</h1>
+    <p class="sub">Every agent. One shared context.</p>
+    <button class="cta" type="button">Request early access</button>
+  </div>
+
+  <div class="hint mono" id="hint" hidden></div>
+  <button class="theme" id="theme" type="button" role="switch" aria-checked="true" aria-label="Dark mode"><span id="themeLabel">Dark</span><span class="track"><span class="knob"></span></span></button>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/d3-delaunay@6.0.4/dist/d3-delaunay.min.js"></script>
+<script>
+(()=>{
+const stage=document.getElementById('stage');
+const cS=document.getElementById('netStatic'), cL=document.getElementById('netLive');
+const xS=cS.getContext('2d'), xL=cL.getContext('2d');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let W=0,H=0,DPR=1,narrow=false;
+let nx,ny,nr,lobeOf,lit,refr,adj,mark,skin;
+let BX,BY,bz,dep,Cx=0,Cy=0,rY=0,rX=0,vY=0,F3=2200,swPh=0,swDir=0;const SWING=.95;
+let ea,eb,elen,eplate;
+let N=0,E=0,lobes=[],grid=new Map(),CELL=36,bbox={};
+let signals=[],litList=new Set(),dust=[],motes=[];
+let col={line:[247,246,246],node:[247,246,246],sig:[200,207,54],muted:[154,150,143],dark:true};
+// thermal: rust at the hot core, pale chartreuse around it, then mint and sea-green cooling to deep teal
+// warm: a yellow-orange core, a brand-lime halo, then pink cooling to magenta at the edge of the spread
+const STOPS=[[1,[250,216,112]],[.85,[245,172,62]],[.7,[236,124,48]],[.56,[228,150,124]],[.43,[200,207,54]],[.29,[230,134,192]],[0,[164,76,146]]];
+let litEn;
+function sigCol(en){en=clamp(en,0,1);for(let k=1;k<STOPS.length;k++){const [e0,c0]=STOPS[k-1],[e1,c1]=STOPS[k];
+  if(en>=e1){const t=(e0-en)/(e0-e1);let c=[0,1,2].map(j=>Math.round(c0[j]+(c1[j]-c0[j])*t));
+    if(!col.dark)c=vivid(c);return c}}return col.dark?STOPS[STOPS.length-1][1]:vivid(STOPS[STOPS.length-1][1])}
+function vivid([r,g,b]){r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn;let h=0,sa=0;
+  if(d){sa=d/(1-Math.abs(2*l-1));h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h*=60;if(h<0)h+=360}
+  sa=Math.min(1,sa*1.35+.08);const L=Math.min(l,.5)*.92,C=(1-Math.abs(2*L-1))*sa,X=C*(1-Math.abs((h/60)%2-1)),m=L-C/2;
+  const [r1,g1,b1]=h<60?[C,X,0]:h<120?[X,C,0]:h<180?[0,C,X]:h<240?[0,X,C]:h<300?[X,0,C]:[C,0,X];
+  return [r1,g1,b1].map(v=>Math.round((v+m)*255))}
+const MSPX=3.6, REFR=1100, MAXSIG=3600, DECAY=.87;
+
+const rand=(a,b)=>a+Math.random()*(b-a);
+const gauss=()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function hex(h){h=h.trim().replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');const n=parseInt(h,16);return[(n>>16)&255,(n>>8)&255,n&255]}
+const rgba=(c,a)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
+function readColors(){const cs=getComputedStyle(document.documentElement);
+  col.line=hex(cs.getPropertyValue('--net-line'));col.node=hex(cs.getPropertyValue('--net-node'));
+  col.sig=hex(cs.getPropertyValue('--net-signal'));col.muted=hex(cs.getPropertyValue('--muted'));
+  const bg=hex(cs.getPropertyValue('--bg'));col.dark=(bg[0]+bg[1]+bg[2])<380}
+const key=(cx,cy)=>cx*10007+cy;
+
+// ---- the organism: lobes along an upright spine, summed into one field
+let shape;
+function makeShape(){
+  const n=Math.round(rand(3,5)),L=[];let x=0,y=0,ang=rand(-.4,.4);
+  for(let i=0;i<n;i++){const r=i===0||i===n-1?rand(.16,.24):rand(.22,.36);
+    L.push({x,y,r});ang=clamp(ang+rand(-.8,.8),-.85,.85);const step=rand(.22,.3);x+=Math.cos(ang)*step;y+=Math.sin(ang)*step}
+  const ph=Array.from({length:8},()=>rand(0,6.283));
+  return {L,ph,
+    f(px,py){let s=0;for(const l of L){const d2=(px-l.x)**2+(py-l.y)**2;s+=l.r*l.r/(d2+1e-4)}
+      const a=Math.atan2(py-L[0].y,px-L[0].x);
+      return s*(1+.24*Math.sin(px*7+ph[0])*Math.cos(py*6+ph[1])+.14*Math.sin(a*4+ph[2])+.09*Math.sin(px*21+py*17+ph[3])+.06*Math.sin(px*41-py*37))},
+    // density: 0 = open void, 1 = packed tissue
+    d(px,py){const v=.5+.28*Math.sin(px*5.3+ph[4])*Math.cos(py*4.1+ph[5])+.2*Math.sin(px*11.7-py*9.3+ph[6])+.12*Math.cos(px*19+py*23+ph[7]);return clamp(v,0,1)}};
+}
+
+// fixed for the approval round; remove the seed to make every visit different again
+const SEED=window.__SEED||4;
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function generate(){const MR=Math.random;Math.random=mulberry32(SEED);try{generateInner()}finally{Math.random=MR}}
+function makeMotes(){const n=Math.round(clamp(W*H/(1440*900),.4,1.4)*420);motes=[];
+  for(let i=0;i<n;i++){const z=Math.random();motes.push({x:Math.random()*W,y:Math.random()*H,z,r:.5+z*1.2,a:.07+z*.3,
+    vx:(Math.random()-.5)*.006*(.4+z),vy:-(.002+Math.random()*.006)*(.4+z),tp:1500+Math.random()*3000,ph:Math.random()*6.3})}}
+function generateInner(){
+  W=stage.clientWidth;H=stage.clientHeight;DPR=Math.min(window.devicePixelRatio||1,2);narrow=W<700;
+  for(const c of [cS,cL]){c.width=Math.round(W*DPR);c.height=Math.round(H*DPR)}
+  xS.setTransform(DPR,0,0,DPR,0,0);xL.setTransform(DPR,0,0,DPR,0,0);
+  shape=makeShape();
+  const T=1.15,VOID=.2;
+  let mnx=1e9,mny=1e9,mxx=-1e9,mxy=-1e9;
+  for(const l of shape.L){mnx=Math.min(mnx,l.x-l.r*1.6);mxx=Math.max(mxx,l.x+l.r*1.6);mny=Math.min(mny,l.y-l.r*1.6);mxy=Math.max(mxy,l.y+l.r*1.6)}
+  // sample: density field decides how packed each area is; voids get a speckled rim
+  const raw=[];
+  for(let k=0;k<200000&&raw.length<12000;k++){const px=rand(mnx,mxx),py=rand(mny,mxy),v=shape.f(px,py);
+    if(v<T)continue;const d=shape.d(px,py);
+    if(d<VOID)continue;
+    const sk=v<T*1.2||d<VOID+.05;
+    const p=sk?.9:.04+d*d*.9;
+    if(Math.random()<p)raw.push([px,py,sk?1:0,d])}
+  let bx0=1e9,by0=1e9,bx1=-1e9,by1=-1e9;for(const p of raw){bx0=Math.min(bx0,p[0]);bx1=Math.max(bx1,p[0]);by0=Math.min(by0,p[1]);by1=Math.max(by1,p[1])}
+  const box=narrow?{x:W*.04,y:H*.14,w:W*.92,h:H*.72}:{x:W*.14,y:H*.12,w:W*.72,h:H*.76};
+  const fit={x:W*.04,y:H*.11,w:W*.92,h:H*.8};
+  const sc=Math.min(Math.min(box.w/(bx1-bx0),box.h/(by1-by0))*1.2,fit.w/(bx1-bx0),fit.h/(by1-by0));
+  box.x=fit.x;box.y=fit.y;box.w=fit.w;box.h=fit.h;
+  const ox=box.x+(box.w-(bx1-bx0)*sc)/2-bx0*sc,oy=box.y+(box.h-(by1-by0)*sc)/2-by0*sc;
+  const area=clamp(W*H/(1440*900),.35,1.3);
+  const unit=Math.min(W,H)/900;
+  // thin: spacing follows density (tight in packed tissue, wide in sparse tissue)
+  const cell=Math.max(2.4,2.8*unit),occ=new Map(),pts=[];
+  raw.sort(()=>Math.random()-.5);
+  const cap=Math.round(2600*area*(narrow?1.1:1));
+  for(const p of raw){if(pts.length>=cap)break;
+    const x=p[0]*sc+ox,y=p[1]*sc+oy,sp=p[2]?5*unit+1.5:(10+30*(1-p[3])**1.5)*Math.max(.8,unit);
+    const r=Math.ceil(sp/cell),gx=Math.floor(x/cell),gy=Math.floor(y/cell);let ok=true;
+    for(let dx=-r;dx<=r&&ok;dx++)for(let dy=-r;dy<=r&&ok;dy++){const q=occ.get(key(gx+dx,gy+dy));if(q&&Math.hypot(q[0]-x,q[1]-y)<sp)ok=false}
+    if(!ok)continue;occ.set(key(gx,gy),[x,y]);pts.push([x,y,p[2],p[3]])}
+  N=pts.length;
+  nx=new Float32Array(N);ny=new Float32Array(N);nr=new Float32Array(N);lobeOf=new Int8Array(N);
+  lit=new Float32Array(N);litEn=new Float32Array(N);refr=new Float64Array(N);mark=new Uint8Array(N);skin=new Uint8Array(N);grid=new Map();
+  lobes=shape.L.map(l=>({sx:l.x*sc+ox,sy:l.y*sc+oy,sr:l.r*sc,count:0,firing:0}));
+  for(let i=0;i<N;i++){nx[i]=pts[i][0];ny[i]=pts[i][1];skin[i]=pts[i][2];
+    const k=key(Math.floor(nx[i]/CELL),Math.floor(ny[i]/CELL));if(!grid.has(k))grid.set(k,[]);grid.get(k).push(i);
+    let best=0,bv=-1;lobes.forEach((l,j)=>{const v=l.sr*l.sr/((nx[i]-l.sx)**2+(ny[i]-l.sy)**2+1);if(v>bv){bv=v;best=j}});
+    lobeOf[i]=best;lobes[best].count++;
+    nr[i]=skin[i]?rand(.4,.85):rand(.6,1.15);mark[i]=0}
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(let i=0;i<N;i++){x0=Math.min(x0,nx[i]);x1=Math.max(x1,nx[i]);y0=Math.min(y0,ny[i]);y1=Math.max(y1,ny[i])}
+  bbox={x0,x1,y0,y1};
+  // links: Delaunay mesh, clipped to the body and kept out of the voids
+  const seen=new Set(),A=[],B=[],P=[];
+  const add=(a,b,pl)=>{if(a===b)return;const k=a<b?a*N+b:b*N+a;if(seen.has(k))return;seen.add(k);A.push(a);B.push(b);P.push(pl?1:0)};
+  const U=(x)=>(x-ox)/sc,V=(y)=>(y-oy)/sc;
+  const solid=(x,y)=>shape.f(U(x),V(y))>T*.97&&shape.d(U(x),V(y))>VOID-.01;
+  const maxAt=(x,y)=>(20+48*(1-shape.d(U(x),V(y)))**1.4)*Math.max(.8,unit);
+  if(window.d3&&d3.Delaunay){const flat=new Float64Array(N*2);for(let i=0;i<N;i++){flat[2*i]=nx[i];flat[2*i+1]=ny[i]}
+    const D=new d3.Delaunay(flat),t=D.triangles,h=D.halfedges;
+    for(let e=0;e<t.length;e++){if(h[e]>e)continue;const a=t[e],b=t[e%3===2?e-2:e+1];
+      const mx=(nx[a]+nx[b])/2,my=(ny[a]+ny[b])/2,d=Math.hypot(nx[a]-nx[b],ny[a]-ny[b]);
+      if(d>maxAt(mx,my))continue;if(!solid(mx,my))continue;add(a,b)}}
+  else{for(let i=0;i<N;i++){const c=near(nx[i],ny[i],maxAt(nx[i],ny[i])).filter(j=>j!==i).sort((p,q)=>Math.hypot(nx[p]-nx[i],ny[p]-ny[i])-Math.hypot(nx[q]-nx[i],ny[q]-ny[i]));c.slice(0,4).forEach(j=>add(i,j))}}
+  const marks=[];for(let i=0;i<N;i++)if(mark[i])marks.push(i);
+  for(const i of marks){const c=marks.filter(j=>j!==i&&Math.abs(lobeOf[j]-lobeOf[i])<=1).sort((p,q)=>Math.hypot(nx[p]-nx[i],ny[p]-ny[i])-Math.hypot(nx[q]-nx[i],ny[q]-ny[i]));
+    c.slice(0,2).forEach(j=>{if(solid((nx[i]+nx[j])/2,(ny[i]+ny[j])/2))add(i,j,1)})}
+  {const deg=new Uint16Array(N);for(let k=0;k<A.length;k++){deg[A[k]]++;deg[B[k]]++}
+   const order=A.map((_,k)=>k).sort(()=>Math.random()-.5),drop=new Uint8Array(A.length);
+   for(const k of order){const a=A[k],b=B[k];if(skin[a]&&skin[b])continue;if(deg[a]>3&&deg[b]>3&&Math.random()<.45){drop[k]=1;deg[a]--;deg[b]--}}
+   for(let k=A.length-1;k>=0;k--)if(drop[k]){A.splice(k,1);B.splice(k,1);P.splice(k,1)}}
+  E=A.length;ea=Int32Array.from(A);eb=Int32Array.from(B);eplate=Uint8Array.from(P);
+  elen=new Float32Array(E);for(let e=0;e<E;e++)elen[e]=Math.hypot(nx[ea[e]]-nx[eb[e]],ny[ea[e]]-ny[eb[e]]);
+  adj=Array.from({length:N},()=>[]);for(let e=0;e<E;e++){adj[ea[e]].push(e);adj[eb[e]].push(e)}
+  // long links get extra, invisible joints so they bend with the surface instead of cutting straight through it in 3D
+  {const seg=14*Math.max(.8,Math.min(W,H)/900),A=[],B=[],P=[],add=[];let M=N;
+   for(let e=0;e<E;e++){const a=ea[e],b=eb[e],L=elen[e],k=Math.ceil(L/seg);if(k<2){A.push(a);B.push(b);P.push(eplate[e]);continue}
+     let prev=a;for(let t=1;t<k;t++){const id=M++;add.push([nx[a]+(nx[b]-nx[a])*t/k,ny[a]+(ny[b]-ny[a])*t/k,lobeOf[t<k/2?a:b],skin[a]&&skin[b]?1:0]);A.push(prev);B.push(id);P.push(eplate[e]);prev=id}
+     A.push(prev);B.push(b);P.push(eplate[e])}
+   const grow=(arr,T)=>{const o=new T(M);o.set(arr);return o};
+   nx=grow(nx,Float32Array);ny=grow(ny,Float32Array);nr=grow(nr,Float32Array);lobeOf=grow(lobeOf,Int8Array);
+   lit=new Float32Array(M);litEn=new Float32Array(M);refr=new Float64Array(M);mark=grow(mark,Uint8Array);skin=grow(skin,Uint8Array);
+   add.forEach((q,k)=>{const i=N+k;nx[i]=q[0];ny[i]=q[1];lobeOf[i]=q[2];nr[i]=.55;skin[i]=q[3];mark[i]=2;
+     const g=key(Math.floor(q[0]/CELL),Math.floor(q[1]/CELL));if(!grid.has(g))grid.set(g,[]);grid.get(g).push(i)});
+   N=M;E=A.length;ea=Int32Array.from(A);eb=Int32Array.from(B);eplate=Uint8Array.from(P);
+   elen=new Float32Array(E);for(let e=0;e<E;e++)elen[e]=Math.hypot(nx[ea[e]]-nx[eb[e]],ny[ea[e]]-ny[eb[e]]);
+   adj=Array.from({length:N},()=>[]);for(let e=0;e<E;e++){adj[ea[e]].push(e);adj[eb[e]].push(e)}}
+  // each lobe gets one anchor node for its annotation
+  lobes.forEach((l,li)=>{let bi=-1,bd=1e9;for(let i=0;i<N;i++){if(lobeOf[i]!==li||skin[i])continue;const d=Math.hypot(nx[i]-l.sx,ny[i]-l.sy);if(d<bd){bd=d;bi=i}}l.anchor=bi<0?0:bi});
+  // dust drifting off the right edge
+  dust=[];const nd=reduce?0:Math.round(560*area);const edge=[];for(let i=0;i<N;i++)if(nx[i]>x1-(x1-x0)*.2)edge.push(i);
+  dust.edge=edge.length?edge:[0];for(let i=0;i<nd;i++)dust.push(spawnDust(true));
+  signals=[];litList.clear();ann.lobe=-1;ann.t=0;
+  // depth: the body swells toward the viewer, thickest where the field is deepest, with a little facet noise
+  BX=Float32Array.from(nx);BY=Float32Array.from(ny);bz=new Float32Array(N);dep=new Float32Array(N);
+  Cx=(x0+x1)/2;Cy=(y0+y1)/2;const Z=.42*Math.max(x1-x0,y1-y0);
+  // depth follows distance in from the outline, along the mesh, so the surface rises gently from the rim
+  {const dist=new Float32Array(N).fill(1e9),q=[];for(let i=0;i<N;i++)if(skin[i]){dist[i]=0;q.push(i)}
+   for(let pass=0;pass<4&&q.length;pass++){let next=[];const inq=new Uint8Array(N);
+     while(q.length){const i=q.pop();for(const e of adj[i]){const j=ea[e]===i?eb[e]:ea[e],d=dist[i]+elen[e];if(d<dist[j]-.5){dist[j]=d;if(!inq[j]){inq[j]=1;next.push(j)}}}
+       if(!q.length&&next.length){q.push(...next);next=[]}}}
+   let D=0;for(let i=0;i<N;i++)if(dist[i]<1e8)D=Math.max(D,dist[i]);D=Math.max(D,1);
+   for(let i=0;i<N;i++){const t=dist[i]<1e8?Math.min(1,dist[i]/D):0;const Zd=Math.min(Z,D*1.5);bz[i]=skin[i]?Zd*.16*Math.sin(nx[i]*.021+ny[i]*.013):Zd*t*(2-t)}}
+  makeMotes();
+  makeVolume();
+  project();
+  drawStatic();
+}
+function makeVolume(){
+  const map=new Int32Array(N);let M=N;for(let i=0;i<N;i++)map[i]=skin[i]?i:M++;
+  const grow=(a,T)=>{const b=new T(M);b.set(a);return b};
+  nx=grow(nx,Float32Array);ny=grow(ny,Float32Array);nr=grow(nr,Float32Array);lobeOf=grow(lobeOf,Int8Array);
+  lit=new Float32Array(M);litEn=new Float32Array(M);refr=new Float64Array(M);mark=grow(mark,Uint8Array);skin=grow(skin,Uint8Array);
+  BX=grow(BX,Float32Array);BY=grow(BY,Float32Array);bz=grow(bz,Float32Array);dep=new Float32Array(M);
+  for(let i=0;i<N;i++){const j=map[i];if(j===i)continue;nx[j]=nx[i];ny[j]=ny[i];nr[j]=nr[i];lobeOf[j]=lobeOf[i];mark[j]=mark[i];BX[j]=BX[i];BY[j]=BY[i];bz[j]=-bz[i]}
+  const A=Array.from(ea),B=Array.from(eb),P=Array.from(eplate);
+  for(let e=0;e<E;e++){const a=map[ea[e]],b=map[eb[e]];if(a===ea[e]&&b===eb[e])continue;A.push(a);B.push(b);P.push(eplate[e])}
+  N=M;E=A.length;ea=Int32Array.from(A);eb=Int32Array.from(B);eplate=Uint8Array.from(P);
+  elen=new Float32Array(E);for(let e=0;e<E;e++)elen[e]=Math.hypot(BX[ea[e]]-BX[eb[e]],BY[ea[e]]-BY[eb[e]]);
+  adj=Array.from({length:N},()=>[]);for(let e=0;e<E;e++){adj[ea[e]].push(e);adj[eb[e]].push(e)}
+}
+function project(){const cY=Math.cos(rY),sY=Math.sin(rY),cX=Math.cos(rX),sX=Math.sin(rX);
+  for(let i=0;i<N;i++){const x=BX[i]-Cx,y=BY[i]-Cy,z=bz[i];
+    const x1=x*cY+z*sY,z1=-x*sY+z*cY,y1=y*cX-z1*sX,z2=y*sX+z1*cX,k=F3/(F3-z2);
+    nx[i]=Cx+x1*k;ny[i]=Cy+y1*k;dep[i]=z2}
+  grid=new Map();for(let i=0;i<N;i++){const g=key(Math.floor(nx[i]/CELL),Math.floor(ny[i]/CELL));let a=grid.get(g);if(!a)grid.set(g,a=[]);a.push(i)}
+}
+function spawnDust(pre){const i=dust.edge[Math.floor(Math.random()*dust.edge.length)];
+  return{x:nx[i]+rand(-6,6),y:ny[i]+rand(-6,6),vx:rand(.003,.02),vy:rand(-.006,.01),life:pre?rand(0,1):0,max:rand(4000,9000),r:rand(.4,1)}}
+function near(x,y,R){const out=[],gx=Math.floor(x/CELL),gy=Math.floor(y/CELL),rc=Math.ceil(R/CELL);
+  for(let dx=-rc;dx<=rc;dx++)for(let dy=-rc;dy<=rc;dy++){const g=grid.get(key(gx+dx,gy+dy));if(!g)continue;
+    for(const j of g)if(Math.hypot(nx[j]-x,ny[j]-y)<R)out.push(j)}return out}
+
+function drawStatic(){
+  readColors();xS.clearRect(0,0,W,H);
+  xS.lineWidth=.45;let dmin=1e9,dmax=-1e9;for(let i=0;i<N;i++){dmin=Math.min(dmin,dep[i]);dmax=Math.max(dmax,dep[i])}const dr=Math.max(1,dmax-dmin);
+  // links that climb steeply through the depth look stretched once the shape turns side-on; fade them out as they stretch
+  for(let b=0;b<4;b++){xS.strokeStyle=rgba(col.line,[col.dark?.09:.13,col.dark?.18:.22,col.dark?.28:.32,col.dark?.06:.08][b]);xS.beginPath();
+    for(let e=0;e<E;e++){if(eplate[e])continue;const A=ea[e],B=eb[e],st=Math.hypot(nx[A]-nx[B],ny[A]-ny[B])/Math.max(elen[e],1);
+      if(st>2.8)continue;const q=st>1.65?3:Math.min(2,Math.floor(((dep[A]+dep[B])/2-dmin)/dr*3));if(q!==b)continue;xS.moveTo(nx[A],ny[A]);xS.lineTo(nx[B],ny[B])}xS.stroke()}
+  xS.lineWidth=.9;xS.strokeStyle=rgba(col.line,col.dark?.5:.5);xS.beginPath();
+  for(let e=0;e<E;e++){if(!eplate[e])continue;xS.moveTo(nx[ea[e]],ny[ea[e]]);xS.lineTo(nx[eb[e]],ny[eb[e]])}xS.stroke();
+  for(let i=0;i<N;i++){xS.fillStyle=rgba(col.node,mark[i]===1?.95:mark[i]===2?.3:(skin[i]?.8:.45));
+    xS.beginPath();xS.arc(nx[i],ny[i],mark[i]===1?2.2:nr[i],0,6.2832);xS.fill()}
+}
+
+function fire(i,en,now){
+  if(refr[i]>now)return;refr[i]=now+REFR;lit[i]=1;litEn[i]=en;litList.add(i);
+  if(en<.12)return;
+  for(const e of adj[i]){if(signals.length>=MAXSIG)break;const j=ea[e]===i?eb[e]:ea[e];if(refr[j]>now)continue;
+    signals.push({e,from:i,to:j,t0:now,t1:now+elen[e]*MSPX,en:en*Math.pow(DECAY,elen[e]/14)})}
+}
+
+// ---- one annotation at a time, for the lobe under the pointer
+const ann={lobe:-1,node:-1,t:0,out:null,hold:0,pending:-1,since:0};
+// technical callout: a short 45° leg out of the shape, then a long horizontal run to a dot and a stroked terminal box
+const ANN_FONT='9px "Atkinson Hyperlegible Mono", ui-monospace, monospace';
+function annBox(li){const l=lobes[li];xL.font=ANN_FONT;
+  const full=['// hydra.system','region: "00",','agents: '+(l.count+'').replace(/./g,'0')+'0,','firing: 000'];
+  return{bw:Math.ceil(Math.max(...full.map(s=>xL.measureText(s).width)))+22,bh:4*13+12}}
+// true when any point of the net sits inside the rectangle (with a little breathing room)
+function netIn(x0,y0,x1,y1){const m=10;x0-=m;y0-=m;x1+=m;y1+=m;
+  for(let gx=Math.floor(x0/CELL);gx<=Math.floor(x1/CELL);gx++)for(let gy=Math.floor(y0/CELL);gy<=Math.floor(y1/CELL);gy++){
+    const c=grid.get(key(gx,gy));if(!c)continue;for(const j of c)if(nx[j]>=x0&&nx[j]<=x1&&ny[j]>=y0&&ny[j]<=y1)return true}return false}
+function netCount(x0,y0,x1,y1){const m=8;x0-=m;y0-=m;x1+=m;y1+=m;let c=0;
+  for(let gx=Math.floor(x0/CELL);gx<=Math.floor(x1/CELL);gx++)for(let gy=Math.floor(y0/CELL);gy<=Math.floor(y1/CELL);gy++){
+    const g=grid.get(key(gx,gy));if(!g)continue;for(const j of g)if(nx[j]>=x0&&nx[j]<=x1&&ny[j]>=y0&&ny[j]<=y1&&++c>40)return c}return c}
+function textRects(){const r=stage.getBoundingClientRect(),pad=14;
+  return [...document.querySelectorAll('h1,.sub,.cta')].map(e=>{const b=e.getBoundingClientRect();return[b.left-r.left-pad,b.top-r.top-pad,b.right-r.left+pad,b.bottom-r.top+pad]})}
+// pick the nearest spot around the hover point (left, right, above or below) that keeps the text off the copy and, where possible, off the net
+function spotCost(x,y,bw,bh,sp,rects){const kx=x+sp.dir*sp.L,ky=y+sp.up*sp.L,ex=kx+sp.dir*sp.R,bx=sp.dir>0?ex+9:ex-9-bw,by=ky-bh/2;
+  if(bx<16||bx+bw>W-16||by<88||by+bh>H-44)return 1e9;
+  if(rects.some(q=>bx<q[2]&&bx+bw>q[0]&&by<q[3]&&by+bh>q[1]))return 1e9;
+  return sp.L*1.41+sp.R+netCount(bx,by,bx+bw,by+bh)*28}
+function bestSpot(x,y,bw,bh){const rects=textRects();let best=null;
+  for(const L of [26,46,70,100,135,175,220])for(const R of [24,48,80,120,170])for(const dir of [1,-1])for(const up of [-1,1]){
+    const kx=x+dir*L,ky=y+up*L,ex=kx+dir*R,bx=dir>0?ex+9:ex-9-bw,by=ky-bh/2;
+    if(bx<16||bx+bw>W-16||by<88||by+bh>H-44)continue;
+    if(rects.some(q=>bx<q[2]&&bx+bw>q[0]&&by<q[3]&&by+bh>q[1]))continue;
+    const n=netCount(bx,by,bx+bw,by+bh),cost=L*1.41+R+n*28;
+    if(!best||cost<best.cost)best={L,R,dir,up,cost}}
+  return best||{L:46,R:60,dir:x>=W/2?-1:1,up:-1,cost:1e9}}
+function annGeom(li,node,st){const l=lobes[li],a=node>=0?node:l.anchor,x=nx[a],y=ny[a],{bw,bh}=annBox(li);
+  const t=performance.now();
+  if(!st)return(sp=>geomFrom(x,y,bw,bh,sp.dir*sp.L,sp.up*sp.L,sp.dir*sp.R,sp.dir))(bestSpot(x,y,bw,bh));
+  if(!st.spot){st.spot=bestSpot(x,y,bw,bh);st.spotT=t}
+  else if(t-(st.spotT||0)>700){st.spotT=t;const cur=spotCost(x,y,bw,bh,st.spot,textRects()),nb=bestSpot(x,y,bw,bh);
+    if(cur>=1e9||nb.cost<cur*.55-30)st.spot=nb}
+  const sp=st.spot,tk=sp.dir*sp.L,tu=sp.up*sp.L,tr=sp.dir*sp.R;
+  if(st.cdir!==sp.dir||st.ck===undefined){st.cdir=sp.dir;st.ck=tk;st.cu=tu;st.cr=tr}
+  else{st.ck+=(tk-st.ck)*.06;st.cu+=(tu-st.cu)*.06;st.cr+=(tr-st.cr)*.06}
+  return geomFrom(x,y,bw,bh,st.ck,st.cu,st.cr,st.cdir)}
+function geomFrom(x,y,bw,bh,dk,du,dr,dir){const kx=x+dk,ky=y+du,ex=kx+dr,right=dir>0,bx=right?ex+9:ex-9-bw;
+  return{x,y,kx,ky,ex,right,dir,bw,bh,bx,by:ky-bh/2}}
+function annLines(li){const l=lobes[li];return['// hydra.system','region: "'+String(li+1).padStart(2,'0')+'",','agents: '+l.count+',','firing: '+l.firing]}
+function drawAnn(li,t,alpha,now,node,st){
+  if(li<0)return;const g=annGeom(li,node??-1,st),l=lobes[li];
+  const leg=Math.hypot(g.kx-g.x,g.ky-g.y),run=Math.abs(g.ex-g.kx),P=leg+run;
+  const lt=clamp(t/.5,0,1),e=(1-(1-lt)**3)*P;
+  xL.globalAlpha=alpha;
+  // anchor: a small hollow node
+  xL.strokeStyle=rgba(col.muted,.7);xL.lineWidth=.8;xL.beginPath();xL.arc(g.x,g.y,3,0,6.2832);xL.stroke();
+  // leader
+  xL.strokeStyle=rgba(col.muted,.5);xL.lineWidth=.6;xL.beginPath();xL.moveTo(g.x,g.y);
+  if(e<=leg){const f=e/leg;xL.lineTo(g.x+(g.kx-g.x)*f,g.y+(g.ky-g.y)*f)}
+  else{xL.lineTo(g.kx,g.ky);xL.lineTo(g.kx+g.dir*(e-leg),g.ky)}
+  xL.stroke();
+  if(lt>=1){
+    // the leader ends in a single vertical rule that spans the text block
+    {const vh=Math.min(1,(t-.5)/.15),y0=g.ky-(g.bh/2-4)*vh,y1=g.ky+(g.bh/2-4)*vh;xL.strokeStyle=rgba(col.muted,.6);xL.lineWidth=.7;xL.beginPath();xL.moveTo(Math.round(g.ex)+.5,y0);xL.lineTo(Math.round(g.ex)+.5,y1);xL.stroke()}
+    // terminal box
+    const lines=annLines(li);xL.font=ANN_FONT;
+    const {bw,bh,bx,by}=g,lh=13;
+    const bt=clamp((t-.5)/.18,0,1);
+    // type it out like a terminal, one line after another, with a block cursor
+    const typed=Math.max(0,(t-.62)*48);let left=typed,cur=null;
+    xL.textAlign='left';xL.textBaseline='middle';
+    lines.forEach((s,k)=>{const n=Math.min(s.length,Math.floor(left));left-=s.length;const ty=by+6+lh*k+lh/2,tx=g.right?g.ex+9:g.ex-9-(bw-22);
+      if(n<=0)return;const shown=s.slice(0,n);
+      xL.fillStyle=rgba(col.muted,.85);xL.fillText(shown,tx,ty);
+      if(n<s.length||k===lines.length-1)cur={x:tx+xL.measureText(shown).width+2,y:ty,done:n>=s.length}});
+    if(cur&&(!cur.done||Math.floor(now/530)%2===0)){xL.fillStyle=rgba(col.muted,.8);xL.fillRect(cur.x,cur.y-4.5,4.5,9)}
+  }
+  xL.globalAlpha=1;
+}
+function lobeUnder(x,y){const c=near(x,y,48);if(!c.length)return -1;const cnt={};let best=-1,bc=0;
+  for(const i of c){const k=lobeOf[i];cnt[k]=(cnt[k]||0)+1;if(cnt[k]>bc){bc=cnt[k];best=k}}return best}
+
+let px=-1,py=-1,lastMove=-1e9,lastPoke=0,nextAmbient=performance.now()+4500;
+const IDLE=4000;
+function poke(x,y,count,en,r){const c=near(x,y,r||56);for(let k=0;k<count&&c.length;k++){fire(c.splice(Math.floor(Math.random()*c.length),1)[0],en,performance.now())}}
+const hint=document.getElementById('hint');
+stage.addEventListener('pointermove',ev=>{const r=stage.getBoundingClientRect();px=ev.clientX-r.left;py=ev.clientY-r.top;lastMove=performance.now();hint.style.opacity=0});
+stage.addEventListener('pointerdown',ev=>{if(ev.target.closest('button'))return;const r=stage.getBoundingClientRect();px=ev.clientX-r.left;py=ev.clientY-r.top;lastMove=performance.now();poke(px,py,8,1);hint.style.opacity=0});
+stage.addEventListener('pointerleave',()=>{lastMove=-1e9});
+
+let last=performance.now();
+function frame(now){
+  const dt=Math.min(64,now-last);last=now;
+  const active=now-lastMove<140;
+  if(active&&now-lastPoke>65){lastPoke=now;poke(px,py,2,.8,28)}
+  // breathing: only after a few seconds without interaction, sparse and dim
+  if(now-lastMove<IDLE){nextAmbient=Math.max(nextAmbient,now+rand(800,1600))}
+  else if(!reduce&&now>nextAmbient){nextAmbient=now+rand(2400,4200);fire(Math.floor(Math.random()*N),.78,now)}
+  for(let k=signals.length-1;k>=0;k--){const s=signals[k];if(now>=s.t1){signals[k]=signals[signals.length-1];signals.pop();if(mark[s.to]===2||Math.random()<s.en*1.3)fire(s.to,s.en,now)}}
+  // annotation target: the lobe under the pointer, held briefly so it doesn't flicker
+  const under=now-lastMove<1500?lobeUnder(px,py):-1;
+  if(under!==ann.pending){ann.pending=under;ann.since=now}
+  const settled=now-ann.since>(under<0?700:220);
+  if(settled&&ann.pending!==ann.lobe){if(ann.lobe>=0)ann.out={lobe:ann.lobe,node:ann.node,t:ann.t,a:1,spot:ann.spot,spotT:1e15,cdir:ann.cdir,ck:ann.ck,cu:ann.cu,cr:ann.cr};ann.lobe=ann.pending;ann.t=0;ann.spot=null;ann.ck=undefined;
+    if(ann.lobe>=0){let bi=lobes[ann.lobe].anchor,bd=1e9;for(const j of near(px,py,70)){if(lobeOf[j]!==ann.lobe||dep[j]<0)continue;const d=Math.hypot(nx[j]-px,ny[j]-py);if(d<bd){bd=d;bi=j}}ann.node=bi}}
+  if(ann.lobe>=0)ann.t+=dt/1000;
+  if(ann.out){ann.out.a-=dt/260;if(ann.out.a<=0)ann.out=null}
+
+  {const on=!reduce&&now-lastMove<1500,e=1-Math.exp(-dt/700);
+    const dir=px>=Cx?1:-1;vY+=((on?.42*dir:0)-vY)*e;
+    let nY=rY;if(on||Math.abs(vY)>.03)nY=rY+vY*dt/1000;else{const tg=Math.round(rY/6.2832)*6.2832;nY=rY+(tg-rY)*(1-Math.exp(-dt/900))}
+    const tX=on?-clamp((py-Cy)/(H*.5),-1,1)*.18:0,nX=rX+(tX-rX)*e;
+    if(Math.abs(nY-rY)+Math.abs(nX-rX)>1e-5){rY=nY;rX=nX;project();drawStatic()}}
+  xL.clearRect(0,0,W,H);
+  if(motes.length){xL.fillStyle=rgba(col.node,1);const pr=Math.sin(rY);
+    for(const m of motes){if(!reduce){m.x+=m.vx*dt;m.y+=m.vy*dt;if(m.x<-10)m.x=W+10;if(m.x>W+10)m.x=-10;if(m.y<-10)m.y=H+10;if(m.y>H+10)m.y=-10}
+      const tw=.65+.35*Math.sin(now/m.tp+m.ph);xL.globalAlpha=m.a*tw;xL.fillRect(m.x-pr*m.z*60,m.y,m.r,m.r)}xL.globalAlpha=1}
+  if(dust.length){xL.fillStyle=rgba(col.node,1);
+    for(let k=0;k<dust.length;k++){const p=dust[k];p.life+=dt/p.max;if(p.life>=1){dust[k]=spawnDust(false);continue}
+      p.x+=p.vx*dt;p.y+=p.vy*dt;xL.globalAlpha=Math.sin(p.life*Math.PI)*.45*Math.max(0,Math.cos(rY))**6;xL.fillRect(p.x,p.y,p.r,p.r)}xL.globalAlpha=1}
+  xL.globalCompositeOperation='source-over';xL.lineWidth=.45;
+  for(const s of signals){const t=clamp((now-s.t0)/(s.t1-s.t0),0,1);
+    const ax=nx[s.from],ay=ny[s.from],bx=nx[s.to],by=ny[s.to],hx=ax+(bx-ax)*t,hy=ay+(by-ay)*t,a=clamp(s.en,0,1);
+    const c=sigCol(s.en),va=.3+.7*a;
+    xL.strokeStyle=rgba(c,va*(col.dark?.75:.95));xL.beginPath();xL.moveTo(ax,ay);xL.lineTo(hx,hy);xL.stroke();
+    }
+  const kk=Math.exp(-dt/420);lobes.forEach(l=>l.firing=0);
+  for(const i of litList){lit[i]*=kk;if(lit[i]<.01){litList.delete(i);continue}if(lit[i]>.3)lobes[lobeOf[i]].firing++;
+    const l=lit[i],c=sigCol(litEn[i]);
+    for(const e of adj[i]){const j=ea[e]===i?eb[e]:ea[e];if(j<i||lit[j]<.01)continue;const m=Math.min(l,lit[j]);
+      xL.strokeStyle=rgba(sigCol((litEn[i]+litEn[j])/2),Math.min(1,m*(col.dark?1.5:2.2))**(col.dark?1.15:.9));xL.lineWidth=.45;xL.beginPath();xL.moveTo(nx[i],ny[i]);xL.lineTo(nx[j],ny[j]);xL.stroke()}
+    }
+  xL.globalCompositeOperation='source-over';
+  if(ann.out)drawAnn(ann.out.lobe,ann.out.t,ann.out.a,now,ann.out.node,ann.out);
+  if(ann.lobe>=0)drawAnn(ann.lobe,ann.t,clamp(ann.t/.15,0,1),now,ann.node,ann);
+  const idle=now-lastMove;
+
+  requestAnimationFrame(frame);
+}
+
+(function(){const g=document.createElement('canvas');g.width=g.height=160;const x=g.getContext('2d'),d=x.createImageData(160,160);
+  for(let i=0;i<d.data.length;i+=4){const v=Math.random()*255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}
+  x.putImageData(d,0,0);document.getElementById('grain').style.backgroundImage=`url(${g.toDataURL()})`})();
+
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',drawStatic);
+new MutationObserver(drawStatic).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+// dark / light switch: starts from the saved choice, else the system setting
+{const btn=document.getElementById('theme'),lab=document.getElementById('themeLabel'),root=document.documentElement;
+ const isDark=()=>root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+ const sync=()=>{const d=isDark();btn.setAttribute('aria-checked',String(d));lab.textContent=d?'Dark':'Light'};
+ try{const t=localStorage.getItem('hydra-theme');if(t==='dark'||t==='light')root.dataset.theme=t}catch(e){}
+ sync();
+ btn.addEventListener('click',ev=>{ev.stopPropagation();if(ev.detail)btn.blur();const next=isDark()?'light':'dark';root.dataset.theme=next;try{localStorage.setItem('hydra-theme',next)}catch(e){}sync()});
+ matchMedia('(prefers-color-scheme: dark)').addEventListener('change',sync)}
+let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(()=>{if(Math.abs(stage.clientWidth-W)>2||Math.abs(stage.clientHeight-H)>40)generate()},150)}).observe(stage);
+
+generate();
+setTimeout(()=>{const l=lobes[Math.floor(lobes.length/2)];if(l)fire(l.anchor,1,performance.now())},300);
+requestAnimationFrame(frame);
+})();
+</script>
