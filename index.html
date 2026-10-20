@@ -6,7 +6,7 @@
 <style>
 /* Layout: single-screen teaser. The organism fills the stage, centered; hero copy sits centered over it on a soft radial scrim. Dark-first, Hydra palette. */
 :root{
-  --bg:#151514; --fg:#f7f6f6; --muted:#9a968f; --sub:#cac8c4;
+  --bg:#151514; --fg:#f7f6f6; --muted:#9a968f; --panel:#1c1c1c; --panel-mut:#9a968f; --sub:#cac8c4;
   --accent:#c8cf36; --accent-ink:#151514; --ghost:#c8cf36;
   --net-line:#f7f6f6; --net-node:#f7f6f6; --net-signal:#c8cf36;
   --scrim:rgba(21,21,20,.5); --scrim-0:rgba(21,21,20,0);
@@ -16,14 +16,14 @@
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
-  --bg:#f7f6f6; --fg:#232424; --muted:#65625d; --sub:#65625d;
+  --bg:#f7f6f6; --fg:#232424; --muted:#65625d; --panel:#ecebea; --panel-mut:#65625d; --sub:#65625d;
   --accent:#c8cf36; --accent-ink:#232424;
   --net-line:#232424; --net-node:#232424; --net-signal:#656722; --ghost:#656722;
   --scrim:rgba(247,246,246,.55); --scrim-0:rgba(247,246,246,0);
   color-scheme:light;
 }}
 :root[data-theme="light"]{
-  --bg:#f7f6f6; --fg:#232424; --muted:#65625d; --sub:#65625d;
+  --bg:#f7f6f6; --fg:#232424; --muted:#65625d; --panel:#ecebea; --panel-mut:#65625d; --sub:#65625d;
   --accent:#c8cf36; --accent-ink:#232424;
   --net-line:#232424; --net-node:#232424; --net-signal:#656722; --ghost:#656722;
   --scrim:rgba(247,246,246,.55); --scrim-0:rgba(247,246,246,0);
@@ -62,6 +62,56 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
 .cta{pointer-events:auto;background:var(--accent);color:var(--accent-ink);border:0;border-radius:3px;padding:15px 22px;font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:clamp(28px,4.5vh,48px)}
 .cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
+.stage canvas{transition:opacity .28s ease}
+#netPrev{opacity:0;pointer-events:none;transition:opacity .45s ease}
+#netPrev.show{opacity:1;transition:none}
+.stage.fading canvas{opacity:0}
+@media (prefers-reduced-motion: reduce){.stage canvas{transition:none}}
+/* closed: one quiet trigger, bottom left */
+.shape-open{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;display:flex;align-items:center;gap:14px;
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
+.shape-open button{font:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:transparent;color:var(--fg);border:1px solid color-mix(in srgb,var(--muted) 50%,transparent);border-radius:3px;padding:6px 10px;cursor:pointer}
+.shape-open button:hover{border-color:var(--fg)}
+.shape-open .id{font-variant-numeric:tabular-nums}
+/* open: a compact settings card in the bottom-left corner, after the reference */
+.shape{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:6;width:min(236px,calc(100% - 32px));max-height:calc(100% - 112px);
+  background:color-mix(in srgb,var(--panel) 45%,transparent);-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);border:0;border-radius:4px;
+  padding:16px 16px 14px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;
+  font-family:var(--f-body);font-weight:400;color:var(--panel-mut);transform:translateY(12px);opacity:0;visibility:hidden;
+  transition:transform .3s cubic-bezier(.2,.7,.2,1),opacity .22s ease,visibility 0s .3s}
+.stage.shaping .shape{transform:none;opacity:1;visibility:visible;transition:transform .3s cubic-bezier(.2,.7,.2,1),opacity .22s ease}
+.stage.shaping .shape-open{opacity:0;pointer-events:none}
+@media (prefers-reduced-motion: reduce){.shape,.stage.shaping .shape{transition:none}}
+.shape *{font-weight:400}
+.shape header{display:flex;justify-content:space-between;align-items:baseline}
+.shape h2{margin:0;font-size:14px;color:var(--fg)}
+.shape .x{background:none;border:0;color:var(--panel-mut);font-size:17px;line-height:1;cursor:pointer;padding:0 2px}
+.shape .x:hover{color:var(--fg)}
+.shape p{margin:3px 0 0;font-size:12px;line-height:1.4;color:var(--panel-mut)}
+.shape section{display:grid;gap:9px}
+.shape h3{margin:0;font-size:12px;color:var(--fg)}
+.shape .sl{display:grid;gap:1px}
+.shape .sl span{font-size:12px}
+.shape .sl div{display:grid;grid-template-columns:1fr 54px;gap:10px;align-items:center}
+.shape output{font-size:11px;font-variant-numeric:tabular-nums;color:var(--panel-mut)}
+.shape input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:14px;background:transparent;margin:0;cursor:pointer}
+.shape input[type=range]::-webkit-slider-runnable-track{height:1px;background:var(--fg)}
+.shape input[type=range]::-moz-range-track{height:1px;background:var(--fg)}
+.shape input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:9px;height:9px;border-radius:50%;background:var(--fg);margin-top:-4px;border:0}
+.shape input[type=range]::-moz-range-thumb{width:9px;height:9px;border-radius:50%;background:var(--fg);border:0}
+.shape input[type=range]:focus-visible{outline:1px solid var(--accent);outline-offset:3px}
+.shape .ends{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;margin-top:-6px;padding-right:64px}
+.shape .sw{display:flex;gap:6px}
+.shape .sw button{flex:1;height:18px;border-radius:2px;border:1px solid transparent;cursor:pointer}
+.shape .sw button[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 2px var(--panel)}
+.shape .sw button:focus-visible{outline:1px solid var(--accent);outline-offset:2px}
+.shape .actions{display:flex;gap:6px;margin-top:2px}
+.shape .actions button{flex:1;white-space:nowrap;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-radius:3px;padding:8px 8px;cursor:pointer}
+.shape .grow{flex:1.6 !important;background:var(--fg);color:var(--bg);border:0}
+.shape .grow:hover{background:color-mix(in srgb,var(--fg) 88%,var(--bg))}
+.shape .reset{background:transparent;color:var(--fg);border:1px solid color-mix(in srgb,var(--panel-mut) 60%,transparent)}
+.shape .reset:hover{border-color:var(--fg)}
+.shape .actions button:focus-visible,.shape-open button:focus-visible,.shape .x:focus-visible{outline:1px solid var(--accent);outline-offset:2px}
 .theme{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:4;display:flex;align-items:center;gap:10px;
   background:none;border:0;padding:4px;color:var(--muted);cursor:pointer;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
 .theme .track{position:relative;width:38px;height:20px;border-radius:10px;border:1px solid var(--muted);transition:border-color .25s}
@@ -82,6 +132,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
 
 <section class="stage" id="stage" aria-label="Interactive nerve net. Move the pointer across it to send signal through the organism.">
   <canvas id="netStatic"></canvas>
+  <canvas id="netPrev" aria-hidden="true"></canvas>
   <canvas id="netLive"></canvas>
   <div class="grain" id="grain"></div>
   <div class="scrim"></div>
@@ -104,6 +155,34 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
 
   <div class="hint mono" id="hint" hidden></div>
   <button class="theme" id="theme" type="button" role="switch" aria-checked="true" aria-label="Dark mode"><span id="themeLabel">Dark</span><span class="track"><span class="knob"></span></span></button>
+  <div class="shape-open" id="shapeOpen">
+    <button type="button" id="openShape" aria-expanded="false" aria-controls="shapePanel">Build your system</button>
+    <span class="id" id="netId" hidden>0004</span>
+  </div>
+  <aside class="shape" id="shapePanel" aria-label="Build your system">
+    <div>
+      <header><h2>Build your system</h2><button type="button" class="x" id="closeShape" aria-label="Close">&times;</button></header>
+      <p>Build a system of your own. Every setting changes how it is wired.</p>
+    </div>
+    <section>
+      <h3>Form</h3>
+      <label class="sl" for="sForm"><span>Structure</span><div><input id="sForm" type="range" min="0" max="1" step="0.01" value="0"><output id="vForm">Organic</output></div></label>
+      <div class="ends"><span>Organic</span><span>Geometric</span></div>
+      <label class="sl" for="sSprawl"><span>Sprawl</span><div><input id="sSprawl" type="range" min="0.5" max="1.8" step="0.05" value="1"><output id="vSprawl">1.0x</output></div></label>
+      <label class="sl" for="sRough"><span>Edge</span><div><input id="sRough" type="range" min="0" max="2.2" step="0.05" value="1"><output id="vRough">1.0x</output></div></label>
+      <label class="sl" for="sVoids"><span>Openings</span><div><input id="sVoids" type="range" min="0" max="0.42" step="0.01" value="0.2"><output id="vVoids">48%</output></div></label>
+      <label class="sl" for="sDensity"><span>Density</span><div><input id="sDensity" type="range" min="0.4" max="1.8" step="0.05" value="1"><output id="vDensity">1.0x</output></div></label>
+    </section>
+    <section>
+      <h3>Signal</h3>
+      <div class="sw" role="group" aria-label="Pulse colour">
+        <button type="button" data-pal="warm" aria-label="Warm" style="background:linear-gradient(90deg,#fad870,#ec7c30,#c8cf36,#e686c0)"></button>
+        <button type="button" data-pal="thermal" aria-label="Thermal" style="background:linear-gradient(90deg,#b06840,#c8cf36,#34a88c,#144a46)"></button>
+        <button type="button" data-pal="lime" aria-label="Lime" style="background:linear-gradient(90deg,#ecf0aa,#c8cf36,#5a5c1e)"></button>
+      </div>
+    </section>
+    <div class="actions"><button type="button" class="grow" id="growBtn">New system</button><button type="button" class="reset" id="resetBtn">Reset</button></div>
+  </aside>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/d3-delaunay@6.0.4/dist/d3-delaunay.min.js"></script>
@@ -116,14 +195,19 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let W=0,H=0,DPR=1,narrow=false;
 let nx,ny,nr,lobeOf,lit,refr,adj,mark,skin;
-let BX,BY,bz,dep,Cx=0,Cy=0,rY=0,rX=0,vY=0,F3=2200,swPh=0,swDir=0;const SWING=.95;
+let formShown=0,bodyW=0,bodyH=0,poly=null,PX,PY,PZ,elenP,keepG,GA=[],GB=[],gadj=null,BX,BY,bz,dep,Cx=0,Cy=0,rY=0,rX=0,vY=0,F3=2200,swPh=0,swDir=0;const SWING=.95;
 let ea,eb,elen,eplate;
 let N=0,E=0,lobes=[],grid=new Map(),CELL=36,bbox={};
 let signals=[],litList=new Set(),dust=[],motes=[];
 let col={line:[247,246,246],node:[247,246,246],sig:[200,207,54],muted:[154,150,143],dark:true};
 // thermal: rust at the hot core, pale chartreuse around it, then mint and sea-green cooling to deep teal
 // warm: a yellow-orange core, a brand-lime halo, then pink cooling to magenta at the edge of the spread
-const STOPS=[[1,[250,216,112]],[.85,[245,172,62]],[.7,[236,124,48]],[.56,[228,150,124]],[.43,[200,207,54]],[.29,[230,134,192]],[0,[164,76,146]]];
+const PALETTES={
+  warm:[[1,[250,216,112]],[.85,[245,172,62]],[.7,[236,124,48]],[.56,[228,150,124]],[.43,[200,207,54]],[.29,[230,134,192]],[0,[164,76,146]]],
+  thermal:[[1,[176,104,64]],[.84,[190,150,88]],[.72,[200,207,54]],[.56,[126,204,160]],[.38,[52,168,140]],[.2,[30,112,100]],[0,[20,74,70]]],
+  lime:[[1,[236,240,170]],[.7,[212,218,103]],[.45,[200,207,54]],[.2,[131,134,39]],[0,[90,92,30]]]};
+const CFG={seed:4,lobes:4,sprawl:1,rough:1,density:1,voids:.2,depth:1,reach:14,spin:.26,palette:'warm',form:0};
+let STOPS=PALETTES[CFG.palette];
 let litEn;
 function sigCol(en){en=clamp(en,0,1);for(let k=1;k<STOPS.length;k++){const [e0,c0]=STOPS[k-1],[e1,c1]=STOPS[k];
   if(en>=e1){const t=(e0-en)/(e0-e1);let c=[0,1,2].map(j=>Math.round(c0[j]+(c1[j]-c0[j])*t));
@@ -149,22 +233,30 @@ const key=(cx,cy)=>cx*10007+cy;
 // ---- the organism: lobes along an upright spine, summed into one field
 let shape;
 function makeShape(){
-  const n=Math.round(rand(3,5)),L=[];let x=0,y=0,ang=rand(-.4,.4);
+  rand(3,5);const n=CFG.lobes,L=[];let x=0,y=0,ang=rand(-.4,.4);
   for(let i=0;i<n;i++){const r=i===0||i===n-1?rand(.16,.24):rand(.22,.36);
-    L.push({x,y,r});ang=clamp(ang+rand(-.8,.8),-.85,.85);const step=rand(.22,.3);x+=Math.cos(ang)*step;y+=Math.sin(ang)*step}
+    L.push({x,y,r});ang=clamp(ang+rand(-.8,.8),-.85,.85);const step=rand(.22,.3)*CFG.sprawl;x+=Math.cos(ang)*step;y+=Math.sin(ang)*step}
   const ph=Array.from({length:8},()=>rand(0,6.283));
+  L.forEach(l=>{const wide=rand(0,1)<.6;l.w=l.r*(wide?rand(1.1,1.9):rand(.55,.9));l.h=l.r*(wide?rand(.5,.85):rand(1.1,1.7));
+    l.c=(l.w+l.h)*rand(.62,.86);l.diag=rand(0,1)<.25});
+  const g=0,S2=Math.SQRT1_2;
+  // a slab measured with straight sides and 45° corner cuts: 1 on its edge, <1 inside
+  const pd=(dx,dy,l)=>{if(l.diag){const u=(dx+dy)*S2,v=(dy-dx)*S2;dx=u;dy=v}const ax=Math.abs(dx),ay=Math.abs(dy);
+    return Math.max(ax/l.w,ay/l.h,(ax+ay)/l.c)};
   return {L,ph,
-    f(px,py){let s=0;for(const l of L){const d2=(px-l.x)**2+(py-l.y)**2;s+=l.r*l.r/(d2+1e-4)}
+    f(px,py){let s=0,m=0;for(const l of L){const dx=px-l.x,dy=py-l.y,d2=dx*dx+dy*dy;s+=l.r*l.r/(d2+1e-4);
+        if(g>0){const q=pd(dx,dy,l);m=Math.max(m,1/(q*q+1e-4))}}
+      if(g>0)s=s*(1-g)+m*1.15*g;
       const a=Math.atan2(py-L[0].y,px-L[0].x);
-      return s*(1+.24*Math.sin(px*7+ph[0])*Math.cos(py*6+ph[1])+.14*Math.sin(a*4+ph[2])+.09*Math.sin(px*21+py*17+ph[3])+.06*Math.sin(px*41-py*37))},
+      return s*(1+CFG.rough*(1-g)*(.24*Math.sin(px*7+ph[0])*Math.cos(py*6+ph[1])+.14*Math.sin(a*4+ph[2])+.09*Math.sin(px*21+py*17+ph[3])+.06*Math.sin(px*41-py*37)))},
     // density: 0 = open void, 1 = packed tissue
-    d(px,py){const v=.5+.28*Math.sin(px*5.3+ph[4])*Math.cos(py*4.1+ph[5])+.2*Math.sin(px*11.7-py*9.3+ph[6])+.12*Math.cos(px*19+py*23+ph[7]);return clamp(v,0,1)}};
+    d(px,py){if(g>.01){const q=.075,bx=Math.round(px/q)*q,by=Math.round(py/q)*q;px+=(bx-px)*g;py+=(by-py)*g}const v=.5+.28*Math.sin(px*5.3+ph[4])*Math.cos(py*4.1+ph[5])+.2*Math.sin(px*11.7-py*9.3+ph[6])+.12*Math.cos(px*19+py*23+ph[7]);return g>0?clamp(v*(1-g)+Math.round(v*4)/4*g,0,1):clamp(v,0,1)}};
 }
 
 // fixed for the approval round; remove the seed to make every visit different again
-const SEED=window.__SEED||4;
+
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-function generate(){const MR=Math.random;Math.random=mulberry32(SEED);try{generateInner()}finally{Math.random=MR}}
+function generate(){const MR=Math.random;Math.random=mulberry32(CFG.seed);try{generateInner()}finally{Math.random=MR}}
 function makeMotes(){const n=Math.round(clamp(W*H/(1440*900),.4,1.4)*420);motes=[];
   for(let i=0;i<n;i++){const z=Math.random();motes.push({x:Math.random()*W,y:Math.random()*H,z,r:.5+z*1.2,a:.07+z*.3,
     vx:(Math.random()-.5)*.006*(.4+z),vy:-(.002+Math.random()*.006)*(.4+z),tp:1500+Math.random()*3000,ph:Math.random()*6.3})}}
@@ -173,7 +265,8 @@ function generateInner(){
   for(const c of [cS,cL]){c.width=Math.round(W*DPR);c.height=Math.round(H*DPR)}
   xS.setTransform(DPR,0,0,DPR,0,0);xL.setTransform(DPR,0,0,DPR,0,0);
   shape=makeShape();
-  const T=1.15,VOID=.2;
+  Math.random=mulberry32(CFG.seed*7+1);   // sampling stream: density and openings only add or remove points, the body stays put
+  const T=1.15,VOID=CFG.voids;
   let mnx=1e9,mny=1e9,mxx=-1e9,mxy=-1e9;
   for(const l of shape.L){mnx=Math.min(mnx,l.x-l.r*1.6);mxx=Math.max(mxx,l.x+l.r*1.6);mny=Math.min(mny,l.y-l.r*1.6);mxy=Math.max(mxy,l.y+l.r*1.6)}
   // sample: density field decides how packed each area is; voids get a speckled rim
@@ -189,15 +282,16 @@ function generateInner(){
   const fit={x:W*.04,y:H*.11,w:W*.92,h:H*.8};
   const sc=Math.min(Math.min(box.w/(bx1-bx0),box.h/(by1-by0))*1.2,fit.w/(bx1-bx0),fit.h/(by1-by0));
   box.x=fit.x;box.y=fit.y;box.w=fit.w;box.h=fit.h;
-  const ox=box.x+(box.w-(bx1-bx0)*sc)/2-bx0*sc,oy=box.y+(box.h-(by1-by0)*sc)/2-by0*sc;
+  const ox=box.x+(box.w-(bx1-bx0)*sc)/2-bx0*sc,oy=box.y+(box.h-(by1-by0)*sc)/2-by0*sc;bodyW=(bx1-bx0)*sc;bodyH=(by1-by0)*sc;
   const area=clamp(W*H/(1440*900),.35,1.3);
   const unit=Math.min(W,H)/900;
   // thin: spacing follows density (tight in packed tissue, wide in sparse tissue)
   const cell=Math.max(2.4,2.8*unit),occ=new Map(),pts=[];
   raw.sort(()=>Math.random()-.5);
-  const cap=Math.round(2600*area*(narrow?1.1:1));
+  const cap=Math.round(2600*area*CFG.density*(narrow?1.1:1)),dn=Math.sqrt(CFG.density);
+  const gq=0,gs=Math.max(7,13*unit)/Math.sqrt(CFG.density);
   for(const p of raw){if(pts.length>=cap)break;
-    const x=p[0]*sc+ox,y=p[1]*sc+oy,sp=p[2]?5*unit+1.5:(10+30*(1-p[3])**1.5)*Math.max(.8,unit);
+    let x=p[0]*sc+ox,y=p[1]*sc+oy;if(gq>0){x+=(Math.round(x/gs)*gs-x)*gq;y+=(Math.round(y/gs)*gs-y)*gq}const sp=p[2]?(5*unit+1.5)/dn:(10+30*(1-p[3])**1.5)*Math.max(.8,unit)/dn;
     const r=Math.ceil(sp/cell),gx=Math.floor(x/cell),gy=Math.floor(y/cell);let ok=true;
     for(let dx=-r;dx<=r&&ok;dx++)for(let dy=-r;dy<=r&&ok;dy++){const q=occ.get(key(gx+dx,gy+dy));if(q&&Math.hypot(q[0]-x,q[1]-y)<sp)ok=false}
     if(!ok)continue;occ.set(key(gx,gy),[x,y]);pts.push([x,y,p[2],p[3]])}
@@ -217,7 +311,7 @@ function generateInner(){
   const add=(a,b,pl)=>{if(a===b)return;const k=a<b?a*N+b:b*N+a;if(seen.has(k))return;seen.add(k);A.push(a);B.push(b);P.push(pl?1:0)};
   const U=(x)=>(x-ox)/sc,V=(y)=>(y-oy)/sc;
   const solid=(x,y)=>shape.f(U(x),V(y))>T*.97&&shape.d(U(x),V(y))>VOID-.01;
-  const maxAt=(x,y)=>(20+48*(1-shape.d(U(x),V(y)))**1.4)*Math.max(.8,unit);
+  const maxAt=(x,y)=>(20+48*(1-shape.d(U(x),V(y)))**1.4)*Math.max(.8,unit)/dn;
   if(window.d3&&d3.Delaunay){const flat=new Float64Array(N*2);for(let i=0;i<N;i++){flat[2*i]=nx[i];flat[2*i+1]=ny[i]}
     const D=new d3.Delaunay(flat),t=D.triangles,h=D.halfedges;
     for(let e=0;e<t.length;e++){if(h[e]>e)continue;const a=t[e],b=t[e%3===2?e-2:e+1];
@@ -262,9 +356,12 @@ function generateInner(){
      while(q.length){const i=q.pop();for(const e of adj[i]){const j=ea[e]===i?eb[e]:ea[e],d=dist[i]+elen[e];if(d<dist[j]-.5){dist[j]=d;if(!inq[j]){inq[j]=1;next.push(j)}}}
        if(!q.length&&next.length){q.push(...next);next=[]}}}
    let D=0;for(let i=0;i<N;i++)if(dist[i]<1e8)D=Math.max(D,dist[i]);D=Math.max(D,1);
-   for(let i=0;i<N;i++){const t=dist[i]<1e8?Math.min(1,dist[i]/D):0;const Zd=Math.min(Z,D*1.5);bz[i]=skin[i]?Zd*.16*Math.sin(nx[i]*.021+ny[i]*.013):Zd*t*(2-t)}}
+   for(let i=0;i<N;i++){const t=dist[i]<1e8?Math.min(1,dist[i]/D):0;const Zd=Math.min(Z,D*1.5)*CFG.depth;bz[i]=skin[i]?Zd*.16*Math.sin(nx[i]*.021+ny[i]*.013):Zd*t*(2-t)}}
   makeMotes();
+  formShown=CFG.form;
   makeVolume();
+  Math.random=mulberry32(CFG.seed*13+5);  // facet stream: the low-poly form is fixed per net, independent of the other sliders
+  buildPoly();
   project();
   drawStatic();
 }
@@ -282,7 +379,8 @@ function makeVolume(){
   adj=Array.from({length:N},()=>[]);for(let e=0;e<E;e++){adj[ea[e]].push(e);adj[eb[e]].push(e)}
 }
 function project(){const cY=Math.cos(rY),sY=Math.sin(rY),cX=Math.cos(rX),sX=Math.sin(rX);
-  for(let i=0;i<N;i++){const x=BX[i]-Cx,y=BY[i]-Cy,z=bz[i];
+  const g=PX?formShown:0,g1=1-g;
+  for(let i=0;i<N;i++){const x=(BX[i]*g1+(g?PX[i]*g:0))-Cx,y=(BY[i]*g1+(g?PY[i]*g:0))-Cy,z=bz[i]*g1+(g?PZ[i]*g:0);
     const x1=x*cY+z*sY,z1=-x*sY+z*cY,y1=y*cX-z1*sX,z2=y*sX+z1*cX,k=F3/(F3-z2);
     nx[i]=Cx+x1*k;ny[i]=Cy+y1*k;dep[i]=z2}
   grid=new Map();for(let i=0;i<N;i++){const g=key(Math.floor(nx[i]/CELL),Math.floor(ny[i]/CELL));let a=grid.get(g);if(!a)grid.set(g,a=[]);a.push(i)}
@@ -293,12 +391,82 @@ function near(x,y,R){const out=[],gx=Math.floor(x/CELL),gy=Math.floor(y/CELL),rc
   for(let dx=-rc;dx<=rc;dx++)for(let dy=-rc;dy<=rc;dy++){const g=grid.get(key(gx+dx,gy+dy));if(!g)continue;
     for(const j of g)if(Math.hypot(nx[j]-x,ny[j]-y)<R)out.push(j)}return out}
 
+// ---- geometric end: a low-poly, star-shaped solid with a sparse cage of nodes around it
+function hull3(P){const F=[],n=P.length;
+  for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)for(let k=j+1;k<n;k++){const a=P[i],b=P[j],c=P[k];
+    const ux=b[0]-a[0],uy=b[1]-a[1],uz=b[2]-a[2],vx=c[0]-a[0],vy=c[1]-a[1],vz=c[2]-a[2];
+    const nx_=uy*vz-uz*vy,ny_=uz*vx-ux*vz,nz_=ux*vy-uy*vx;let pos=0,neg=0;
+    for(let m=0;m<n;m++){if(m===i||m===j||m===k)continue;const d=nx_*(P[m][0]-a[0])+ny_*(P[m][1]-a[1])+nz_*(P[m][2]-a[2]);if(d>1e-9)pos++;else if(d<-1e-9)neg++;if(pos&&neg)break}
+    if(pos&&neg)continue;F.push(nx_*a[0]+ny_*a[1]+nz_*a[2]<0?[i,k,j]:[i,j,k])}
+  return F}
+function sphereDirs(n,minAng){const D=[];let tries=0;while(D.length<n&&tries<4000){tries++;const z=rand(-1,1),t=rand(0,6.2832),r=Math.sqrt(1-z*z),d=[r*Math.cos(t),z,r*Math.sin(t)];
+  if(D.every(q=>q[0]*d[0]+q[1]*d[1]+q[2]*d[2]<Math.cos(minAng)))D.push(d)}return D}
+function edgesOf(F){const S=new Set(),E=[];for(const f of F)for(let k=0;k<3;k++){const a=f[k],b=f[(k+1)%3],key=a<b?a+'-'+b:b+'-'+a;if(!S.has(key)){S.add(key);E.push(a<b?[a,b]:[b,a])}}return E}
+function hashf(x,y){const v=Math.sin(x*12.9898+y*78.233)*43758.5453;return v-Math.floor(v)}
+function buildPoly(){
+  const n=28,dirs=sphereDirs(n,.26);
+  const spike=.3+.5*CFG.rough,rx=bodyW/2*.72,ry=bodyH/2*.72,rz=(rx+ry)/2*.7*CFG.depth;
+  const sq=[rand(.7,1),rand(.7,1),rand(.7,1)];
+  const rad=dirs.map(()=>rand(0,1)<.3?1+rand(.4,1)*spike*1.5:1+rand(-.2,.08)*spike);
+  const V=dirs.map((d,i)=>[d[0]*rad[i]*rx*sq[0],d[1]*rad[i]*ry*sq[1],d[2]*rad[i]*rz*sq[2]]);
+  const F=hull3(dirs),Ed=edgesOf(F);
+  const cdirs=sphereDirs(Math.round(n*.5),.55),C=cdirs.map(d=>{const r=rand(1.45,1.9);return[d[0]*r*rx*sq[0],d[1]*r*ry*sq[1],d[2]*r*rz*sq[2]]});
+  // cage: each cage node ties to its two nearest neighbours and to the nearest vertex of the solid
+  const CE=[];C.forEach((p,i)=>{const near=C.map((q,j)=>[j,Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2])]).filter(x=>x[0]!==i).sort((a,b)=>a[1]-b[1]);
+    near.slice(0,2).forEach(([j])=>{if(!CE.some(e=>(e[0]===i&&e[1]===j)||(e[0]===j&&e[1]===i)))CE.push([i,j])});
+    let bv=0,bd=1e9;V.forEach((v,k)=>{const d=Math.hypot(p[0]-v[0],p[1]-v[1],p[2]-v[2]);if(d<bd){bd=d;bv=k}});CE.push([i,-1-bv])});
+  const adjV=V.map(()=>[]);Ed.forEach(([a,b])=>{adjV[a].push(b);adjV[b].push(a)});
+  poly={V,F,E:Ed,C,CE,adj:adjV,sx:new Float32Array(V.length),sy:new Float32Array(V.length),sz:new Float32Array(V.length),
+    cx:new Float32Array(C.length),cy:new Float32Array(C.length),heat:new Float32Array(V.length),hen:new Float32Array(V.length),ref:new Float64Array(V.length)};
+  // every net point gets a second home on the solid: where its ray from the centre meets a facet
+  PX=new Float32Array(N);PY=new Float32Array(N);PZ=new Float32Array(N);const facet=new Int32Array(N).fill(-1),edgeD=new Float32Array(N).fill(1e9),fold=new Array(N).fill(null),unitG=Math.max(.8,Math.min(W,H)/900);
+  const tri=F.map(f=>[V[f[0]],V[f[1]],V[f[2]]]);
+  for(let i=0;i<N;i++){let dx=BX[i]-Cx,dy=BY[i]-Cy,dz=bz[i];const L=Math.hypot(dx,dy,dz)||1;dx/=L;dy/=L;dz/=L;let best=-1,bestF=-1;
+    for(let fi=0;fi<tri.length;fi++){const [a,b,c]=tri[fi];const e1=[b[0]-a[0],b[1]-a[1],b[2]-a[2]],e2=[c[0]-a[0],c[1]-a[1],c[2]-a[2]];
+      const px=dy*e2[2]-dz*e2[1],py=dz*e2[0]-dx*e2[2],pz=dx*e2[1]-dy*e2[0],det=e1[0]*px+e1[1]*py+e1[2]*pz;if(Math.abs(det)<1e-9)continue;
+      const inv=1/det,tx=-a[0],ty=-a[1],tz=-a[2],u=(tx*px+ty*py+tz*pz)*inv;if(u<-1e-4||u>1+1e-4)continue;
+      const qx=ty*e1[2]-tz*e1[1],qy=tz*e1[0]-tx*e1[2],qz=tx*e1[1]-ty*e1[0],v=(dx*qx+dy*qy+dz*qz)*inv;if(v<-1e-4||u+v>1+1e-4)continue;
+      const t=(e2[0]*qx+e2[1]*qy+e2[2]*qz)*inv;if(t>0&&(best<0||t<best)){best=t;bestF=fi}}
+    if(best<0)best=L*.8;PX[i]=Cx+dx*best;PY[i]=Cy+dy*best;PZ[i]=dz*best;facet[i]=bestF;
+    if(bestF>=0){const [a,b,c]=tri[bestF],q=[dx*best,dy*best,dz*best];const segp=(p,q1,q2)=>{const vx=q2[0]-q1[0],vy=q2[1]-q1[1],vz=q2[2]-q1[2],t=clamp(((p[0]-q1[0])*vx+(p[1]-q1[1])*vy+(p[2]-q1[2])*vz)/(vx*vx+vy*vy+vz*vz||1),0,1);return[q1[0]+vx*t,q1[1]+vy*t,q1[2]+vz*t]};
+      let bp=null,bd=1e9;for(const [q1,q2] of [[a,b],[b,c],[c,a]]){const r=segp(q,q1,q2),d=Math.hypot(r[0]-q[0],r[1]-q[1],r[2]-q[2]);if(d<bd){bd=d;bp=r}}
+      edgeD[i]=bd;fold[i]=bp}}
+  // most points inside a facet slide onto its nearest fold, so their links become long chords across a flat plane; a few stay inside
+  for(let i=0;i<N;i++){if(facet[i]<0||!fold[i]||edgeD[i]<7*unitG||hashf(BX[i],BY[i])<.12)continue;PX[i]=Cx+fold[i][0];PY[i]=Cy+fold[i][1];PZ[i]=fold[i][2]}
+  // at the geometric end only points near a fold survive, plus a scattering inside each facet, so the facets read as long flat planes
+  keepG=null;
+  GA=[];GB=[];gadj=null;
+  elenP=new Float32Array(E);for(let e=0;e<E;e++)elenP[e]=Math.hypot(PX[ea[e]]-PX[eb[e]],PY[ea[e]]-PY[eb[e]])}
+function projPoly(){if(!poly)return;const cY=Math.cos(rY),sY=Math.sin(rY),cX=Math.cos(rX),sX=Math.sin(rX);
+  const pr=(p)=>{const x1=p[0]*cY+p[2]*sY,z1=-p[0]*sY+p[2]*cY,y1=p[1]*cX-z1*sX,z2=p[1]*sX+z1*cX,k=F3/(F3-z2);return[Cx+x1*k,Cy+y1*k,z2]};
+  poly.V.forEach((p,i)=>{const q=pr(p);poly.sx[i]=q[0];poly.sy[i]=q[1];poly.sz[i]=q[2]});
+  poly.C.forEach((p,i)=>{const q=pr(p);poly.cx[i]=q[0];poly.cy[i]=q[1]})}
+function drawPoly(ctx,g){if(!poly||g<=0)return;projPoly();const{sx,sy,sz}=poly,L=[-.45,-.62,.64];
+  const fs=poly.F.map(f=>[f,(sz[f[0]]+sz[f[1]]+sz[f[2]])/3]).sort((a,b)=>a[1]-b[1]);
+  for(const [f] of fs){const ax=sx[f[1]]-sx[f[0]],ay=sy[f[1]]-sy[f[0]],az=sz[f[1]]-sz[f[0]],bx=sx[f[2]]-sx[f[0]],by=sy[f[2]]-sy[f[0]],bz_=sz[f[2]]-sz[f[0]];
+    let nx_=ay*bz_-az*by,ny_=az*bx-ax*bz_,nz_=ax*by-ay*bx;const nl=Math.hypot(nx_,ny_,nz_)||1;nx_/=nl;ny_/=nl;nz_/=nl;if(nz_<0){nx_=-nx_;ny_=-ny_;nz_=-nz_}
+    const lit=clamp(.5+.5*(nx_*L[0]+ny_*L[1]+nz_*L[2]),0,1);
+    ctx.fillStyle=rgba(col.line,((col.dark?.02:.03)+lit*(col.dark?.11:.1))*g);ctx.beginPath();ctx.moveTo(sx[f[0]],sy[f[0]]);ctx.lineTo(sx[f[1]],sy[f[1]]);ctx.lineTo(sx[f[2]],sy[f[2]]);ctx.closePath();ctx.fill()}
+  ctx.lineWidth=.7;ctx.strokeStyle=rgba(col.line,(col.dark?.42:.5)*g);ctx.beginPath();
+  for(const [a,b] of poly.E){ctx.moveTo(sx[a],sy[a]);ctx.lineTo(sx[b],sy[b])}ctx.stroke();
+  ctx.lineWidth=.5;ctx.strokeStyle=rgba(col.line,(col.dark?.26:.32)*g);ctx.beginPath();
+  for(const [a,b] of poly.CE){const bxx=b<0?sx[-1-b]:poly.cx[b],byy=b<0?sy[-1-b]:poly.cy[b];ctx.moveTo(poly.cx[a],poly.cy[a]);ctx.lineTo(bxx,byy)}ctx.stroke();
+  ctx.fillStyle=rgba(col.node,.92*g);for(let i=0;i<sx.length;i++){ctx.beginPath();ctx.arc(sx[i],sy[i],2,0,6.2832);ctx.fill()}
+  for(let i=0;i<poly.cx.length;i++){ctx.beginPath();ctx.arc(poly.cx[i],poly.cy[i],2.4,0,6.2832);ctx.fill()}}
+// signal on the solid: heat runs vertex to vertex along its edges
+function polyFire(i,en,now){if(!poly||poly.ref[i]>now)return;poly.ref[i]=now+380;if(en>poly.heat[i]){poly.heat[i]=en;poly.hen[i]=en}
+  if(en>.2)setTimeout(()=>poly&&poly.adj[i]&&poly.adj[i].forEach(j=>polyFire(j,en*.74,performance.now())),110)}
+function drawPolyHeat(ctx,dt,g){if(!poly||g<=0)return;const{sx,sy,heat,hen}=poly,k=Math.exp(-dt/700);for(let i=0;i<heat.length;i++)heat[i]*=k;
+  for(const f of poly.F){const h=(heat[f[0]]+heat[f[1]]+heat[f[2]])/3;if(h<.04)continue;const e=(hen[f[0]]+hen[f[1]]+hen[f[2]])/3;
+    ctx.fillStyle=rgba(sigCol(e),.22*h*g);ctx.beginPath();ctx.moveTo(sx[f[0]],sy[f[0]]);ctx.lineTo(sx[f[1]],sy[f[1]]);ctx.lineTo(sx[f[2]],sy[f[2]]);ctx.closePath();ctx.fill()}
+  ctx.lineWidth=.7;for(const [a,b] of poly.E){const m=Math.min(heat[a],heat[b]);if(m<.03)continue;ctx.strokeStyle=rgba(sigCol((hen[a]+hen[b])/2),Math.min(1,m*1.6)*g);ctx.beginPath();ctx.moveTo(sx[a],sy[a]);ctx.lineTo(sx[b],sy[b]);ctx.stroke()}}
+
 function drawStatic(){
-  readColors();xS.clearRect(0,0,W,H);
+  readColors();xS.clearRect(0,0,W,H);const gF=CFG.form;
   xS.lineWidth=.45;let dmin=1e9,dmax=-1e9;for(let i=0;i<N;i++){dmin=Math.min(dmin,dep[i]);dmax=Math.max(dmax,dep[i])}const dr=Math.max(1,dmax-dmin);
   // links that climb steeply through the depth look stretched once the shape turns side-on; fade them out as they stretch
   for(let b=0;b<4;b++){xS.strokeStyle=rgba(col.line,[col.dark?.09:.13,col.dark?.18:.22,col.dark?.28:.32,col.dark?.06:.08][b]);xS.beginPath();
-    for(let e=0;e<E;e++){if(eplate[e])continue;const A=ea[e],B=eb[e],st=Math.hypot(nx[A]-nx[B],ny[A]-ny[B])/Math.max(elen[e],1);
+    for(let e=0;e<E;e++){if(eplate[e])continue;const A=ea[e],B=eb[e];const st=Math.hypot(nx[A]-nx[B],ny[A]-ny[B])/Math.max(elenP?elen[e]*(1-CFG.form)+elenP[e]*formShown:elen[e],1);
       if(st>2.8)continue;const q=st>1.65?3:Math.min(2,Math.floor(((dep[A]+dep[B])/2-dmin)/dr*3));if(q!==b)continue;xS.moveTo(nx[A],ny[A]);xS.lineTo(nx[B],ny[B])}xS.stroke()}
   xS.lineWidth=.9;xS.strokeStyle=rgba(col.line,col.dark?.5:.5);xS.beginPath();
   for(let e=0;e<E;e++){if(!eplate[e])continue;xS.moveTo(nx[ea[e]],ny[ea[e]]);xS.lineTo(nx[eb[e]],ny[eb[e]])}xS.stroke();
@@ -309,8 +477,11 @@ function drawStatic(){
 function fire(i,en,now){
   if(refr[i]>now)return;refr[i]=now+REFR;lit[i]=1;litEn[i]=en;litList.add(i);
   if(en<.12)return;
+  const geo=CFG.form>=.5;
   for(const e of adj[i]){if(signals.length>=MAXSIG)break;const j=ea[e]===i?eb[e]:ea[e];if(refr[j]>now)continue;
-    signals.push({e,from:i,to:j,t0:now,t1:now+elen[e]*MSPX,en:en*Math.pow(DECAY,elen[e]/14)})}
+    signals.push({e,from:i,to:j,t0:now,t1:now+elen[e]*MSPX,en:en*Math.pow(DECAY,elen[e]/CFG.reach)})}
+  if(geo&&gadj&&gadj[i])for(const k of gadj[i]){const j=GA[k]===i?GB[k]:GA[k];if(refr[j]>now)continue;const L=Math.hypot(nx[i]-nx[j],ny[i]-ny[j]);
+    signals.push({e:-1-k,from:i,to:j,t0:now,t1:now+L*MSPX,en:en*Math.pow(DECAY,L/CFG.reach)})}
 }
 
 // ---- one annotation at a time, for the lobe under the pointer
@@ -406,6 +577,7 @@ stage.addEventListener('pointerleave',()=>{lastMove=-1e9});
 let last=performance.now();
 function frame(now){
   const dt=Math.min(64,now-last);last=now;
+  if(Math.abs(formShown-CFG.form)>.0005){formShown+=(CFG.form-formShown)*(1-Math.exp(-dt/140));if(Math.abs(formShown-CFG.form)<.0005)formShown=CFG.form;project();drawStatic()}
   const active=now-lastMove<140;
   if(active&&now-lastPoke>65){lastPoke=now;poke(px,py,2,.8,28)}
   // breathing: only after a few seconds without interaction, sparse and dim
@@ -422,7 +594,7 @@ function frame(now){
   if(ann.out){ann.out.a-=dt/260;if(ann.out.a<=0)ann.out=null}
 
   {const on=!reduce&&now-lastMove<1500,e=1-Math.exp(-dt/700);
-    const dir=px>=Cx?1:-1;vY+=((on?.26*dir:0)-vY)*e;
+    const dir=px>=Cx?1:-1;vY+=((on?CFG.spin*dir:0)-vY)*e;
     let nY=rY;if(on||Math.abs(vY)>.03)nY=rY+vY*dt/1000;else{const tg=Math.round(rY/6.2832)*6.2832;nY=rY+(tg-rY)*(1-Math.exp(-dt/900))}
     const tX=on?-clamp((py-Cy)/(H*.5),-1,1)*.18:0,nX=rX+(tX-rX)*e;
     if(Math.abs(nY-rY)+Math.abs(nX-rX)>1e-5){rY=nY;rX=nX;project();drawStatic()}}
@@ -469,6 +641,30 @@ new MutationObserver(drawStatic).observe(document.documentElement,{attributes:tr
  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',sync)}
 let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(()=>{if(Math.abs(stage.clientWidth-W)>2||Math.abs(stage.clientHeight-H)>40)generate()},150)}).observe(stage);
 
+
+// ---- shape your net
+{const stg=document.getElementById('stage'),panel=document.getElementById('shapePanel'),openW=document.getElementById('shapeOpen'),openB=document.getElementById('openShape');
+ [panel,openW].forEach(el=>['pointermove','pointerdown'].forEach(t=>el.addEventListener(t,ev=>ev.stopPropagation())));
+ const D0={...CFG},map={Form:'form',Sprawl:'sprawl',Rough:'rough',Voids:'voids',Density:'density'};
+ const fmt={form:v=>v<.05?'Organic':v>.95?'Geometric':Math.round(v*100)+'%',sprawl:v=>v.toFixed(1)+'x',rough:v=>v.toFixed(1)+'x',voids:v=>Math.round(v/.42*100)+'%',density:v=>v.toFixed(1)+'x'};
+ const netId=document.getElementById('netId'),showId=()=>{netId.textContent=String(CFG.seed).padStart(4,'0')};
+ const prev=document.getElementById('netPrev'),pctx=prev.getContext('2d');
+ const snap=()=>{if(reduce)return;prev.width=cS.width;prev.height=cS.height;pctx.setTransform(1,0,0,1,0,0);pctx.drawImage(cS,0,0);prev.classList.add('show');void prev.offsetWidth;prev.classList.remove('show')};
+ let t=0;const regen=(fade)=>{clearTimeout(t);t=setTimeout(()=>{if(fade&&!reduce){stg.classList.add('fading');setTimeout(()=>{rY=0;vY=0;generate();stg.classList.remove('fading');
+     setTimeout(()=>{const g=lobes[Math.floor(lobes.length/2)];if(g)fire(g.anchor,1,performance.now())},120)},300)}else{snap();const ry0=rY;generate();rY=ry0;project();drawStatic()}},fade?0:160)};
+ const sync=()=>{for(const [id,k] of Object.entries(map)){document.getElementById('s'+id).value=CFG[k];document.getElementById('v'+id).textContent=fmt[k](CFG[k])}
+   document.querySelectorAll('.sw button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pal===CFG.palette)));showId()};
+ for(const [id,k] of Object.entries(map)){const el=document.getElementById('s'+id);el.addEventListener('input',()=>{CFG[k]=+el.value;document.getElementById('v'+id).textContent=fmt[k](CFG[k]);if(k!=='form')regen(false)})}
+ document.querySelectorAll('.sw button').forEach(b=>b.addEventListener('click',()=>{CFG.palette=b.dataset.pal;STOPS=PALETTES[CFG.palette];sync();
+   const g=lobes[Math.floor(Math.random()*lobes.length)];if(g)fire(g.anchor,1,performance.now())}));
+ document.getElementById('growBtn').addEventListener('click',()=>{CFG.seed=1+Math.floor(Math.random()*9999);try{history.replaceState(null,'','#s'+CFG.seed)}catch(e){}sync();regen(true)});
+ document.getElementById('resetBtn').addEventListener('click',()=>{Object.assign(CFG,D0);STOPS=PALETTES[CFG.palette];sync();regen(true)});
+ const setOpen=o=>{stg.classList.toggle('shaping',o);openB.setAttribute('aria-expanded',String(o));if(o)setTimeout(()=>document.getElementById('sForm').focus({preventScroll:true}),60);else openB.focus({preventScroll:true})};
+ openB.addEventListener('click',()=>setOpen(true));document.getElementById('closeShape').addEventListener('click',()=>setOpen(false));
+ addEventListener('keydown',e=>{if(e.key==='Escape'&&stg.classList.contains('shaping'))setOpen(false)});
+ const m=/^#s(\d{1,5})$/.exec(location.hash);if(m)CFG.seed=+m[1];
+ if(location.hash==='#studio')stg.classList.add('shaping');
+ sync()}
 generate();
 setTimeout(()=>{const l=lobes[Math.floor(lobes.length/2)];if(l)fire(l.anchor,1,performance.now())},300);
 requestAnimationFrame(frame);
