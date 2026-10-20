@@ -6,27 +6,27 @@
 <style>
 /* Layout: single-screen teaser. The organism fills the stage, centered; hero copy sits centered over it on a soft radial scrim. Dark-first, Hydra palette. */
 :root{
-  --bg:#151514; --fg:#f7f6f6; --muted:#9a968f;
+  --bg:#151514; --fg:#f7f6f6; --muted:#9a968f; --sub:#cac8c4;
   --accent:#c8cf36; --accent-ink:#151514; --ghost:#c8cf36;
   --net-line:#f7f6f6; --net-node:#f7f6f6; --net-signal:#c8cf36;
-  --scrim:rgba(21,21,20,.78); --scrim-0:rgba(21,21,20,0);
+  --scrim:rgba(21,21,20,.5); --scrim-0:rgba(21,21,20,0);
   --f-display:"Arimo","Helvetica Neue",Arial,sans-serif;
   --f-body:"Atkinson Hyperlegible",system-ui,sans-serif;
   --f-mono:"Atkinson Hyperlegible Mono",ui-monospace,Menlo,monospace;
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
-  --bg:#f7f6f6; --fg:#232424; --muted:#65625d;
+  --bg:#f7f6f6; --fg:#232424; --muted:#65625d; --sub:#65625d;
   --accent:#c8cf36; --accent-ink:#232424;
   --net-line:#232424; --net-node:#232424; --net-signal:#656722; --ghost:#656722;
-  --scrim:rgba(247,246,246,.82); --scrim-0:rgba(247,246,246,0);
+  --scrim:rgba(247,246,246,.55); --scrim-0:rgba(247,246,246,0);
   color-scheme:light;
 }}
 :root[data-theme="light"]{
-  --bg:#f7f6f6; --fg:#232424; --muted:#65625d;
+  --bg:#f7f6f6; --fg:#232424; --muted:#65625d; --sub:#65625d;
   --accent:#c8cf36; --accent-ink:#232424;
   --net-line:#232424; --net-node:#232424; --net-signal:#656722; --ghost:#656722;
-  --scrim:rgba(247,246,246,.82); --scrim-0:rgba(247,246,246,0);
+  --scrim:rgba(247,246,246,.55); --scrim-0:rgba(247,246,246,0);
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -37,6 +37,8 @@ body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16
 
 .stage{position:relative;height:100%;min-height:600px;overflow:hidden;background:var(--bg);touch-action:pan-y;cursor:crosshair}
 .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* the live layer (pulses) sits above the copy, so signal runs through the headline; the resting net stays behind it */
+#netLive{z-index:3;pointer-events:none}
 .grain{position:absolute;inset:-80px;pointer-events:none;opacity:.075;mix-blend-mode:screen;background-size:80px 80px;animation:grain .8s steps(1) infinite}
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .grain{mix-blend-mode:multiply;opacity:.06}}
 :root[data-theme="light"] .grain{mix-blend-mode:multiply;opacity:.06}
@@ -45,7 +47,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16
 .scrim{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 34% 30% at 50% 52%,var(--scrim) 0%,var(--scrim) 35%,var(--scrim-0) 100%)}
 @media (max-width:700px){.scrim{background:radial-gradient(ellipse 70% 32% at 50% 52%,var(--scrim) 0%,var(--scrim) 40%,var(--scrim-0) 100%)}}
 
-.nav{position:absolute;inset:0 0 auto;display:flex;justify-content:space-between;align-items:center;padding-block:22px;z-index:2;pointer-events:none}
+.nav{position:absolute;inset:0 0 auto;display:flex;justify-content:space-between;align-items:center;padding-block:22px;z-index:4;pointer-events:none}
 .brand{display:flex;color:var(--fg)}
 .brand svg{display:block;width:102px;height:39px}
 .nav-links{display:flex;gap:28px;align-items:center;color:var(--muted);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
@@ -56,11 +58,11 @@ body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16
 
 .copy{position:absolute;inset:0;z-index:2;display:grid;place-content:center;justify-items:center;text-align:center;gap:22px;pointer-events:none}
 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px);line-height:1.03;letter-spacing:-.02em;margin:0;max-width:17ch;text-wrap:balance;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-.sub{font-weight:400;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:clamp(17px,1.6vw,20px);color:var(--muted);margin:0;max-width:40ch;text-wrap:balance}
+.sub{font-weight:400;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:clamp(17px,1.6vw,20px);color:var(--sub);margin:0;max-width:40ch;text-wrap:balance}
 .cta{pointer-events:auto;background:var(--accent);color:var(--accent-ink);border:0;border-radius:3px;padding:15px 22px;font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:clamp(28px,4.5vh,48px)}
 .cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
-.theme{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:3;display:flex;align-items:center;gap:10px;
+.theme{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:4;display:flex;align-items:center;gap:10px;
   background:none;border:0;padding:4px;color:var(--muted);cursor:pointer;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
 .theme .track{position:relative;width:38px;height:20px;border-radius:10px;border:1px solid var(--muted);transition:border-color .25s}
 .theme .knob{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:var(--fg);transition:transform .25s ease}
