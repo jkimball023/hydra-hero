@@ -70,7 +70,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
 /* closed: one quiet trigger, bottom left */
 .shape-open{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;display:flex;align-items:center;gap:14px;
   font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
-.shape-open button{font:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:transparent;color:var(--fg);border:1px solid color-mix(in srgb,var(--muted) 50%,transparent);border-radius:3px;padding:6px 10px;cursor:pointer}
+.shape-open button{font:inherit;font-weight:400;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:transparent;color:var(--fg);border:1px solid color-mix(in srgb,var(--muted) 50%,transparent);border-radius:3px;padding:6px 10px;cursor:pointer}
 .shape-open button:hover{border-color:var(--fg)}
 .shape-open .id{font-variant-numeric:tabular-nums}
 /* open: a compact settings card in the bottom-left corner, after the reference */
@@ -82,7 +82,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
 .stage.shaping .shape{transform:none;opacity:1;visibility:visible;transition:transform .3s cubic-bezier(.2,.7,.2,1),opacity .22s ease}
 .stage.shaping .shape-open{opacity:0;pointer-events:none}
 @media (prefers-reduced-motion: reduce){.shape,.stage.shaping .shape{transition:none}}
-.shape *{font-weight:400}
+.shape,.shape *{font-weight:400;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .shape header{display:flex;justify-content:space-between;align-items:baseline}
 .shape h2{margin:0;font-size:14px;color:var(--fg)}
 .shape .x{background:none;border:0;color:var(--panel-mut);font-size:17px;line-height:1;cursor:pointer;padding:0 2px}
@@ -156,13 +156,13 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
   <div class="hint mono" id="hint" hidden></div>
   <button class="theme" id="theme" type="button" role="switch" aria-checked="true" aria-label="Dark mode"><span id="themeLabel">Dark</span><span class="track"><span class="knob"></span></span></button>
   <div class="shape-open" id="shapeOpen">
-    <button type="button" id="openShape" aria-expanded="false" aria-controls="shapePanel">Build your system</button>
+    <button type="button" id="openShape" aria-expanded="false" aria-controls="shapePanel">Create your system</button>
     <span class="id" id="netId" hidden>0004</span>
   </div>
-  <aside class="shape" id="shapePanel" aria-label="Build your system">
+  <aside class="shape" id="shapePanel" aria-label="Create your system">
     <div>
-      <header><h2>Build your system</h2><button type="button" class="x" id="closeShape" aria-label="Close">&times;</button></header>
-      <p>Build a system of your own. Every setting changes how it is wired.</p>
+      <header><h2>Create your system</h2><button type="button" class="x" id="closeShape" aria-label="Close">&times;</button></header>
+      <p>Create a system of your own. Every setting changes how it is wired.</p>
     </div>
     <section>
       <h3>Form</h3>
