@@ -42,26 +42,23 @@ body{background:var(--bg);color:var(--fg);font-family:var(--f-body);margin:0}
 .theme:hover .track{border-color:var(--fg)}
 .theme:focus{outline:none}
 .theme:focus-visible .track{outline:1px solid var(--lime);outline-offset:2px}
-.hint{position:fixed;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:3;text-align:center;
-  font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);pointer-events:none;transition:opacity .5s}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 
 <canvas id="cv" aria-hidden="true"></canvas>
 <div class="wrap" id="wrap">
   <header class="head">
-    <span class="eb">// how hydra works</span>
+    <span class="eb">How Hydra works</span>
     <h1>Agents do the work. You control the system.</h1>
     <p>Scroll to follow one issue through a workflow defined once.</p>
   </header>
 </div>
 <button class="theme" id="themeBtn" type="button" role="switch" aria-checked="true" aria-label="Dark mode"><span class="track"><span class="knob"></span></span></button>
-<p class="hint" id="hint">SCROLL ↓</p>
 <p class="sr">An issue arrives from Slack — "add rate limiting to the api"; it could as easily come from the web dashboard or the CLI. Hydra maps the work onto shared context — standards, repo, docs, history — using a workflow defined once, and starts agent sessions in parallel. Claude finds the cause, an N+1 query, and hands off to Codex, which patches it. Mid-run, a Jira status change wakes the pm agent, which takes over the docs lane from Copilot, alerts James in Slack, and runs its own parallel path drafting release notes that land in shared context at the merge. A replay of the same issue with a different prompt races the main run on a second path; when it stalls, Jayantk takes the session over interactively, and a compare node merges the paths — variant A is kept, your judgment. A "your turn" marker appears on the Claude lane: input is available but optional, and the fleet continues without it. The work converges into pull request 1284 on GitHub, where lint, tests and build pass. The run waits at review for your call: agents do the work, you decide what ships. On approval it merges to main; the merge wakes the security agent and alerts the security-review channel, and the result is written back into shared context, so the next run starts smarter.</p>
 
 <script>
 (()=>{
-const cv=document.getElementById('cv'),x=cv.getContext('2d'),wrap=document.getElementById('wrap'),hint=document.getElementById('hint');
+const cv=document.getElementById('cv'),x=cv.getContext('2d'),wrap=document.getElementById('wrap');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const MONO='"Atkinson Hyperlegible Mono",ui-monospace,Menlo,monospace';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -87,10 +84,10 @@ let W=0,H=0,DPR=1,L={};
 function layout(){
   W=innerWidth;H=innerHeight;DPR=Math.min(2,devicePixelRatio||1);
   cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);x.setTransform(DPR,0,0,DPR,0,0);
-  const port=W<700,sx=port?Math.max(58,W*.14):W/2;
+  const port=W<900,sx=port?Math.max(58,W*.14):W/2;
   const dx=port?48:110;
   const railX=port?W-24:Math.min(sx+430,W-56);
-  const Y={start:400,trig:510,map:760,fan0:980,hand:1270,take:1300,yt:1330,split:900,stall:1140,cmp:1604,patch:1680,gate:1880,merge:2070,term:2170,fin:2300,headMax:2390};
+  const Y={start:400,trig:510,map:760,fan0:980,hand:1270,take:1300,yt:1330,split:900,stall:1020,cmp:1604,patch:1680,gate:1880,merge:2070,term:2170,fin:2300,headMax:2390};
   const laneTop=Y.fan0+dx,laneBot=1420,fan1=laneBot+dx;Y.fan1=fan1;
   const S=(s)=>port?1:s; // phone: everything on the right
   const mkC=(key,y,side,anchorX,rows,w)=>{const ax=anchorX??sx;
@@ -112,12 +109,12 @@ function layout(){
       {x:sx+dx,y0:laneTop,y1:Y.take,lab:'copilot · api docs'},
       {x:sx+dx,y0:Y.take,y1:laneBot,lab:'pm · scope check'}],
     cards:[
-      mkC('trig',Y.trig,1,sx,{eb:'// 01 · ISSUE',t:'SLACK → HYDRA',r:['"add rate limiting to the api"','also: web · cli']}),
-      mkC('map',Y.map,S(-1),sx,{eb:'// 02 · PLAN',t:'WORK MAPPED · TASKS IDENTIFIED',r:['workflow defined once','12 steps · 3 gates']}),
-      mkC('fan',Y.fan0+(port?120:150),1,sx+dx,{eb:'// 03 · AGENT SESSIONS',t:'RUNNING · IN PARALLEL',r:['claude finds cause: N+1 query','handoff → codex patches it','jira event → pm takes a lane']},port?undefined:244),
-      mkC('patch',Y.patch,S(-1),sx,{eb:'// 04 · PULL REQUEST',t:'PR #1284 · GITHUB',chk:['lint','tests · 142 pass','build']}),
-      mkC('gate',Y.gate,1,sx,{eb:'// 05 · REVIEW',t:'DECIDE WHAT SHIPS',tb:'APPROVED · BY YOU',r:['reviewer agent · checks pass'],rb:['merged on your word']}),
-      mkC('merge',Y.merge,S(-1),sx,{eb:'// 06 · MERGED',t:'MERGED → MAIN',r:['write → shared context','history +1 · next run smarter']})]
+      mkC('trig',Y.trig,1,sx,{eb:'01 · Issue',t:'SLACK → HYDRA',r:['"add rate limiting to the api"','also: web · cli']}),
+      mkC('map',Y.map,S(-1),sx,{eb:'02 · Plan',t:'WORK MAPPED · TASKS IDENTIFIED',r:['workflow defined once','12 steps · 3 gates']}),
+      mkC('fan',Y.fan0+(port?120:150),1,sx+dx,{eb:'03 · Agent sessions',t:'RUNNING · IN PARALLEL',r:['claude finds cause: N+1 query','handoff → codex patches it','jira event → pm takes a lane']},port?undefined:244),
+      mkC('patch',Y.patch,S(-1),sx,{eb:'04 · Pull request',t:'PR #1284 · GITHUB',chk:['lint','tests · 142 pass','build']}),
+      mkC('gate',Y.gate,1,sx,{eb:'05 · Review',t:'DECIDE WHAT SHIPS',tb:'APPROVED · BY YOU',r:['reviewer agent · checks pass'],rb:['merged on your word']}),
+      mkC('merge',Y.merge,S(-1),sx,{eb:'06 · Merged',t:'MERGED → MAIN',r:['write → shared context','history +1 · next run smarter']})]
   };
   // background circuitry: two bus lines per side, with branches at the real station
   // heights — every line ends at a junction, a terminal, a component, or a ground
@@ -126,7 +123,7 @@ function layout(){
   if(!port){
     const stys=[Y.trig,Y.map,Y.fan0,Y.hand,Y.patch,Y.gate,Y.merge];
     for(const s of[-1,1]){
-      const bA=snap(sx+s*346),bB=snap(sx+s*398);
+      const bA=snap(sx+s*(railX-sx-84)),bB=snap(sx+s*(railX-sx-32));
       C.buses.push([bA,Y.start,Y.term],[bB,stys[0],stys[stys.length-1]+26]);
       C.tops.push([bA,Y.start]);
       C.grounds.push([bA,Y.term],[bB,stys[stys.length-1]+26]);
@@ -139,7 +136,7 @@ function layout(){
     // crossings: tie the two sides together, passing directly behind the flow,
     // placed at the midpoints between stations so they never touch a node or leader
     const mids=[[Y.trig,Y.map],[Y.map,Y.fan0],[Y.fan1,Y.patch],[Y.patch,Y.gate],[Y.gate,Y.merge],[Y.merge,Y.term]].map(([a,b])=>snap((a+b)/2));
-    const bL=snap(sx-346),bR=snap(sx+346);
+    const bL=snap(sx-(railX-sx-84)),bR=snap(sx+(railX-sx-84));
     mids.forEach((y,i)=>{
       if(i%2){const xj=snap(sx+(i===3?104:-104));
         C.branches.push([[bL,y],[xj,y],[xj,y+26],[bR,y+26]]);
@@ -164,6 +161,9 @@ function layout(){
   // parallel arms (desktop): a replay path racing the main run on the left, and the
   // pm agent's own path on the right, landing on the shared-context write line
   L.armL=port?null:{x:sx-264};L.armR=port?null:{x:sx+324};
+  // the fan card sits between the docs lane and the shared-context rail: it is sized
+  // to end short of the rail, so no card ever crosses a flow line
+  if(!port){const fc=L.cards.find(c=>c.key==='fan');fc.bx=sx+dx+42;fc.w=Math.min(244,railX-18-fc.bx)}
   if(!port){
     L.lines.push(
       {pts:[[sx,Y.split],[sx-264,Y.split],[sx-264,Y.cmp],[sx,Y.cmp]]},
@@ -347,24 +347,22 @@ function render(){
     x.moveTo(rx,jy-10);x.lineTo(rx,ty0+(n-1)*13+10);x.stroke();
     lines.forEach((s,i)=>txt(lit?dec(s,t0,i*130):s,rx+sd*10,ty0+i*13,
       {size:i?9:9.5,align:sd>0?'left':'right',c:i?col.muted:(lit?col.fg:col.muted),a:lit?(i?.8:.95):(i?.5:.6),ko:true}))};
-  // a drop annotation hangs its rule from a horizontal line instead of using a leader
-  const dropAnn=(rx,ay,lines,lit,t0)=>{const en=clamp(1-(head-ay)/1800,0,1);
-    x.strokeStyle=lit?rgba(sigCol(.45+.4*en),.45+.5*en):rgba(col.fg,.3);x.lineWidth=.9;
-    x.beginPath();x.moveTo(rx,ay+3);x.lineTo(rx,ay+22+(lines.length-1)*13);x.stroke();
-    lines.forEach((s,i)=>txt(lit?dec(s,t0,i*130):s,rx+10,ay+18+i*13,
-      {size:i?9:9.5,c:i?col.muted:(lit?col.fg:col.muted),a:lit?(i?.8:.95):(i?.5:.6),ko:true}))};
-  // jira event: the pm agent takes over the docs lane, then runs its own path
+  // jira event: the pm agent takes over the docs lane, then runs its own path.
+  // On desktop the annotation leaves the pm arm just after it turns downward,
+  // facing into the corner, so it reads like every other event annotation
   diamond(sx+dx,Y.take,head>=Y.take);
-  {const JL=['jira status change','wake: pm agent','alert: james in slack'];
-   if(port)eann(sx+dx,Y.take,JL,head>=Y.take,R.take);
-   else dropAnn(sx+dx+56,Y.take,JL,head>=Y.take,R.take)}
+  {const JL=['jira status change','wake: pm agent','alert: james in slack'],jlit=head>=Y.take;
+   if(port||!L.armR)eann(sx+dx,Y.take,JL,jlit,R.take);
+   else{const ax=L.armR.x,ay=Y.take+24;
+     x.fillStyle=jlit?rgba(sigCol(.7),.9):rgba(col.muted,.8);x.beginPath();x.arc(ax,ay,1.8,0,6.3);x.fill();
+     eann(ax,ay,JL,jlit,R.take,-1)}}
   // post-merge: the system keeps moving without you
   {const sy=Y.merge+80,slit=head>=sy;diamond(sx+56,sy,slit);
    eann(sx+56,sy,['pr merged → main','wake: security agent','alert: #sec-review'],slit,R.sec)}
   if(L.armL){
     // the replay path: a human steps into the stalled variant, and compare decides
     diamond(L.armL.x,Y.stall,head>=Y.stall);
-    eann(L.armL.x,Y.stall,['session stalled · try 2 of 3','takeover: jayantk','mode: interactive'],head>=Y.stall,R.stall,-1);
+    eann(L.armL.x,Y.stall,['session stalled · try 2 of 3','takeover: jayantk','mode: interactive'],head>=Y.stall,R.stall);
     diamond(sx,Y.cmp,head>=Y.cmp);
     eann(sx,Y.cmp,['compare · variant A vs B','A kept · your judgment'],head>=Y.cmp,R.cmp);
     // junctions where the arms leave and rejoin
@@ -409,10 +407,8 @@ function render(){
   // closing line
   if(head>=Y.fin){const t0=R.fin;
     x.font=`17px ${getComputedStyle(document.body).fontFamily}`;x.textAlign='center';x.textBaseline='middle';
-    x.fillStyle=rgba(col.fg,.95);x.fillText(dec('See the work without watching every agent.',t0),port?W/2:sx,Y.fin);
-    txt(dec('// the next run starts smarter',t0),port?W/2:sx,Y.fin+24,{align:'center',size:10,a:.75})}
+    x.fillStyle=rgba(col.fg,.95);x.fillText(dec('See the work without watching every agent.',t0),port?W/2:sx,Y.fin);}
   x.restore();
-  hint.style.opacity=(scrollY||0)>60?0:1;
 }
 
 // ---- theme
