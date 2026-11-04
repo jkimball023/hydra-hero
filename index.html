@@ -7,8 +7,8 @@
 /* Layout: single-screen teaser. The organism fills the stage, centered; hero copy sits centered over it on a soft radial scrim. Dark-first, Hydra palette. */
 :root{
   --bg:#151514; --fg:#f7f6f6; --muted:#9a968f; --panel:#1c1c1c; --panel-mut:#9a968f; --sub:#cac8c4;
-  --accent:#c8cf36; --accent-ink:#151514; --ghost:#c8cf36;
-  --net-line:#f7f6f6; --net-node:#f7f6f6; --net-signal:#c8cf36;
+  --accent:#cade9a; --accent-ink:#151514; --ghost:#cade9a; --logo:#f7f6f6;
+  --net-line:#f7f6f6; --net-node:#f7f6f6; --net-signal:#cade9a;
   --scrim:rgba(21,21,20,.5); --scrim-0:rgba(21,21,20,0);
   --f-display:"Arimo","Helvetica Neue",Arial,sans-serif;
   --f-body:"Atkinson Hyperlegible",system-ui,sans-serif;
@@ -17,15 +17,15 @@
 }
 @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
   --bg:#f7f6f6; --fg:#232424; --muted:#65625d; --panel:#ecebea; --panel-mut:#65625d; --sub:#65625d;
-  --accent:#c8cf36; --accent-ink:#232424;
-  --net-line:#232424; --net-node:#232424; --net-signal:#656722; --ghost:#656722;
+  --accent:#cade9a; --accent-ink:#232424; --logo:#232424;
+  --net-line:#232424; --net-node:#232424; --net-signal:#5a6e3c; --ghost:#5a6e3c;
   --scrim:rgba(247,246,246,.55); --scrim-0:rgba(247,246,246,0);
   color-scheme:light;
 }}
 :root[data-theme="light"]{
   --bg:#f7f6f6; --fg:#232424; --muted:#65625d; --panel:#ecebea; --panel-mut:#65625d; --sub:#65625d;
-  --accent:#c8cf36; --accent-ink:#232424;
-  --net-line:#232424; --net-node:#232424; --net-signal:#656722; --ghost:#656722;
+  --accent:#cade9a; --accent-ink:#232424; --logo:#232424;
+  --net-line:#232424; --net-node:#232424; --net-signal:#5a6e3c; --ghost:#5a6e3c;
   --scrim:rgba(247,246,246,.55); --scrim-0:rgba(247,246,246,0);
   color-scheme:light;
 }
@@ -39,7 +39,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16
 .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 /* the live layer (pulses) sits above the copy, so signal runs through the headline; the resting net stays behind it */
 #netLive{z-index:3;pointer-events:none}
-.grain{position:absolute;inset:-80px;pointer-events:none;opacity:.075;mix-blend-mode:screen;background-size:80px 80px;animation:grain .8s steps(1) infinite}
+.grain{position:absolute;inset:-80px;z-index:4;pointer-events:none;opacity:.075;mix-blend-mode:screen;background-size:80px 80px;animation:grain .8s steps(1) infinite}
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .grain{mix-blend-mode:multiply;opacity:.06}}
 :root[data-theme="light"] .grain{mix-blend-mode:multiply;opacity:.06}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-31px,17px)}40%{transform:translate(23px,-41px)}60%{transform:translate(-47px,-11px)}80%{transform:translate(13px,37px)}}
@@ -56,10 +56,13 @@ body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16
 .nav-cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media (max-width:700px){.nav-links span{display:none}}
 
-.copy{position:absolute;inset:0;z-index:2;display:grid;place-content:center;justify-items:center;text-align:center;gap:22px;pointer-events:none}
+.copy{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;gap:22px;pointer-events:none}
 h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px);line-height:1.03;letter-spacing:-.02em;margin:0;max-width:17ch;text-wrap:balance;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .sub{font-weight:400;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:clamp(17px,1.6vw,20px);color:var(--sub);margin:0;max-width:40ch;text-wrap:balance}
-.cta{pointer-events:auto;background:var(--accent);color:var(--accent-ink);border:0;border-radius:3px;padding:15px 22px;font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:clamp(28px,4.5vh,48px)}
+/* the copy sits at layer 2 (pulses run over the headline); the button sits above the pulses, annotations and grain */
+.copy>*{position:relative;z-index:2}
+.copy>.cta{z-index:5}
+.cta{pointer-events:auto;background:#a8e29c;color:var(--accent-ink);border:0;border-radius:3px;padding:15px 22px;font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:clamp(28px,4.5vh,48px)}
 .cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 .stage canvas{transition:opacity .28s ease}
@@ -143,7 +146,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
   </div>
 
   <header class="nav gutter">
-    <span class="brand" role="img" aria-label="Hydra"><svg viewBox="0 0 102 39" width="102" height="39" aria-hidden="true" focusable="false"><g fill="#C8CF36"><path d="M16.5501 16.4434H10.4494V22.5566H16.5501V16.4434Z"/><path d="M28.7509 16.4434H22.6503V22.5566H28.7509V16.4434Z"/><path d="M21.6449 11.4592C21.0015 9.93451 20.0805 8.56539 18.9079 7.39077C17.7357 6.21616 16.3694 5.29328 14.8478 4.64807C13.4467 4.05427 11.9697 3.72116 10.449 3.65409V9.7789C13.8616 10.0722 16.5496 12.9491 16.5496 16.4434H22.6503C22.6503 14.7166 22.312 13.0394 21.6449 11.4592Z"/><path d="M33.8458 11.4592C33.2023 9.93451 32.2813 8.56539 31.1087 7.39077C29.9365 6.21616 28.5702 5.29328 27.0486 4.64807C25.6475 4.05427 24.1705 3.72116 22.6503 3.65409V9.7789C26.0629 10.0722 28.7509 12.9491 28.7509 16.4434H34.8515C34.8515 14.7166 34.5133 13.0394 33.8462 11.4592H33.8458Z"/><path d="M16.5501 29.2211C13.1374 28.9278 10.4494 26.0509 10.4494 22.5566H4.3488C4.3488 24.2834 4.68703 25.9606 5.35412 27.5408C5.99756 29.0655 6.91855 30.4346 8.0912 31.6092C9.2634 32.7838 10.6297 33.7067 12.1513 34.3519C13.5524 34.9457 15.0294 35.2788 16.5501 35.3459V29.2211Z"/><path d="M28.7509 29.2211C25.3382 28.9278 22.6503 26.0509 22.6503 22.5566H16.5496C16.5496 24.2834 16.8879 25.9606 17.5549 27.5408C18.1984 29.0655 19.1194 30.4346 20.292 31.6092C21.4642 32.7838 22.8305 33.7067 24.3521 34.3519C25.7532 34.9457 27.2302 35.2788 28.7509 35.3459V29.2211Z"/></g><g fill="currentColor"><path d="M44.0966 12.4295H46.1099V18.3732H54.5081V12.4295H56.5036V26.5709H54.5081V20.2275H46.1099V26.5709H44.0966V12.4295Z"/><path d="M58.8257 28.6792H60.3495C61.4195 28.6792 61.6373 28.4976 62.0545 27.4979L62.399 26.6979L58.1546 16.5556H60.2045L63.3427 24.3898H63.3789L66.4626 16.5556H68.4581L63.6876 28.2066C63.0527 29.7335 62.3454 30.2423 60.6221 30.2423H58.8266V28.6792H58.8257Z"/><path d="M69.0453 21.5541C69.0453 17.6824 69.9525 16.4282 73.3986 16.4282C75.9197 16.4282 76.5546 16.9554 77.0263 18.0643H77.0624V12.4295H78.949V26.5709H77.099V25.044H77.0629C76.6457 26.1345 75.9201 26.6979 73.3986 26.6979C69.952 26.6979 69.0453 25.4437 69.0453 21.5541ZM74.0335 24.9711C76.5002 24.9711 77.0807 24.3348 77.0807 22.2266V20.8995C77.0807 18.773 76.5002 18.1367 74.0335 18.1367C71.4397 18.1367 70.9681 18.7184 70.9681 21.5537C70.9681 24.3889 71.4397 24.9707 74.0335 24.9707V24.9711Z"/><path d="M81.525 16.5556H83.3933V18.1917H83.4295C83.8284 17.0828 84.79 16.5378 86.3861 16.5378H87.4927V18.2284H86.3499C84.0827 18.2284 83.4116 18.8646 83.4116 21.0274V26.5714H81.525V16.5556Z"/><path d="M88.382 23.6261C88.382 21.3905 89.6698 20.5181 92.7897 20.5181H95.7825V19.991C95.7825 18.4278 95.1658 18.0097 93.1703 18.0097C91.3203 18.0097 90.5943 18.3003 90.5943 19.6637V19.7182H88.726V19.5367C88.726 17.1374 90.0682 16.4103 93.152 16.4103C96.4897 16.4103 97.6503 17.301 97.6503 19.8819V26.5709H95.782V25.1531H95.7637C95.3648 26.08 94.8021 26.6979 92.2627 26.6979C89.56 26.6979 88.3811 25.8072 88.3811 23.6261H88.382ZM92.8258 25.0802C95.0208 25.0802 95.8007 24.5714 95.8007 22.9174V22.1175H92.8258C90.8848 22.1175 90.2681 22.481 90.2681 23.5899C90.2681 24.6988 90.921 25.0802 92.8258 25.0802Z"/></g></svg></span>
+    <span class="brand" role="img" aria-label="Hydra"><svg viewBox="0 0 102 39" width="102" height="39" aria-hidden="true" focusable="false"><g fill="currentColor"><path d="M16.5501 16.4434H10.4494V22.5566H16.5501V16.4434Z"/><path d="M28.7509 16.4434H22.6503V22.5566H28.7509V16.4434Z"/><path d="M21.6449 11.4592C21.0015 9.93451 20.0805 8.56539 18.9079 7.39077C17.7357 6.21616 16.3694 5.29328 14.8478 4.64807C13.4467 4.05427 11.9697 3.72116 10.449 3.65409V9.7789C13.8616 10.0722 16.5496 12.9491 16.5496 16.4434H22.6503C22.6503 14.7166 22.312 13.0394 21.6449 11.4592Z"/><path d="M33.8458 11.4592C33.2023 9.93451 32.2813 8.56539 31.1087 7.39077C29.9365 6.21616 28.5702 5.29328 27.0486 4.64807C25.6475 4.05427 24.1705 3.72116 22.6503 3.65409V9.7789C26.0629 10.0722 28.7509 12.9491 28.7509 16.4434H34.8515C34.8515 14.7166 34.5133 13.0394 33.8462 11.4592H33.8458Z"/><path d="M16.5501 29.2211C13.1374 28.9278 10.4494 26.0509 10.4494 22.5566H4.3488C4.3488 24.2834 4.68703 25.9606 5.35412 27.5408C5.99756 29.0655 6.91855 30.4346 8.0912 31.6092C9.2634 32.7838 10.6297 33.7067 12.1513 34.3519C13.5524 34.9457 15.0294 35.2788 16.5501 35.3459V29.2211Z"/><path d="M28.7509 29.2211C25.3382 28.9278 22.6503 26.0509 22.6503 22.5566H16.5496C16.5496 24.2834 16.8879 25.9606 17.5549 27.5408C18.1984 29.0655 19.1194 30.4346 20.292 31.6092C21.4642 32.7838 22.8305 33.7067 24.3521 34.3519C25.7532 34.9457 27.2302 35.2788 28.7509 35.3459V29.2211Z"/></g><g fill="currentColor"><path d="M44.0966 12.4295H46.1099V18.3732H54.5081V12.4295H56.5036V26.5709H54.5081V20.2275H46.1099V26.5709H44.0966V12.4295Z"/><path d="M58.8257 28.6792H60.3495C61.4195 28.6792 61.6373 28.4976 62.0545 27.4979L62.399 26.6979L58.1546 16.5556H60.2045L63.3427 24.3898H63.3789L66.4626 16.5556H68.4581L63.6876 28.2066C63.0527 29.7335 62.3454 30.2423 60.6221 30.2423H58.8266V28.6792H58.8257Z"/><path d="M69.0453 21.5541C69.0453 17.6824 69.9525 16.4282 73.3986 16.4282C75.9197 16.4282 76.5546 16.9554 77.0263 18.0643H77.0624V12.4295H78.949V26.5709H77.099V25.044H77.0629C76.6457 26.1345 75.9201 26.6979 73.3986 26.6979C69.952 26.6979 69.0453 25.4437 69.0453 21.5541ZM74.0335 24.9711C76.5002 24.9711 77.0807 24.3348 77.0807 22.2266V20.8995C77.0807 18.773 76.5002 18.1367 74.0335 18.1367C71.4397 18.1367 70.9681 18.7184 70.9681 21.5537C70.9681 24.3889 71.4397 24.9707 74.0335 24.9707V24.9711Z"/><path d="M81.525 16.5556H83.3933V18.1917H83.4295C83.8284 17.0828 84.79 16.5378 86.3861 16.5378H87.4927V18.2284H86.3499C84.0827 18.2284 83.4116 18.8646 83.4116 21.0274V26.5714H81.525V16.5556Z"/><path d="M88.382 23.6261C88.382 21.3905 89.6698 20.5181 92.7897 20.5181H95.7825V19.991C95.7825 18.4278 95.1658 18.0097 93.1703 18.0097C91.3203 18.0097 90.5943 18.3003 90.5943 19.6637V19.7182H88.726V19.5367C88.726 17.1374 90.0682 16.4103 93.152 16.4103C96.4897 16.4103 97.6503 17.301 97.6503 19.8819V26.5709H95.782V25.1531H95.7637C95.3648 26.08 94.8021 26.6979 92.2627 26.6979C89.56 26.6979 88.3811 25.8072 88.3811 23.6261H88.382ZM92.8258 25.0802C95.0208 25.0802 95.8007 24.5714 95.8007 22.9174V22.1175H92.8258C90.8848 22.1175 90.2681 22.481 90.2681 23.5899C90.2681 24.6988 90.921 25.0802 92.8258 25.0802Z"/></g></svg></span>
     <nav class="nav-links mono"><span>Blog</span><span>Docs</span><button class="nav-cta" type="button">Request early access</button></nav>
   </header>
 
@@ -176,9 +179,9 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
     <section>
       <h3>Signal</h3>
       <div class="sw" role="group" aria-label="Pulse colour">
-        <button type="button" data-pal="warm" aria-label="Warm" style="background:linear-gradient(90deg,#fad870,#ec7c30,#c8cf36,#e686c0)"></button>
-        <button type="button" data-pal="thermal" aria-label="Thermal" style="background:linear-gradient(90deg,#b06840,#c8cf36,#34a88c,#144a46)"></button>
-        <button type="button" data-pal="lime" aria-label="Lime" style="background:linear-gradient(90deg,#ecf0aa,#c8cf36,#5a5c1e)"></button>
+        <button type="button" data-pal="warm" aria-label="Warm" style="background:linear-gradient(90deg,#fad870,#ec7c30,#cade9a,#e686c0)"></button>
+        <button type="button" data-pal="thermal" aria-label="Thermal" style="background:linear-gradient(90deg,#b06840,#cade9a,#34a88c,#144a46)"></button>
+        <button type="button" data-pal="lime" aria-label="Lime" style="background:linear-gradient(90deg,#ecf0aa,#cade9a,#5a5c1e)"></button>
       </div>
     </section>
     <div class="actions"><button type="button" class="grow" id="growBtn">New system</button><button type="button" class="reset" id="resetBtn">Reset</button></div>
@@ -199,13 +202,13 @@ let formShown=0,bodyW=0,bodyH=0,poly=null,PX,PY,PZ,elenP,keepG,GA=[],GB=[],gadj=
 let ea,eb,elen,eplate;
 let N=0,E=0,lobes=[],grid=new Map(),CELL=36,bbox={};
 let signals=[],litList=new Set(),dust=[],motes=[];
-let col={line:[247,246,246],node:[247,246,246],sig:[200,207,54],muted:[154,150,143],dark:true};
+let col={line:[247,246,246],node:[247,246,246],sig:[202,222,154],muted:[154,150,143],dark:true};
 // thermal: rust at the hot core, pale chartreuse around it, then mint and sea-green cooling to deep teal
 // warm: a yellow-orange core, a brand-lime halo, then pink cooling to magenta at the edge of the spread
 const PALETTES={
-  warm:[[1,[250,216,112]],[.85,[245,172,62]],[.7,[236,124,48]],[.56,[228,150,124]],[.43,[200,207,54]],[.29,[230,134,192]],[0,[164,76,146]]],
-  thermal:[[1,[176,104,64]],[.84,[190,150,88]],[.72,[200,207,54]],[.56,[126,204,160]],[.38,[52,168,140]],[.2,[30,112,100]],[0,[20,74,70]]],
-  lime:[[1,[236,240,170]],[.7,[212,218,103]],[.45,[200,207,54]],[.2,[131,134,39]],[0,[90,92,30]]]};
+  warm:[[1,[250,216,112]],[.85,[245,172,62]],[.7,[236,124,48]],[.56,[228,150,124]],[.43,[202,222,154]],[.29,[230,134,192]],[0,[164,76,146]]],
+  thermal:[[1,[176,104,64]],[.84,[190,150,88]],[.72,[202,222,154]],[.56,[126,204,160]],[.38,[52,168,140]],[.2,[30,112,100]],[0,[20,74,70]]],
+  lime:[[1,[236,240,170]],[.7,[212,218,103]],[.45,[202,222,154]],[.2,[131,134,39]],[0,[90,92,30]]]};
 const CFG={seed:4,lobes:4,sprawl:1,rough:1,density:1,voids:.2,depth:1,reach:14,spin:.26,palette:'warm',form:0};
 let STOPS=PALETTES[CFG.palette];
 let litEn;
@@ -227,7 +230,7 @@ const rgba=(c,a)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
 function readColors(){const cs=getComputedStyle(document.documentElement);
   col.line=hex(cs.getPropertyValue('--net-line'));col.node=hex(cs.getPropertyValue('--net-node'));
   col.sig=hex(cs.getPropertyValue('--net-signal'));col.muted=hex(cs.getPropertyValue('--muted'));
-  const bg=hex(cs.getPropertyValue('--bg'));col.dark=(bg[0]+bg[1]+bg[2])<380}
+  const bg=hex(cs.getPropertyValue('--bg'));col.bg=bg;col.dark=(bg[0]+bg[1]+bg[2])<380}
 const key=(cx,cy)=>cx*10007+cy;
 
 // ---- the organism: lobes along an upright spine, summed into one field
@@ -346,7 +349,7 @@ function generateInner(){
   // dust drifting off the right edge
   dust=[];const nd=reduce?0:Math.round(560*area);const edge=[];for(let i=0;i<N;i++)if(nx[i]>x1-(x1-x0)*.2)edge.push(i);
   dust.edge=edge.length?edge:[0];for(let i=0;i<nd;i++)dust.push(spawnDust(true));
-  signals=[];litList.clear();ann.lobe=-1;ann.t=0;
+  signals=[];litList.clear();chain=null;
   // depth: the body swells toward the viewer, thickest where the field is deepest, with a little facet noise
   BX=Float32Array.from(nx);BY=Float32Array.from(ny);bz=new Float32Array(N);dep=new Float32Array(N);
   Cx=(x0+x1)/2;Cy=(y0+y1)/2;const Z=.42*Math.max(x1-x0,y1-y0);
@@ -484,13 +487,20 @@ function fire(i,en,now){
     signals.push({e:-1-k,from:i,to:j,t0:now,t1:now+L*MSPX,en:en*Math.pow(DECAY,L/CFG.reach)})}
 }
 
-// ---- one annotation at a time, for the lobe under the pointer
-const ann={lobe:-1,node:-1,t:0,out:null,hold:0,pending:-1,since:0};
-// technical callout: a short 45° leg out of the shape, then a long horizontal run to a dot and a stroked terminal box
-const ANN_FONT='9px "Atkinson Hyperlegible Mono", ui-monospace, monospace';
-function annBox(li){const l=lobes[li];xL.font=ANN_FONT;
-  const full=['// hydra.system','region: "00",','agents: '+(l.count+'').replace(/./g,'0')+'0,','firing: 000'];
-  return{bw:Math.ceil(Math.max(...full.map(s=>xL.measureText(s).width)))+22,bh:4*13+12}}
+// ---- event chains: an engineering event lands on one node, wakes an agent on a second, alerts a person on a third
+const EVENTS=[
+ [['// 01 trigger','jira: HYD-412 → in progress'],['// 02 wake','pm agent'],['// 03 alert','james in slack']],
+ [['// 01 trigger','pr #2184 merged → main'],['// 02 wake','security agent'],['// 03 alert','#security-review']],
+ [['// 01 trigger','ci failed on main'],['// 02 wake','tester agent'],['// 03 alert','on-call in slack']],
+ [['// 01 trigger','issue filed: rate limits'],['// 02 wake','triager agent'],['// 03 alert','platform board']],
+ [['// 01 trigger','review requested: pr #2207'],['// 02 wake','reviewer agent'],['// 03 alert','sam in slack']],
+ [['// 01 trigger','release candidate tagged'],['// 02 wake','release agent'],['// 03 alert','#releases']],
+ [['// 01 trigger','dependency cve published'],['// 02 wake','security agent'],['// 03 alert','#security-review']],
+ [['// 01 trigger','design doc approved'],['// 02 wake','pm agent'],['// 03 alert','#eng-planning']]];
+let chain=null,chainOut=null,chainNext=0,evIdx=Math.floor(Math.random()*EVENTS.length),avoidExtra=[];
+const ANN_FONT='10.5px "Atkinson Hyperlegible Mono", ui-monospace, monospace';
+const BP={x:12,dot:0,top:9,lh:15,bot:9,r:6};
+function annBox(lines){xL.font=ANN_FONT;return{bw:Math.ceil(Math.max(...lines.map(s=>xL.measureText(s).width)))+BP.x*2+BP.dot+6,bh:BP.top+lines.length*BP.lh+BP.bot}}
 // true when any point of the net sits inside the rectangle (with a little breathing room)
 function netIn(x0,y0,x1,y1){const m=10;x0-=m;y0-=m;x1+=m;y1+=m;
   for(let gx=Math.floor(x0/CELL);gx<=Math.floor(x1/CELL);gx++)for(let gy=Math.floor(y0/CELL);gy<=Math.floor(y1/CELL);gy++){
@@ -508,21 +518,20 @@ function legsClear(x,y,kx,ky,ex,marks){return !marks.some(q=>segHits(x,y,kx,ky,q
 // pick the nearest spot around the hover point (left, right, above or below) that keeps the text off the copy and, where possible, off the net
 function spotCost(x,y,bw,bh,sp,rects,marks){marks=marks||markRects();const kx=x+sp.dir*sp.L,ky=y+sp.up*sp.L,ex=kx+sp.dir*sp.R,bx=sp.dir>0?ex+9:ex-9-bw,by=ky-bh/2;
   if(bx<16||bx+bw>W-16||by<88||by+bh>H-44)return 1e9;
-  if(rects.concat(marks).some(q=>bx<q[2]&&bx+bw>q[0]&&by<q[3]&&by+bh>q[1]))return 1e9;
+  if(rects.concat(marks,avoidExtra).some(q=>bx<q[2]&&bx+bw>q[0]&&by<q[3]&&by+bh>q[1]))return 1e9;
   if(!legsClear(x,y,kx,ky,ex,marks))return 1e9;
-  return sp.L*1.41+sp.R*.45+netCount(bx,by,bx+bw,by+bh)*28}
-function bestSpot(x,y,bw,bh){const marks=markRects(),rects=textRects().concat(marks);let best=null;
-  for(const L of [26,46,70,100,135,175,220])for(const R of [90,120,155,200])for(const dir of [1,-1])for(const up of [-1,1]){
+  return sp.L*1.41+sp.R*.45+netCount(bx,by,bx+bw,by+bh)*70}
+function bestSpot(x,y,bw,bh){const marks=markRects(),rects=textRects().concat(marks,avoidExtra);let best=null;
+  for(const L of [26,46,70,100,135,175,220])for(const R of [90,120,155,200,250,300])for(const dir of [1,-1])for(const up of [-1,1]){
     const kx=x+dir*L,ky=y+up*L,ex=kx+dir*R,bx=dir>0?ex+9:ex-9-bw,by=ky-bh/2;
     if(bx<16||bx+bw>W-16||by<88||by+bh>H-44)continue;
     if(rects.some(q=>bx<q[2]&&bx+bw>q[0]&&by<q[3]&&by+bh>q[1]))continue;
     if(!legsClear(x,y,kx,ky,ex,marks))continue;
-    const n=netCount(bx,by,bx+bw,by+bh),cost=L*1.41+R*.45+n*28;
+    const n=netCount(bx,by,bx+bw,by+bh),cost=L*1.41+R*.45+n*70;
     if(!best||cost<best.cost)best={L,R,dir,up,cost}}
   return best||{L:46,R:90,dir:x>=W/2?-1:1,up:-1,cost:1e9}}
-function annGeom(li,node,st){const l=lobes[li],a=node>=0?node:l.anchor,x=nx[a],y=ny[a],{bw,bh}=annBox(li);
+function annGeom(st){const x=nx[st.node],y=ny[st.node],{bw,bh}=annBox(st.lines);
   const t=performance.now();
-  if(!st)return(sp=>geomFrom(x,y,bw,bh,sp.dir*sp.L,sp.up*sp.L,sp.dir*sp.R,sp.dir))(bestSpot(x,y,bw,bh));
   if(!st.spot){st.spot=bestSpot(x,y,bw,bh);st.spotT=t}
   else if(t-(st.spotT||0)>700){st.spotT=t;const cur=spotCost(x,y,bw,bh,st.spot,textRects()),nb=bestSpot(x,y,bw,bh);
     if(cur>=1e9||nb.cost<cur*.55-30)st.spot=nb}
@@ -532,41 +541,79 @@ function annGeom(li,node,st){const l=lobes[li],a=node>=0?node:l.anchor,x=nx[a],y
   return geomFrom(x,y,bw,bh,st.ck,st.cu,st.cr,st.cdir)}
 function geomFrom(x,y,bw,bh,dk,du,dr,dir){const kx=x+dk,ky=y+du,ex=kx+dr,right=dir>0,bx=right?ex+9:ex-9-bw;
   return{x,y,kx,ky,ex,right,dir,bw,bh,bx,by:ky-bh/2}}
-function annLines(li){const l=lobes[li];return['// hydra.system','region: "'+String(li+1).padStart(2,'0')+'",','agents: '+l.count+',','firing: '+l.firing]}
-function drawAnn(li,t,alpha,now,node,st){
-  if(li<0)return;const g=annGeom(li,node??-1,st),l=lobes[li];
-  const leg=Math.hypot(g.kx-g.x,g.ky-g.y),run=Math.abs(g.ex-g.kx),P=leg+run;
-  const lt=clamp(t/.5,0,1),e=(1-(1-lt)**3)*P;
-  xL.globalAlpha=alpha;
-  // anchor: a small hollow node
+// tag: a solid rounded card tied to its node by a dotted line; the log lines type in as before
+function drawAnn(st,alpha,now){const t=st.t,g=annGeom(st);st.g=g;if(alpha<=0)return;
+  const dk=col.dark,ink=dk?[202,200,196]:[35,36,36],dim=col.muted;
+  const dot=sigCol(.84-(st.k||0)*.17);
+  const pop=clamp((t-.46)/.18,0,1),sc=.94+.06*(1-(1-pop)**3);
+  xL.save();xL.globalAlpha=alpha;
+  // anchor + angled leader, drawn out from the node like before, ending at the tag's edge
+  const edge=g.right?g.bx:g.bx+g.bw,leg=Math.hypot(g.kx-g.x,g.ky-g.y),run=Math.abs(edge-g.kx),P=leg+run,lt=clamp(t/.5,0,1),e=(1-(1-lt)**3)*P;
   xL.strokeStyle=rgba(col.muted,.7);xL.lineWidth=.8;xL.beginPath();xL.arc(g.x,g.y,3,0,6.2832);xL.stroke();
-  // leader
-  xL.strokeStyle=rgba(col.muted,.5);xL.lineWidth=.6;xL.beginPath();xL.moveTo(g.x,g.y);
-  if(e<=leg){const f=e/leg;xL.lineTo(g.x+(g.kx-g.x)*f,g.y+(g.ky-g.y)*f)}
-  else{xL.lineTo(g.kx,g.ky);xL.lineTo(g.kx+g.dir*(e-leg),g.ky)}
-  xL.stroke();
-  if(lt>=1){
-    // the leader ends in a single vertical rule that spans the text block
-    {const vh=Math.min(1,(t-.5)/.15),y0=g.ky-(g.bh/2-4)*vh,y1=g.ky+(g.bh/2-4)*vh;xL.strokeStyle=rgba(col.muted,.6);xL.lineWidth=.7;xL.beginPath();xL.moveTo(Math.round(g.ex)+.5,y0);xL.lineTo(Math.round(g.ex)+.5,y1);xL.stroke()}
-    // terminal box
-    const lines=annLines(li);xL.font=ANN_FONT;
-    const {bw,bh,bx,by}=g,lh=13;
-    const bt=clamp((t-.5)/.18,0,1);
-    // type it out like a terminal, one line after another, with a block cursor
-    const typed=Math.max(0,(t-.62)*48);let left=typed,cur=null;
-    xL.textAlign='left';xL.textBaseline='middle';
-    lines.forEach((s,k)=>{const n=Math.min(s.length,Math.floor(left));left-=s.length;const ty=by+6+lh*k+lh/2,tx=g.right?g.ex+9:g.ex-9-(bw-22);
-      if(n<=0)return;const shown=s.slice(0,n);
-      xL.fillStyle=rgba(col.muted,.85);xL.fillText(shown,tx,ty);
-      if(n<s.length||k===lines.length-1)cur={x:tx+xL.measureText(shown).width+2,y:ty,done:n>=s.length}});
-    if(cur&&(!cur.done||Math.floor(now/530)%2===0)){xL.fillStyle=rgba(col.muted,.8);xL.fillRect(cur.x,cur.y-4.5,4.5,9)}
-  }
-  xL.globalAlpha=1;
-}
+  xL.strokeStyle=rgba(col.muted,.55);xL.lineWidth=.7;xL.beginPath();xL.moveTo(g.x,g.y);
+  if(e<=leg){const f=e/Math.max(leg,1);xL.lineTo(g.x+(g.kx-g.x)*f,g.y+(g.ky-g.y)*f)}else{xL.lineTo(g.kx,g.ky);xL.lineTo(g.kx+g.dir*(e-leg),g.ky)}xL.stroke();
+  if(pop>0){xL.globalAlpha=alpha*pop;const ox=g.right?g.bx:g.bx+g.bw;xL.translate(ox,g.ky);xL.scale(sc,sc);xL.translate(-ox,-g.ky);
+    const{bx,by,bw,bh}=g;
+    // no fill: the inside is just page background (it hides any net that slips underneath), with a light keyline
+    xL.beginPath();xL.roundRect(bx+.5,by+.5,bw-1,bh-1,BP.r);xL.fillStyle=rgba(col.bg,.94);xL.fill();
+    xL.strokeStyle=rgba(col.muted,dk?.45:.5);xL.lineWidth=1;xL.stroke();
+    // a small solid dot where the leader joins the tag
+    xL.fillStyle=rgba(col.muted,.95);xL.beginPath();xL.arc(g.right?bx+.5:bx+bw-.5,g.ky,2.2,0,6.2832);xL.fill();
+    // status dot, softly pulsing while the line is being written
+    const lines=st.lines,typed=Math.max(0,(t-.62)*42),total=lines.reduce((a,s)=>a+s.length,0),busy=typed<total;
+    const pr=busy?.75+.25*Math.sin(now/120):1;
+    xL.font=ANN_FONT;xL.textAlign='left';xL.textBaseline='middle';
+    let left=typed,cur=null;const tx=bx+BP.x+BP.dot;
+    lines.forEach((s,k)=>{const n=Math.min(s.length,Math.floor(left));left-=s.length;if(n<=0)return;const ty=by+BP.top+BP.lh*k+BP.lh/2,shown=s.slice(0,n);
+      const lx=tx;
+      xL.fillStyle=rgba(k===0?dim:ink,1);xL.fillText(shown,lx,ty);
+      if(n<s.length||k===lines.length-1)cur={x:lx+xL.measureText(shown).width+2,y:ty,done:n>=s.length}});
+    if(cur&&(!cur.done||Math.floor(now/530)%2===0)){xL.fillStyle=rgba(ink,.75);xL.fillRect(cur.x,cur.y-5,5,10)}}
+  xL.restore()}
 function lobeUnder(x,y){const c=near(x,y,48);if(!c.length)return -1;const cnt={};let best=-1,bc=0;
   for(const i of c){const k=lobeOf[i];cnt[k]=(cnt[k]||0)+1;if(cnt[k]>bc){bc=cnt[k];best=k}}return best}
 
-let px=-1,py=-1,lastMove=-1e9,lastPoke=0,nextAmbient=performance.now()+4500;
+function boxOf(s){const g=s.g;return g?[Math.min(g.bx,g.ex)-8,g.by-8,Math.max(g.bx+g.bw,g.ex)+8,g.by+g.bh+8]:null}
+function inRects(x,y,R){return R.some(q=>x>q[0]&&x<q[2]&&y>q[1]&&y<q[3])}
+function startChain(a,now){const ev=EVENTS[evIdx++%EVENTS.length];chain={ev,steps:[{node:a,lines:ev[0],t:0,k:0}],travel:null,end:0,a:1};fire(a,1,now)}
+// next hop: a node a short way off, further from the previous step (forward momentum), reached along the net's own links
+function pickNext(c){const tg=performance.now()-lastMove<1500&&lobeUnder(px,py)>=0?[px,py]:null;
+  // a pointer resting on the net pulls the next hop toward it; otherwise keep forward momentum
+  if(tg)return pickTry(c,110,420,-2,tg)||pickTry(c,90,460,-2,null);
+  return pickTry(c,170,330,.15)||pickTry(c,120,380,-.35)||pickTry(c,90,420,-2)}
+function pickTry(c,dMin,dMax,cMin,tg){const A=c.steps[c.steps.length-1].node,P=c.steps.length>1?c.steps[c.steps.length-2].node:-1;
+  const par=new Int32Array(N).fill(-2),hop=new Int16Array(N),pl=new Float32Array(N);par[A]=-1;const q=[A];
+  for(let h=0;h<q.length;h++){const i=q[h];if(hop[i]>=22)continue;for(const e of adj[i]){const j=ea[e]===i?eb[e]:ea[e];if(par[j]!==-2)continue;par[j]=i;hop[j]=hop[i]+1;pl[j]=pl[i]+Math.hypot(nx[j]-nx[i],ny[j]-ny[i]);q.push(j)}}
+  const tr=textRects(),own=c.steps.map(boxOf).filter(Boolean);
+  const hx=P>=0?nx[A]-nx[P]:0,hy=P>=0?ny[A]-ny[P]:0,hl=Math.hypot(hx,hy)||1;
+  const cand=[];for(const j of q){if(j===A||dep[j]<0)continue;const dx=nx[j]-nx[A],dy=ny[j]-ny[A],d=Math.hypot(dx,dy);if(d<dMin||d>dMax)continue;
+    if(inRects(nx[j],ny[j],tr)||inRects(nx[j],ny[j],own))continue;
+    const cosH=P>=0?(dx*hx+dy*hy)/(d*hl):0;if(P>=0&&cosH<cMin)continue;
+    // short, direct routes; mostly sideways travel so the callouts don't stack; keep heading roughly where the last hop went
+    cand.push([j,tg?Math.hypot(nx[j]-tg[0],ny[j]-tg[1])/40+pl[j]/d*.4+Math.random()*.3:pl[j]/d*1.2+Math.abs(dy)/d*.9-cosH*.6+Math.random()*.7])}
+  cand.sort((a,b)=>a[1]-b[1]);
+  const lines=c.ev[c.steps.length],{bw,bh}=annBox(lines);avoidExtra=own;
+  for(const [j] of cand.slice(0,16)){const sp=bestSpot(nx[j],ny[j],bw,bh);if(sp.cost>=1e9)continue;
+    const path=[j];let i=j;while(par[i]>=0){i=par[i];path.push(i)}path.reverse();avoidExtra=[];return{path,i:0,f:0,lines}}
+  avoidExtra=[];return null}
+function updChain(c,now,dt){if(!c)return;for(const s of c.steps)s.t+=dt/1000;
+  const cur=c.steps[c.steps.length-1];
+  if(c.travel){const T=c.travel;let adv=dt*.36;
+    while(adv>0&&T.i<T.path.length-1){const a=T.path[T.i],b=T.path[T.i+1],L=Math.max(1,Math.hypot(nx[b]-nx[a],ny[b]-ny[a])),rem=(1-T.f)*L;
+      if(adv>=rem){adv-=rem;T.i++;T.f=0;const j=T.path[T.i];lit[j]=1;litEn[j]=.95;litList.add(j)}else{T.f+=adv/L;adv=0}}
+    if(T.i>=T.path.length-1){const b=T.path[T.path.length-1];refr[b]=0;fire(b,.95,now);c.steps.push({node:b,lines:T.lines,t:0,k:c.steps.length});c.travel=null}}
+  else if(!c.end&&c.steps.length<3&&cur.t>1.7){c.travel=pickNext(c);if(!c.travel)c.end=now+1800}
+  else if(!c.end&&c.steps.length===3&&cur.t>1.4)c.end=now+(now-lastMove<1500?1100:2600);
+  if(c.end&&now>c.end){c.a-=dt/(c.fast?240:520);if(c.a<=0){if(c===chainOut)chainOut=null;else{chain=null;chainNext=now+(now-lastMove<IDLE?500:2600)}}}}
+function drawChain(c,now){if(!c)return;
+  if(c.travel){const T=c.travel,a=T.path[T.i],b=T.path[Math.min(T.i+1,T.path.length-1)],hx=nx[a]+(nx[b]-nx[a])*T.f,hy=ny[a]+(ny[b]-ny[a])*T.f;
+    xL.globalAlpha=c.a;xL.strokeStyle=rgba(sigCol(1),.95);xL.lineWidth=1.1;xL.beginPath();xL.moveTo(nx[a],ny[a]);xL.lineTo(hx,hy);xL.stroke();
+    xL.fillStyle=rgba(sigCol(1),1);xL.beginPath();xL.arc(hx,hy,1.8,0,6.2832);xL.fill();xL.globalAlpha=1}
+  c.steps.forEach((s,k)=>{avoidExtra=c.steps.filter(o=>o!==s).map(boxOf).filter(Boolean);drawAnn(s,c.a*clamp(s.t/.15,0,1),now)});avoidExtra=[]}
+function randomStart(){const tr=textRects();for(let k=0;k<60;k++){const i=Math.floor(Math.random()*N);if(dep[i]<0||inRects(nx[i],ny[i],tr))continue;
+    if(nx[i]<W*.12||nx[i]>W*.88)continue;const{bw,bh}=annBox(EVENTS[evIdx%EVENTS.length][0]);if(bestSpot(nx[i],ny[i],bw,bh).cost<1e9)return i}return -1}
+let hov={node:-1,since:0};
+let px=-1,py=-1,lastMove=-1e9,lastPoke=0,nextAmbient=performance.now()+4500;chainNext=performance.now()+1400;
 const IDLE=4000;
 function poke(x,y,count,en,r){const c=near(x,y,r||56);for(let k=0;k<count&&c.length;k++){fire(c.splice(Math.floor(Math.random()*c.length),1)[0],en,performance.now())}}
 const hint=document.getElementById('hint');
@@ -584,14 +631,16 @@ function frame(now){
   if(now-lastMove<IDLE){nextAmbient=Math.max(nextAmbient,now+rand(800,1600))}
   else if(!reduce&&now>nextAmbient){nextAmbient=now+rand(2400,4200);fire(Math.floor(Math.random()*N),.78,now)}
   for(let k=signals.length-1;k>=0;k--){const s=signals[k];if(now>=s.t1){signals[k]=signals[signals.length-1];signals.pop();if(mark[s.to]===2||Math.random()<s.en*1.3)fire(s.to,s.en,now)}}
-  // annotation target: the lobe under the pointer, held briefly so it doesn't flicker
-  const under=now-lastMove<1500?lobeUnder(px,py):-1;
-  if(under!==ann.pending){ann.pending=under;ann.since=now}
-  const settled=now-ann.since>(under<0?700:220);
-  if(settled&&ann.pending!==ann.lobe){if(ann.lobe>=0)ann.out={lobe:ann.lobe,node:ann.node,t:ann.t,a:1,spot:ann.spot,spotT:1e15,cdir:ann.cdir,ck:ann.ck,cu:ann.cu,cr:ann.cr};ann.lobe=ann.pending;ann.t=0;ann.spot=null;ann.ck=undefined;
-    if(ann.lobe>=0){let bi=lobes[ann.lobe].anchor,bd=1e9;for(const j of near(px,py,70)){if(lobeOf[j]!==ann.lobe||dep[j]<0)continue;const d=Math.hypot(nx[j]-px,ny[j]-py);if(d<bd){bd=d;bi=j}}ann.node=bi}}
-  if(ann.lobe>=0)ann.t+=dt/1000;
-  if(ann.out){ann.out.a-=dt/260;if(ann.out.a<=0)ann.out=null}
+  // event chains: start at the node under a resting pointer, or on their own when nobody is interacting
+  {const over=now-lastMove<1500&&lobeUnder(px,py)>=0;
+    if(over){let bi=-1,bd=1e9;for(const j of near(px,py,70)){if(dep[j]<0)continue;const d=Math.hypot(nx[j]-px,ny[j]-py);if(d<bd){bd=d;bi=j}}
+      if(bi!==hov.node&&(hov.node<0||Math.hypot(nx[bi]-nx[hov.node],ny[bi]-ny[hov.node])>30)){hov.node=bi;hov.since=now}}else hov.node=-1;
+    if(chain&&!chainOut&&hov.node>=0&&now-hov.since>420&&chain.steps[0].t>.9){
+      const far=[...chain.steps.map(s=>s.node),...(chain.travel?[chain.travel.path[chain.travel.path.length-1]]:[])].every(j=>Math.hypot(nx[j]-nx[hov.node],ny[j]-ny[hov.node])>150);
+      if(far){chainOut=chain;chainOut.travel=null;chainOut.fast=true;chainOut.end=now-1;chain=null;startChain(hov.node,now)}}
+    if(!chain&&now>chainNext){if(hov.node>=0&&now-hov.since>260)startChain(hov.node,now);
+      else if(now-lastMove>IDLE){const i=randomStart();if(i>=0)startChain(i,now);else chainNext=now+1000}}}
+  updChain(chain,now,dt);updChain(chainOut,now,dt);
 
   {const on=!reduce&&now-lastMove<1500,e=1-Math.exp(-dt/700);
     const dir=px>=Cx?1:-1;vY+=((on?CFG.spin*dir:0)-vY)*e;
@@ -618,8 +667,7 @@ function frame(now){
       xL.strokeStyle=rgba(sigCol((litEn[i]+litEn[j])/2),Math.min(1,m*(col.dark?1.5:2.2))**(col.dark?1.15:.9));xL.lineWidth=.45;xL.beginPath();xL.moveTo(nx[i],ny[i]);xL.lineTo(nx[j],ny[j]);xL.stroke()}
     }
   xL.globalCompositeOperation='source-over';
-  if(ann.out)drawAnn(ann.out.lobe,ann.out.t,ann.out.a,now,ann.out.node,ann.out);
-  if(ann.lobe>=0)drawAnn(ann.lobe,ann.t,clamp(ann.t/.15,0,1),now,ann.node,ann);
+  drawChain(chainOut,now);drawChain(chain,now);
   const idle=now-lastMove;
 
   requestAnimationFrame(frame);
