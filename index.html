@@ -214,6 +214,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,4.45vw,64px
 /* the panel matches the list's height; the screenshot hangs from the top and runs off the bottom edge */
 .lp .visual img{position:absolute;left:7.67%;top:clamp(32px,7%,57px);width:85.2%;height:auto;transition:opacity .28s ease}
 .lp .visual img.out{opacity:0}
+.lp .visual img{clip-path:inset(1px 0 0 0 round 1.9% 1.9% 0 0 / 1.57% 1.57% 0 0)}   /* clip the light corners baked into the screenshot so it sits cleanly on dark panels */
 @keyframes visin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
 /* 04 feature cards: side-scroll carousel; the track runs past the right edge on purpose */
