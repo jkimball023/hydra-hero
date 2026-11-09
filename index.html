@@ -365,7 +365,7 @@ html,body{overflow-x:clip}
 .lp .byo.pre .byo-card .chip,.lp .byo-card .chip.shut{clip-path:inset(0 calc(100% - 16px) 0 0 round 999px)}
 .lp .byo.pre .byo-card .chip i,.lp .byo-card .chip.shut.nochk i{transform:scale(0)}
 .lp .byo.pre .byo-card .chip,.lp .byo-card .chip.nochk{opacity:0}
-.lp .byo-card{transition:opacity .35s ease-out,transform .45s cubic-bezier(.22,1,.36,1)}
+.lp .byo-card{transition:opacity .6s ease-out,transform .7s cubic-bezier(.22,1,.36,1),background-color .35s ease,border-color .35s ease}
 
 @media (max-width:1240px){.lp .byo{grid-template-columns:minmax(0,38%) minmax(0,1fr)}.lp .byo-h{width:auto;max-width:440px;font-size:40px;line-height:50px}.lp .byo-copy{padding:96px 24px 56px 48px}.lp .byo-b{margin:48px 0 0;max-width:260px}.lp .byo-inset{padding:32px 24px}.lp .byo-grid{width:100%;grid-template-columns:repeat(auto-fit,minmax(264px,1fr));gap:16px}}
 @media (max-width:900px){
@@ -1114,12 +1114,12 @@ requestAnimationFrame(frame);
 (()=>{const p=document.querySelector('.lp .byo');if(!p||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 const grid=p.querySelector('.byo-grid'),cards=[...p.querySelectorAll('.byo-card')];p.classList.add('pre');
 new IntersectionObserver((es,io)=>{if(!es[0].isIntersecting)return;io.disconnect();
-  cards.forEach(c=>{const ch=c.querySelector('.chip');ch.classList.add('shut','nochk');ch.style.transition='none'});
-  p.classList.remove('pre');void p.offsetWidth;
-  cards.forEach((c,i)=>{const ch=c.querySelector('.chip'),t=i*70;ch.style.transition='';
-    c.style.transitionDelay=t+'ms';
-    setTimeout(()=>ch.classList.remove('nochk'),t+320);      // check pops in
-    setTimeout(()=>ch.classList.remove('shut'),t+560)})      // pill opens to the right
+  cards.forEach((c,i)=>{const ch=c.querySelector('.chip');ch.classList.add('shut','nochk');ch.style.transition='none';
+    c.style.transitionDelay=(i*160)+'ms'});   // delays must be set before the cards leave the hidden state
+  void p.offsetWidth;p.classList.remove('pre');void p.offsetWidth;
+  cards.forEach((c,i)=>{const ch=c.querySelector('.chip'),t=i*160;ch.style.transition='';
+    setTimeout(()=>ch.classList.remove('nochk'),t+480);      // check pops in
+    setTimeout(()=>ch.classList.remove('shut'),t+720)})      // pill opens to the right
 },{threshold:.45}).observe(grid)})();
 </script>
 
