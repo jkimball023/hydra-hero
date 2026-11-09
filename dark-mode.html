@@ -1043,11 +1043,11 @@ function pickTry(c,dMin,dMax,cMin,tg){const A=c.steps[c.steps.length-1].node,P=c
   avoidExtra=[];avoidSegs=[];return null}
 function updChain(c,now,dt){if(!c)return;for(const s of c.steps)s.t+=dt/1000;
   const cur=c.steps[c.steps.length-1];
-  if(c.travel){const T=c.travel;let adv=dt*.62;
+  if(c.travel){const T=c.travel;let adv=dt*1.0;
     while(adv>0&&T.i<T.path.length-1){const a=T.path[T.i],b=T.path[T.i+1],L=Math.max(1,Math.hypot(nx[b]-nx[a],ny[b]-ny[a])),rem=(1-T.f)*L;
       if(adv>=rem){adv-=rem;T.i++;T.f=0;const j=T.path[T.i];lit[j]=1;litEn[j]=.95;litList.add(j)}else{T.f+=adv/L;adv=0}}
     if(T.i>=T.path.length-1){const b=T.path[T.path.length-1];refr[b]=0;fire(b,.95,now);c.steps.push(newStep(b,T.lines,c.steps.length,c));c.travel=null}}
-  else if(!c.end&&c.steps.length<3&&cur.t>(c.steps.length===1?1.1:.9)){c.travel=pickNext(c);if(!c.travel)c.end=now+1800}
+  else if(!c.end&&c.steps.length<3&&cur.t>(c.steps.length===1?.7:.55)){c.travel=pickNext(c);if(!c.travel)c.end=now+1800}
   else if(!c.end&&c.steps.length===3&&cur.t>1.4)c.end=now+(now-lastMove<1500?1100:2600);
   if(c.end&&now>c.end){c.a-=dt/(c.fast?240:520);if(c.a<=0){if(c===chainOut)chainOut=null;else{chain=null;chainNext=now+(now-lastMove<IDLE?500:2600)}}}}
 function drawChain(c,now){if(!c)return;
