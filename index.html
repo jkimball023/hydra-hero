@@ -1,4 +1,9 @@
-<title>Hydra Hero Teaser</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hydra — Build the system, not just the software</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,32 +21,32 @@
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
-  --bg:#f7f6f6; --fg:#232424; --muted:#65625d; --panel:#ecebea; --panel-mut:#65625d; --sub:#65625d;
+  --bg:#f4faeb; --fg:#232424; --muted:#65625d; --panel:#ecebea; --panel-mut:#65625d; --sub:#65625d;
   --accent:#cade9a; --accent-ink:#232424; --logo:#232424;
   --net-line:#232424; --net-node:#232424; --net-signal:#5a6e3c; --ghost:#5a6e3c;
-  --scrim:rgba(247,246,246,.55); --scrim-0:rgba(247,246,246,0);
+  --scrim:rgba(244,250,235,.55); --scrim-0:rgba(244,250,235,0);
   color-scheme:light;
 }}
 :root[data-theme="light"]{
-  --bg:#f7f6f6; --fg:#232424; --muted:#65625d; --panel:#ecebea; --panel-mut:#65625d; --sub:#65625d;
+  --bg:#f4faeb; --fg:#232424; --muted:#65625d; --panel:#ecebea; --panel-mut:#65625d; --sub:#65625d;
   --accent:#cade9a; --accent-ink:#232424; --logo:#232424;
   --net-line:#232424; --net-node:#232424; --net-signal:#5a6e3c; --ghost:#5a6e3c;
-  --scrim:rgba(247,246,246,.55); --scrim-0:rgba(247,246,246,0);
+  --scrim:rgba(244,250,235,.55); --scrim-0:rgba(244,250,235,0);
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html,body{height:100%}
+html,body{margin:0}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.5}
 .gutter{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
 
-.stage{position:relative;height:100%;min-height:600px;overflow:hidden;background:var(--bg);touch-action:pan-y;cursor:crosshair}
+.stage{position:relative;height:100vh;height:100svh;max-height:1100px;min-height:600px;overflow:hidden;background:var(--bg);touch-action:pan-y;cursor:crosshair}
 .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 /* the live layer (pulses) sits above the copy, so signal runs through the headline; the resting net stays behind it */
 #netLive{z-index:3;pointer-events:none}
 .grain{position:absolute;inset:-80px;z-index:4;pointer-events:none;opacity:.075;mix-blend-mode:screen;background-size:80px 80px;animation:grain .8s steps(1) infinite}
-@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .grain{mix-blend-mode:multiply;opacity:.06}}
-:root[data-theme="light"] .grain{mix-blend-mode:multiply;opacity:.06}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .grain{mix-blend-mode:multiply;opacity:.035}}
+:root[data-theme="light"] .grain{mix-blend-mode:multiply;opacity:.035}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-31px,17px)}40%{transform:translate(23px,-41px)}60%{transform:translate(-47px,-11px)}80%{transform:translate(13px,37px)}}
 @media (prefers-reduced-motion: reduce){.grain{animation:none}}
 .scrim{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 34% 30% at 50% 52%,var(--scrim) 0%,var(--scrim) 35%,var(--scrim-0) 100%)}
@@ -51,7 +56,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16
 .brand{display:flex;color:var(--fg)}
 .brand svg{display:block;width:102px;height:39px}
 .nav-links{display:flex;gap:28px;align-items:center;color:var(--muted);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-.nav-cta{pointer-events:auto;background:transparent;color:var(--ghost);border:1px solid var(--ghost);border-radius:3px;padding:10px 16px;font:inherit;font-weight:400;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
+.nav-cta{pointer-events:auto;background:transparent;color:var(--ghost);border:1px solid var(--ghost);border-radius:999px;padding:7px 16px;font:inherit;font-weight:400;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
 .nav-cta:hover{background:color-mix(in srgb,var(--ghost) 12%,transparent)}
 .nav-cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media (max-width:700px){.nav-links span{display:none}}
@@ -62,7 +67,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
 /* the copy sits at layer 2 (pulses run over the headline); the button sits above the pulses, annotations and grain */
 .copy>*{position:relative;z-index:2}
 .copy>.cta{z-index:5}
-.cta{pointer-events:auto;background:#a8e29c;color:var(--accent-ink);border:0;border-radius:3px;padding:15px 22px;font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:clamp(28px,4.5vh,48px)}
+.cta{pointer-events:auto;background:#a8e29c;color:var(--accent-ink);border:0;border-radius:999px;height:44px;min-width:140px;padding:12px 24px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:13px;line-height:20px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:clamp(28px,4.5vh,48px)}
 .cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 .stage canvas{transition:opacity .28s ease}
@@ -131,7 +136,10 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
 .marks i::after{top:0;bottom:0;left:7px;width:1px}
 @media (max-width:700px){.marks i.c{display:none}}
 .hint{position:absolute;left:0;right:0;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:2;text-align:center;color:var(--muted);pointer-events:none;transition:opacity .6s}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
+</head>
+<body>
 
 <section class="stage" id="stage" aria-label="Interactive nerve net. Move the pointer across it to send signal through the organism.">
   <canvas id="netStatic"></canvas>
@@ -147,46 +155,288 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
 
   <header class="nav gutter">
     <span class="brand" role="img" aria-label="Hydra"><svg viewBox="0 0 102 39" width="102" height="39" aria-hidden="true" focusable="false"><g fill="currentColor"><path d="M16.5501 16.4434H10.4494V22.5566H16.5501V16.4434Z"/><path d="M28.7509 16.4434H22.6503V22.5566H28.7509V16.4434Z"/><path d="M21.6449 11.4592C21.0015 9.93451 20.0805 8.56539 18.9079 7.39077C17.7357 6.21616 16.3694 5.29328 14.8478 4.64807C13.4467 4.05427 11.9697 3.72116 10.449 3.65409V9.7789C13.8616 10.0722 16.5496 12.9491 16.5496 16.4434H22.6503C22.6503 14.7166 22.312 13.0394 21.6449 11.4592Z"/><path d="M33.8458 11.4592C33.2023 9.93451 32.2813 8.56539 31.1087 7.39077C29.9365 6.21616 28.5702 5.29328 27.0486 4.64807C25.6475 4.05427 24.1705 3.72116 22.6503 3.65409V9.7789C26.0629 10.0722 28.7509 12.9491 28.7509 16.4434H34.8515C34.8515 14.7166 34.5133 13.0394 33.8462 11.4592H33.8458Z"/><path d="M16.5501 29.2211C13.1374 28.9278 10.4494 26.0509 10.4494 22.5566H4.3488C4.3488 24.2834 4.68703 25.9606 5.35412 27.5408C5.99756 29.0655 6.91855 30.4346 8.0912 31.6092C9.2634 32.7838 10.6297 33.7067 12.1513 34.3519C13.5524 34.9457 15.0294 35.2788 16.5501 35.3459V29.2211Z"/><path d="M28.7509 29.2211C25.3382 28.9278 22.6503 26.0509 22.6503 22.5566H16.5496C16.5496 24.2834 16.8879 25.9606 17.5549 27.5408C18.1984 29.0655 19.1194 30.4346 20.292 31.6092C21.4642 32.7838 22.8305 33.7067 24.3521 34.3519C25.7532 34.9457 27.2302 35.2788 28.7509 35.3459V29.2211Z"/></g><g fill="currentColor"><path d="M44.0966 12.4295H46.1099V18.3732H54.5081V12.4295H56.5036V26.5709H54.5081V20.2275H46.1099V26.5709H44.0966V12.4295Z"/><path d="M58.8257 28.6792H60.3495C61.4195 28.6792 61.6373 28.4976 62.0545 27.4979L62.399 26.6979L58.1546 16.5556H60.2045L63.3427 24.3898H63.3789L66.4626 16.5556H68.4581L63.6876 28.2066C63.0527 29.7335 62.3454 30.2423 60.6221 30.2423H58.8266V28.6792H58.8257Z"/><path d="M69.0453 21.5541C69.0453 17.6824 69.9525 16.4282 73.3986 16.4282C75.9197 16.4282 76.5546 16.9554 77.0263 18.0643H77.0624V12.4295H78.949V26.5709H77.099V25.044H77.0629C76.6457 26.1345 75.9201 26.6979 73.3986 26.6979C69.952 26.6979 69.0453 25.4437 69.0453 21.5541ZM74.0335 24.9711C76.5002 24.9711 77.0807 24.3348 77.0807 22.2266V20.8995C77.0807 18.773 76.5002 18.1367 74.0335 18.1367C71.4397 18.1367 70.9681 18.7184 70.9681 21.5537C70.9681 24.3889 71.4397 24.9707 74.0335 24.9707V24.9711Z"/><path d="M81.525 16.5556H83.3933V18.1917H83.4295C83.8284 17.0828 84.79 16.5378 86.3861 16.5378H87.4927V18.2284H86.3499C84.0827 18.2284 83.4116 18.8646 83.4116 21.0274V26.5714H81.525V16.5556Z"/><path d="M88.382 23.6261C88.382 21.3905 89.6698 20.5181 92.7897 20.5181H95.7825V19.991C95.7825 18.4278 95.1658 18.0097 93.1703 18.0097C91.3203 18.0097 90.5943 18.3003 90.5943 19.6637V19.7182H88.726V19.5367C88.726 17.1374 90.0682 16.4103 93.152 16.4103C96.4897 16.4103 97.6503 17.301 97.6503 19.8819V26.5709H95.782V25.1531H95.7637C95.3648 26.08 94.8021 26.6979 92.2627 26.6979C89.56 26.6979 88.3811 25.8072 88.3811 23.6261H88.382ZM92.8258 25.0802C95.0208 25.0802 95.8007 24.5714 95.8007 22.9174V22.1175H92.8258C90.8848 22.1175 90.2681 22.481 90.2681 23.5899C90.2681 24.6988 90.921 25.0802 92.8258 25.0802Z"/></g></svg></span>
-    <nav class="nav-links mono"><span>Blog</span><span>Docs</span><button class="nav-cta" type="button">Request early access</button></nav>
+    <nav class="nav-links mono"><span>Blog</span><span>Docs</span><button class="nav-cta" type="button">Get access</button></nav>
   </header>
 
   <div class="copy gutter">
     <h1>Build the system, not just the software.</h1>
     <p class="sub">Every agent. One shared context.</p>
-    <button class="cta" type="button">Request early access</button>
+    <button class="cta" type="button">Get access</button>
   </div>
 
   <div class="hint mono" id="hint" hidden></div>
   <button class="theme" id="theme" type="button" role="switch" aria-checked="true" aria-label="Dark mode"><span id="themeLabel">Dark</span><span class="track"><span class="knob"></span></span></button>
-  <div class="shape-open" id="shapeOpen">
-    <button type="button" id="openShape" aria-expanded="false" aria-controls="shapePanel">Create your system</button>
-    <span class="id" id="netId" hidden>0004</span>
-  </div>
-  <aside class="shape" id="shapePanel" aria-label="Create your system">
-    <div>
-      <header><h2>Create your system</h2><button type="button" class="x" id="closeShape" aria-label="Close">&times;</button></header>
-      <p>Create a system of your own. Every setting changes how it is wired.</p>
-    </div>
-    <section>
-      <h3>Form</h3>
-      <label class="sl" for="sForm"><span>Structure</span><div><input id="sForm" type="range" min="0" max="1" step="0.01" value="0"><output id="vForm">Organic</output></div></label>
-      <div class="ends"><span>Organic</span><span>Geometric</span></div>
-      <label class="sl" for="sSprawl"><span>Sprawl</span><div><input id="sSprawl" type="range" min="0.5" max="1.8" step="0.05" value="1"><output id="vSprawl">1.0x</output></div></label>
-      <label class="sl" for="sRough"><span>Edge</span><div><input id="sRough" type="range" min="0" max="2.2" step="0.05" value="1"><output id="vRough">1.0x</output></div></label>
-      <label class="sl" for="sVoids"><span>Openings</span><div><input id="sVoids" type="range" min="0" max="0.42" step="0.01" value="0.2"><output id="vVoids">48%</output></div></label>
-      <label class="sl" for="sDensity"><span>Density</span><div><input id="sDensity" type="range" min="0.4" max="1.8" step="0.05" value="1"><output id="vDensity">1.0x</output></div></label>
-    </section>
-    <section>
-      <h3>Signal</h3>
-      <div class="sw" role="group" aria-label="Pulse colour">
-        <button type="button" data-pal="warm" aria-label="Warm" style="background:linear-gradient(90deg,#fad870,#ec7c30,#cade9a,#e686c0)"></button>
-        <button type="button" data-pal="thermal" aria-label="Thermal" style="background:linear-gradient(90deg,#b06840,#cade9a,#34a88c,#144a46)"></button>
-        <button type="button" data-pal="lime" aria-label="Lime" style="background:linear-gradient(90deg,#ecf0aa,#cade9a,#5a5c1e)"></button>
-      </div>
-    </section>
-    <div class="actions"><button type="button" class="grow" id="growBtn">New system</button><button type="button" class="reset" id="resetBtn">Reset</button></div>
-  </aside>
 </section>
+
+<style>
+/* ---------- landing page below the hero: fixed light/dark section palette from the Figma system pass (557:16) ---------- */
+.lp{--ink:#151514;--body:#4a4845;--mut:#65625d;--rule:#aeaeae;--mint:#f4faeb;--chip:#a3e9ae;--arrow:#e6f2d4;
+  --gut:max(24px,calc((100% - 1272px)/2));
+  --f-display:"Arimo","Helvetica Neue",Arial,sans-serif;--f-body:"Atkinson Hyperlegible",system-ui,sans-serif;--f-mono:"Atkinson Hyperlegible Mono",ui-monospace,Menlo,monospace;
+  background:#fff;color:var(--ink);font-family:var(--f-body);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.lp *{box-sizing:border-box}
+.lp img{display:block;max-width:100%}
+.lp .sec{padding:72px var(--gut)}
+/* type ramp: Display/Section, Heading/Card, Body/Default, Body/Small, Label/Eyebrow, Label/Interactive, Label/Nav */
+.lp .eyebrow{font:400 12px/12px var(--f-mono);letter-spacing:.0048em;color:var(--mut);margin:0 0 20px}
+.lp .h2{font:400 48px/52px var(--f-display);letter-spacing:-.0052em;margin:0;max-width:523px;text-wrap:balance}
+.lp .h3{font:400 24px/30px var(--f-display);letter-spacing:-.0034em;margin:0}
+.lp .body{font:400 16px/24px var(--f-body);color:var(--body);margin:0}
+.lp .small{font:400 14px/21px var(--f-body)}
+.lp .label{font:400 13px/20px var(--f-mono);letter-spacing:.04em;text-transform:uppercase}
+.lp .navlabel{font:400 12px/17px var(--f-mono);letter-spacing:.04em;text-transform:uppercase}
+.lp .head{margin-bottom:80px}
+.lp .sec-first{padding-top:130px}
+
+/* 02 statement: one card, gradient media over a mint three-column panel */
+.lp .feature{border-radius:15px;overflow:hidden;background:var(--mint)}
+.lp .feature .media{aspect-ratio:1272/589;width:100%;height:auto;object-fit:cover;display:block}
+@media (max-width:900px){.lp .feature .media{aspect-ratio:580/559}}
+.lp .cols{display:grid;grid-template-columns:repeat(3,1fr);padding:72px 32px 80px}
+.lp .cols>div{padding:0 40px;display:grid;gap:16px;align-content:start}
+.lp .cols>div+div{border-left:1px solid var(--rule)}
+.lp .cols .eyebrow{margin:0 0 4px}
+
+/* 03 how it works: click a row to select it; the visual fades to match */
+
+.lp .how{display:grid;grid-template-columns:471px 743px;justify-content:space-between;align-items:stretch}
+.lp .rows{list-style:none;margin:0;padding:0}
+.lp .row{display:grid;grid-template-columns:48px 1fr;gap:32px;padding:32px 0;border-top:1px solid transparent;border-bottom:1px solid transparent;
+  opacity:.5;transition:opacity .35s ease,border-color .35s ease;cursor:pointer}
+.lp .row:hover{opacity:.8}
+.lp .row.on{opacity:1;border-color:var(--rule)}
+.lp .row:focus-visible{outline:2px solid var(--ink);outline-offset:4px;border-radius:4px}
+.lp .row .ix{height:26px;border-radius:999px;display:grid;place-items:center;font:400 13px/20px var(--f-mono);letter-spacing:.04em;transition:background .35s ease}
+.lp .row.on .ix{background:var(--chip)}
+.lp .row .txt{display:grid;gap:12px}
+.lp .row .body{color:var(--mut);max-width:391px}
+.lp .visual{position:relative;min-height:420px;border-radius:15px;background:var(--mint);overflow:hidden}
+/* the panel matches the list's height; the screenshot hangs from the top and runs off the bottom edge */
+.lp .visual img{position:absolute;left:7.67%;top:clamp(32px,7%,57px);width:85.2%;height:auto;transition:opacity .28s ease}
+.lp .visual img.out{opacity:0}
+@keyframes visin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* 04 feature cards: side-scroll carousel; the track runs past the right edge on purpose */
+.lp .carousel-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:64px}
+.lp .arrows{display:flex;gap:12px;flex:none}
+.lp .arrow{width:48px;height:48px;border-radius:999px;border:0;background:var(--arrow);color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:opacity .25s ease,background .2s ease}
+.lp .arrow:hover{background:#dcedc6}
+.lp .arrow[disabled]{opacity:.35;cursor:default}
+.lp .arrow:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.lp .track{display:flex;gap:56px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;
+  --edge:max(24px,calc((100vw - var(--sbw,0px) - 1272px)/2));
+  margin:0 calc(50% - 50vw + var(--sbw,0px)/2);padding:0 var(--edge) 8px;scroll-padding-left:var(--edge);scrollbar-width:none}
+.lp .track::after{content:"";flex:0 0 1px}
+.lp .track::-webkit-scrollbar{display:none}
+.lp .card{flex:none;width:455px;scroll-snap-align:start}
+.lp .card .media{width:100%;height:auto;aspect-ratio:455/476;border-radius:15px;object-fit:cover;background:var(--mint)}
+.lp .card .txt{padding-top:32px;display:grid;gap:16px;max-width:324px}
+
+/* 05 waitlist: one big statement and a single email pill */
+.lp .dark{background:#151514;color:#f7f6f6}
+.lp .waitlist{padding:150px var(--gut) 72px;display:grid;gap:48px;justify-items:center;text-align:center}
+.lp .wl-h{font:400 48px/52px var(--f-display);letter-spacing:-.0052em;margin:0;color:#f7f6f6;max-width:760px;text-wrap:balance}
+.lp form{display:grid;gap:16px;width:min(100%,520px)}
+.lp .wl-pill{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 28px;border:1px solid #4a4845;border-radius:999px;transition:border-color .2s ease}
+.lp .wl-pill:focus-within{border-color:#a8e29c}
+.lp .wl-pill.err{border-color:#e19389}
+.lp .wl-pill input{text-align:left;flex:1;min-width:0;background:transparent;border:0;outline:none;color:#f7f6f6;font:400 16px/24px var(--f-body);padding:10px 0}
+.lp .wl-pill input::placeholder{color:#9a968f}
+.lp .submit{flex:none;height:48px;padding:0 24px;border:0;border-radius:999px;background:#f7f6f6;color:#151514;cursor:pointer;white-space:nowrap}
+.lp .submit:hover{background:#ecebea}
+.lp .submit:focus-visible{outline:2px solid #a8e29c;outline-offset:3px}
+.lp .submit[disabled]{background:#a8e29c;cursor:default}
+.lp .notice{color:#9a968f;margin:0}
+.lp .thanks{display:none;color:#a8e29c;margin:0}
+.lp form.sent .thanks{display:block}
+.lp form.sent .notice{display:none}
+
+/* 06 footer */
+.lp .footer{padding:60px var(--gut);display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap}
+.lp .footer .brand-mark{display:grid;gap:71px;justify-items:start}
+.lp .footer .brand-mark svg{width:75px;height:77px;color:#ecebea}
+.lp .footer .cpy{color:#9a968f;margin:0}
+.lp .footer .links{display:grid;gap:33px;justify-items:end}
+.lp .socials{display:flex;gap:34px;align-items:center}
+.lp .socials a{color:#f7f6f6;display:block}
+.lp .socials svg{display:block;height:24px;width:auto}
+.lp .fnav{display:flex;gap:28px;flex-wrap:wrap;margin:0;padding:0;list-style:none}
+.lp .fnav a,.lp .socials a{color:inherit;text-decoration:none}
+.lp .fnav a{color:#9a968f}
+.lp .fnav a:hover,.lp .socials a:hover{color:#f7f6f6}
+.lp a:focus-visible{outline:2px solid #a8e29c;outline-offset:3px;border-radius:2px}
+
+
+/* 03b stats: three numbers that tick up on scroll, labels typed in like the hero tags, over a faint net */
+.lp .stats{position:relative;background:#bdeac9;overflow:hidden}
+.lp .stats .netc{position:absolute;left:0;top:0;height:100%;width:100%;pointer-events:none;opacity:.8}
+.lp .stats-in{position:relative;display:grid;grid-template-columns:minmax(0,560px) 712px;justify-content:space-between;align-items:start;padding:72px var(--gut) 96px}
+.lp .stats .h2{max-width:523px;text-wrap:wrap}
+.lp .stat-list{list-style:none;margin:179px 0 0;padding:0}
+.lp .stat{display:grid;grid-template-columns:382px 1fr;align-items:center;padding:40px 0 40px 76px}
+.lp .stat+.stat{border-top:1px solid #aeaeae}
+.lp .stat .num{font:400 115px/120px var(--f-display);letter-spacing:-2px;color:#151514;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lp .stat .lab{font:400 16px/24px var(--f-body);color:#4a4845;white-space:pre;min-height:48px}
+.lp .stat .lab .cur{display:inline-block;width:3px;height:1.15em;background:currentColor;opacity:.75;vertical-align:-.2em;margin-left:2px}
+.lp .stat .lab .cur.blink{animation:scur 1.06s steps(1) infinite}
+@keyframes scur{50%{opacity:0}}
+@media (max-width:1240px){.lp .stats-in{grid-template-columns:1fr minmax(0,620px);gap:48px}.lp .stat{grid-template-columns:minmax(0,1.1fr) 1fr;padding-left:24px}}
+@media (max-width:900px){
+  .lp .stats .netc{width:100%;opacity:.45}
+  .lp .stats-in{grid-template-columns:1fr;padding:72px var(--gut)}
+  .lp .stat-list{margin-top:40px}
+  .lp .stat{grid-template-columns:1fr;padding:28px 0;gap:8px}
+  .lp .stat .num{font-size:72px;line-height:76px}
+}
+@media (min-width:601px) and (max-width:900px){.lp .stat{grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:32px;padding:32px 0}}   /* medium: label sits beside its number, like desktop */
+
+/* ---------- smaller screens ---------- */
+@media (max-width:1240px){
+  .lp .how{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:48px}
+}
+@media (max-width:900px){
+  .lp .h2{font-size:34px;line-height:38px}
+  .lp .head{margin-bottom:40px}
+  .lp .carousel-head{margin-bottom:32px}
+  .lp .cols{grid-template-columns:1fr;padding:40px 24px 48px;gap:32px}
+  .lp .cols>div{padding:0}
+  .lp .cols>div+div{border-left:0;border-top:1px solid var(--rule);padding-top:32px}
+  .lp .how{grid-template-columns:1fr;gap:40px}
+  .lp .visual{height:auto;aspect-ratio:743/822}
+  .lp .row>.visual{grid-column:1/-1;min-height:0;width:100%;min-width:0;margin-top:4px;animation:visin .38s cubic-bezier(.22,1,.36,1)}
+  .lp .card{width:min(78vw,455px)}
+  .lp .carousel-head{flex-wrap:wrap}
+  .lp .carousel-head .arrows{margin-left:auto}
+  .lp .track{gap:24px}
+  .lp .waitlist{padding:96px var(--gut) 56px;gap:40px}
+  .lp .wl-h{font-size:34px;line-height:38px}
+  .lp .wl-h br{display:none}
+  .lp .wl-pill{flex-wrap:wrap;border-radius:28px;padding:8px}
+  .lp .wl-pill input{padding:10px 16px;flex-basis:100%}
+  .lp .submit{width:100%}
+  .lp .footer .links{justify-items:start}
+}
+@media (prefers-reduced-motion: reduce){.lp .track{scroll-behavior:auto}.lp .row,.lp .visual img{transition:none}}
+
+/* ---- sticky nav: slides down once the hero has scrolled away */
+.snav{position:fixed;inset:0 0 auto;z-index:50;display:flex;justify-content:space-between;align-items:center;height:64px;
+  padding:0 max(24px,calc((100% - 1272px)/2));background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(12px) saturate(1.2);backdrop-filter:blur(12px) saturate(1.2);
+  border-bottom:1px solid rgba(21,21,20,.08);color:#151514;transform:translateY(-101%);transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s;visibility:hidden}
+.snav.on{transform:none;visibility:visible;box-shadow:0 6px 24px -18px rgba(21,21,20,.35)}
+.snav:not(.on){transition:transform .35s cubic-bezier(.4,0,1,1),visibility 0s .35s}
+.snav .brand{display:flex;color:#151514}.snav .brand svg{width:84px;height:32px}
+.snav .links{display:flex;gap:28px;align-items:center;font:400 12px/17px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:#65625d}
+.snav .links a{color:inherit;text-decoration:none}.snav .links a:hover{color:#151514}
+.snav .nav-cta{background:#a8e29c;color:#151514;border:0;border-radius:999px;height:36px;padding:0 18px;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;pointer-events:auto}
+.snav .nav-cta:hover{background:#9bd88e}
+.snav .nav-cta:focus-visible{outline:2px solid #151514;outline-offset:3px}
+@media (max-width:700px){.snav{height:56px}.snav .links a{display:none}}
+.lp section[id],#waitlist{scroll-margin-top:72px}
+@media (prefers-reduced-motion: reduce){.snav,.snav:not(.on){transition:none}}
+</style>
+
+<div class="snav" id="snav" aria-hidden="true"><a class="brand" href="#top" aria-label="Hydra, back to top"></a><nav class="links"><a href="#">Blog</a><a href="#">Docs</a><button class="nav-cta" type="button" tabindex="-1">Get access</button></nav></div>
+<main class="lp" id="main">
+  <!-- 02 Statement -->
+  <section class="sec sec-first" aria-labelledby="s2h">
+    <div class="head"><p class="eyebrow">// Lorem ipsum dolor</p><h2 class="h2" id="s2h">Lorem ipsum dolor sit amet, consectetuer</h2></div>
+    <div class="feature">
+      <picture><source media="(max-width: 900px)" srcset="assets/statement-media-m.jpg" width="580" height="559"><img class="media" src="assets/statement-media.jpg" width="1272" height="589" alt="Hydra's My sessions view: every agent session, its agent and its state, in one list." loading="lazy"></picture>
+      <div class="cols">
+        <div><p class="eyebrow">Lorem ipsum</p><h3 class="h3">Laoreet dolore magna</h3><p class="body">Issues, dependencies, agent sessions, handoffs, pull requests, and reviews stay on one surface.</p></div>
+        <div><p class="eyebrow">Lorem ipsum</p><h3 class="h3">Ut wisi enim ad</h3><p class="body">Issues, dependencies, agent sessions, handoffs, pull requests, and reviews stay on one surface.</p></div>
+        <div><p class="eyebrow">Lorem ipsum</p><h3 class="h3">Duis autem vel</h3><p class="body">Issues, dependencies, agent sessions, handoffs, pull requests, and reviews stay on one surface.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 How it works — pinned scroll -->
+  <section class="sec" aria-labelledby="s3h">
+    <div class="head"><p class="eyebrow">// How Hydra Works</p><h2 class="h2" id="s3h">Lorem ipsum dolor sit amet, consectetuer</h2></div>
+    <div class="how">
+          <ol class="rows" id="rows">
+            <li class="row on" data-i="0" tabindex="0" role="button" aria-pressed="true"><span class="ix">01</span><div class="txt"><h3 class="h3">Orchestration</h3><p class="body">One instruction spawns the fleet. Queues, handoffs, ownership, and humans where judgment is required.</p></div></li>
+            <li class="row" data-i="1" tabindex="0" role="button" aria-pressed="false"><span class="ix">02</span><div class="txt"><h3 class="h3">Agents</h3><p class="body">One instruction spawns the fleet. Queues, handoffs, ownership, and humans where judgment is required.</p></div></li>
+            <li class="row" data-i="2" tabindex="0" role="button" aria-pressed="false"><span class="ix">03</span><div class="txt"><h3 class="h3">Orchestration</h3><p class="body">One instruction spawns the fleet. Queues, handoffs, ownership, and humans where judgment is required.</p></div></li>
+            <li class="row" data-i="3" tabindex="0" role="button" aria-pressed="false"><span class="ix">04</span><div class="txt"><h3 class="h3">Orchestration</h3><p class="body">One instruction spawns the fleet. Queues, handoffs, ownership, and humans where judgment is required.</p></div></li>
+          </ol>
+          <div class="visual"><img id="howShot" src="assets/product-agents.jpg" width="633" height="763" alt="Hydra's Agents view: each agent with its live state, headless and interactive sessions." loading="lazy"></div>
+    </div>
+  </section>
+
+
+  <!-- 03b Stats -->
+  <section class="stats" id="stats" aria-labelledby="sSh">
+    <canvas class="netc" aria-hidden="true"></canvas>
+    <div class="stats-in">
+      <h2 class="h2" id="sSh">Lorem ipsum dolor sit amet, consectetuer adipiscing</h2>
+      <ul class="stat-list">
+        <li class="stat"><span class="num" data-to="100" data-dec="0" data-suf="+">100+</span><span class="lab" data-txt="Agents run
+in parallel">Agents run
+in parallel</span></li>
+        <li class="stat"><span class="num" data-to="60" data-dec="0" data-suf="%">60%</span><span class="lab" data-txt="Reduction in
+token spend">Reduction in
+token spend</span></li>
+        <li class="stat"><span class="num" data-to="4.7" data-dec="1" data-suf="x">4.7x</span><span class="lab" data-txt="More PRs per
+human decision">More PRs per
+human decision</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 04 Feature cards — side-scroll carousel -->
+  <section class="sec" aria-labelledby="s4h">
+    <div class="carousel-head">
+      <div><p class="eyebrow">// How Hydra Works</p><h2 class="h2" id="s4h">Lorem ipsum dolor sit amet, consectetuer</h2></div>
+      <div class="arrows">
+        <button type="button" class="arrow" id="prev" aria-label="Previous card" aria-controls="track"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M11 6L5 12L11 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button type="button" class="arrow" id="next" aria-label="Next card" aria-controls="track"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13 6L19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+    <div class="track" id="track" role="region" aria-label="Feature cards" tabindex="0">
+      <article class="card"><img class="media" src="assets/card-1.jpg" width="455" height="476" alt="Agents view." loading="lazy"><div class="txt"><h3 class="h3">Lorem ipsum dolor</h3><p class="body">Issues, dependencies, agent sessions, handoffs, pull requests, and reviews stay on one surface. Follow the work and intervene when your judgment is needed.</p></div></article>
+      <article class="card"><img class="media" src="assets/card-2.jpg" width="455" height="476" alt="Patches view." loading="lazy"><div class="txt"><h3 class="h3">Observe and control</h3><p class="body">Issues, dependencies, agent sessions, handoffs, pull requests, and reviews stay on one surface. Follow the work and intervene when your judgment is needed.</p></div></article>
+      <article class="card"><img class="media" src="assets/card-3.jpg" width="455" height="476" alt="All issues board." loading="lazy"><div class="txt"><h3 class="h3">Observe and control</h3><p class="body">Issues, dependencies, agent sessions, handoffs, pull requests, and reviews stay on one surface. Follow the work and intervene when your judgment is needed.</p></div></article>
+      <article class="card" aria-hidden="false"><img class="media" src="assets/card-1.jpg" width="455" height="476" alt="Agents view." loading="lazy"><div class="txt"><h3 class="h3">Lorem ipsum dolor</h3><p class="body">Issues, dependencies, agent sessions, handoffs, pull requests, and reviews stay on one surface. Follow the work and intervene when your judgment is needed.</p></div></article>
+      <article class="card" aria-hidden="false"><img class="media" src="assets/card-2.jpg" width="455" height="476" alt="Patches view." loading="lazy"><div class="txt"><h3 class="h3">Observe and control</h3><p class="body">Issues, dependencies, agent sessions, handoffs, pull requests, and reviews stay on one surface. Follow the work and intervene when your judgment is needed.</p></div></article>
+      <article class="card" aria-hidden="false"><img class="media" src="assets/card-3.jpg" width="455" height="476" alt="All issues board." loading="lazy"><div class="txt"><h3 class="h3">Observe and control</h3><p class="body">Issues, dependencies, agent sessions, handoffs, pull requests, and reviews stay on one surface. Follow the work and intervene when your judgment is needed.</p></div></article>
+    </div>
+  </section>
+
+  <!-- 05 Waitlist -->
+  <section class="dark" id="waitlist" aria-labelledby="s5h">
+    <div class="waitlist">
+      <h2 class="wl-h" id="s5h">Hydra is in early access.<br>Be first to know when it opens.</h2>
+      <form id="wl" novalidate>
+        <div class="wl-pill">
+          <label class="sr" for="wlEmail">Email</label>
+          <input id="wlEmail" name="email" type="email" placeholder="Enter your email" autocomplete="email" required>
+          <button type="submit" class="submit label">Sign up for updates</button>
+        </div>
+        <p class="notice small">We'll only email you about access and product updates.</p>
+        <p class="thanks small" role="status">Thanks, you're on the list. We'll be in touch.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- 06 Footer -->
+  <footer class="dark">
+    <div class="footer">
+      <div class="brand-mark">
+        <svg viewBox="4.3 3.6 30.6 31.8" aria-label="Hydra" role="img"><g fill="currentColor"><path d="M16.5501 16.4434H10.4494V22.5566H16.5501V16.4434Z"/><path d="M28.7509 16.4434H22.6503V22.5566H28.7509V16.4434Z"/><path d="M21.6449 11.4592C21.0015 9.93451 20.0805 8.56539 18.9079 7.39077C17.7357 6.21616 16.3694 5.29328 14.8478 4.64807C13.4467 4.05427 11.9697 3.72116 10.449 3.65409V9.7789C13.8616 10.0722 16.5496 12.9491 16.5496 16.4434H22.6503C22.6503 14.7166 22.312 13.0394 21.6449 11.4592Z"/><path d="M33.8458 11.4592C33.2023 9.93451 32.2813 8.56539 31.1087 7.39077C29.9365 6.21616 28.5702 5.29328 27.0486 4.64807C25.6475 4.05427 24.1705 3.72116 22.6503 3.65409V9.7789C26.0629 10.0722 28.7509 12.9491 28.7509 16.4434H34.8515C34.8515 14.7166 34.5133 13.0394 33.8462 11.4592H33.8458Z"/><path d="M16.5501 29.2211C13.1374 28.9278 10.4494 26.0509 10.4494 22.5566H4.3488C4.3488 24.2834 4.68703 25.9606 5.35412 27.5408C5.99756 29.0655 6.91855 30.4346 8.0912 31.6092C9.2634 32.7838 10.6297 33.7067 12.1513 34.3519C13.5524 34.9457 15.0294 35.2788 16.5501 35.3459V29.2211Z"/><path d="M28.7509 29.2211C25.3382 28.9278 22.6503 26.0509 22.6503 22.5566H16.5496C16.5496 24.2834 16.8879 25.9606 17.5549 27.5408C18.1984 29.0655 19.1194 30.4346 20.292 31.6092C21.4642 32.7838 22.8305 33.7067 24.3521 34.3519C25.7532 34.9457 27.2302 35.2788 28.7509 35.3459V29.2211Z"/></g></svg>
+        <p class="cpy navlabel">© Hydra 2026</p>
+      </div>
+      <div class="links">
+        <div class="socials">
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3zM7.2 9.5H5.4v8.7h1.8zM6.3 5.6a1.05 1.05 0 1 0 0 2.1 1.05 1.05 0 0 0 0-2.1zM18.6 13.3c0-2.4-1.3-3.9-3.4-3.9-1.1 0-1.9.6-2.3 1.2V9.5h-1.8v8.7h1.8v-4.6c0-1.2.6-2.2 1.8-2.2s1.6.9 1.6 2.2v4.6h1.8z" fill-rule="evenodd"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg></a>
+          <a href="#" aria-label="Discord"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 5.3A17 17 0 0 0 15.4 4l-.5 1a15.7 15.7 0 0 0-5.8 0l-.5-1a17 17 0 0 0-4.2 1.3C1.7 9.3 1 13.2 1.3 17a17.2 17.2 0 0 0 5.2 2.6l1.1-1.8c-.6-.2-1.2-.5-1.7-.9l.4-.3a12.2 12.2 0 0 0 11.4 0l.4.3c-.5.4-1.1.7-1.7.9l1.1 1.8a17.2 17.2 0 0 0 5.2-2.6c.4-4.4-.7-8.3-3.1-11.7zM8.7 14.7c-1 0-1.9-1-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1zm6.6 0c-1 0-1.9-1-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1z"/></svg></a>
+        </div>
+        <ul class="fnav navlabel"><li><a href="#">Blog</a></li><li><a href="#">Docs</a></li><li><a href="#">Privacy policy</a></li><li><a href="#">Terms of use</a></li></ul>
+      </div>
+    </div>
+  </footer>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/d3-delaunay@6.0.4/dist/d3-delaunay.min.js"></script>
 <script>
@@ -208,13 +458,18 @@ let col={line:[247,246,246],node:[247,246,246],sig:[202,222,154],muted:[154,150,
 const PALETTES={
   warm:[[1,[250,216,112]],[.85,[245,172,62]],[.7,[236,124,48]],[.56,[228,150,124]],[.43,[202,222,154]],[.29,[230,134,192]],[0,[164,76,146]]],
   thermal:[[1,[176,104,64]],[.84,[190,150,88]],[.72,[202,222,154]],[.56,[126,204,160]],[.38,[52,168,140]],[.2,[30,112,100]],[0,[20,74,70]]],
-  lime:[[1,[236,240,170]],[.7,[212,218,103]],[.45,[202,222,154]],[.2,[131,134,39]],[0,[90,92,30]]]};
-const CFG={seed:4,lobes:4,sprawl:1,rough:1,density:1,voids:.2,depth:1,reach:14,spin:.26,palette:'warm',form:0};
+  lime:[[1,[236,240,170]],[.7,[212,218,103]],[.45,[202,222,154]],[.2,[131,134,39]],[0,[90,92,30]]],
+  // brand mint only: bright at the hot core, the same green cooling toward a deeper shade as the signal spreads
+  mint:[[1,[226,247,220]],[.75,[190,236,180]],[.5,[168,226,156]],[.25,[124,182,114]],[0,[84,128,78]]]};
+const CFG={seed:4,lobes:4,sprawl:1,rough:1,density:1,voids:.2,depth:1,reach:14,spin:.26,palette:'mint',form:0};
 let STOPS=PALETTES[CFG.palette];
 let litEn;
-function sigCol(en){en=clamp(en,0,1);for(let k=1;k<STOPS.length;k++){const [e0,c0]=STOPS[k-1],[e1,c1]=STOPS[k];
+// light mode: mint gets its own deeper ramp (darkest at the hot core, lightening as it spreads) instead of the generic brightness boost
+const LIGHT_STOPS={mint:[[1,[64,98,54]],[.75,[78,118,66]],[.5,[90,136,78]],[.25,[126,166,114]],[0,[166,196,156]]]};
+function sigCol(en){en=clamp(en,0,1);const own=!col.dark&&LIGHT_STOPS[CFG.palette],S=own||STOPS,boost=!col.dark&&!own;
+  for(let k=1;k<S.length;k++){const [e0,c0]=S[k-1],[e1,c1]=S[k];
   if(en>=e1){const t=(e0-en)/(e0-e1);let c=[0,1,2].map(j=>Math.round(c0[j]+(c1[j]-c0[j])*t));
-    if(!col.dark)c=vivid(c);return c}}return col.dark?STOPS[STOPS.length-1][1]:vivid(STOPS[STOPS.length-1][1])}
+    if(boost)c=vivid(c);return c}}return boost?vivid(S[S.length-1][1]):S[S.length-1][1]}
 function vivid([r,g,b]){r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn;let h=0,sa=0;
   if(d){sa=d/(1-Math.abs(2*l-1));h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h*=60;if(h<0)h+=360}
   sa=Math.min(1,sa*1.35+.08);const L=Math.min(l,.5)*.92,C=(1-Math.abs(2*L-1))*sa,X=C*(1-Math.abs((h/60)%2-1)),m=L-C/2;
@@ -487,6 +742,72 @@ function fire(i,en,now){
     signals.push({e:-1-k,from:i,to:j,t0:now,t1:now+L*MSPX,en:en*Math.pow(DECAY,L/CFG.reach)})}
 }
 
+// ---- cell windows: the net zoomed in. A micrography sample, warped by slow fluid noise, sits where each leader lands.
+const CELLTEX=["assets/cell-0.jpg","assets/cell-1.jpg","assets/cell-2.jpg","assets/cell-3.jpg"];
+// per texture: spots picked for colour variety and fine detail inside a cell-sized window
+const SPOTS=[
+ [[.639,.252],[.748,.231],[.518,.284],[.605,.507],[.798,.442],[.85,.296]],
+ [[.621,.698],[.637,.865],[.082,.307],[.591,.11],[.939,.449],[.933,.615]],
+ [[.41,.542],[.503,.631],[.893,.331],[.597,.114],[.571,.761],[.764,.212]],
+ [[.2,.27],[.25,.42],[.29,.3],[.76,.68],[.71,.6],[.86,.78],[.08,.4]]];
+const lastSpot=[-1,-1,-1,-1];
+function nextSpot(ti){const L=SPOTS[ti];let k;do{k=Math.floor(Math.random()*L.length)}while(L.length>1&&k===lastSpot[ti]);lastSpot[ti]=k;const [x,y]=L[k];return[x+(Math.random()-.5)*.02,y+(Math.random()-.5)*.02]}
+let lastTex=-1;
+function nextTex(avoid){let t;do{t=Math.floor(Math.random()*CELLTEX.length)}while(t===lastTex||(avoid||[]).includes(t));lastTex=t;return t}
+const cellImgs=CELLTEX.map(()=>new Image());let cellLoaded=0,cellReady=false;
+const cellGL=(()=>{const cv=document.createElement('canvas');let gl=null;try{gl=cv.getContext('webgl2',{premultipliedAlpha:true,preserveDrawingBuffer:true,antialias:false})}catch(e){}
+  if(!gl)return null;
+  const VS=`#version 300 es
+in vec2 a;out vec2 v;void main(){v=a*.5+.5;gl_Position=vec4(a,0,1);}`;
+  const FS=`#version 300 es
+precision highp float;
+uniform sampler2D u_tex;uniform float u_t,u_aspect;uniform vec2 u_off;
+in vec2 v;out vec4 o;
+vec2 h2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return -1.+2.*fract(sin(p)*43758.5453);}
+float n(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);
+  return mix(mix(dot(h2(i),f),dot(h2(i+vec2(1,0)),f-vec2(1,0)),u.x),mix(dot(h2(i+vec2(0,1)),f-vec2(0,1)),dot(h2(i+vec2(1,1)),f-vec2(1,1)),u.x),u.y);}
+float fbm(vec2 p){float s=0.,a=.5;for(int i=0;i<4;i++){s+=a*n(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return s;}
+float hash(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
+void main(){
+  vec2 p=(v*2.-1.)*vec2(1.,-1.);float r=length(p);
+  vec2 q=p*(1.+.06*r*r);
+  float t=u_t;
+  vec2 base=u_off*vec2(u_aspect,1.)+q*.065+vec2(t*.0022,-t*.0016);   // high magnification: at 40px the stripes still resolve
+  vec2 w=vec2(fbm(base*9.+vec2(0.,t*.10)),fbm(base*9.+vec2(5.2,1.3)-vec2(t*.09,0.)));
+  vec2 uv=base+w*.035;
+  vec2 w2=vec2(fbm(uv*24.+t*.16),fbm(uv*24.+vec2(3.1,7.7)-t*.14));
+  uv+=w2*.012;
+  uv.x/=u_aspect;
+  vec3 c=texture(u_tex,uv).rgb;
+  c+=(hash(gl_FragCoord.xy+fract(t*7.3)*91.)-.5)*.07;
+  c*=mix(.86,1.,smoothstep(1.,.7,r));
+  float a=1.-smoothstep(.95,1.,r);
+  o=vec4(c*a,a);
+}`;
+  const sh=(t,s)=>{const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);return x};
+  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS))return null;gl.useProgram(pr);
+  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(pr,'a');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  const txs=CELLTEX.map(()=>{const tx=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tx);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.MIRRORED_REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.MIRRORED_REPEAT);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);return tx});
+  return {cv,gl,txs,u:{t:gl.getUniformLocation(pr,'u_t'),aspect:gl.getUniformLocation(pr,'u_aspect'),off:gl.getUniformLocation(pr,'u_off')}}})();
+cellImgs.forEach((im,i)=>{im.onload=()=>{if(cellGL){const g=cellGL.gl;g.bindTexture(g.TEXTURE_2D,cellGL.txs[i]);g.texImage2D(g.TEXTURE_2D,0,g.RGBA,g.RGBA,g.UNSIGNED_BYTE,im);g.generateMipmap(g.TEXTURE_2D)}
+  if(++cellLoaded===cellImgs.length)cellReady=true};im.src=CELLTEX[i]});
+let cellClock=0,cellTile=0;
+// render every visible step's sample into one strip of tiles, then each tag copies its own tile
+function renderCells(steps){if(!cellGL||!cellReady||!steps.length)return;const g=cellGL.gl,T=Math.round(ANN.D*DPR);
+  const need=T*Math.max(8,steps.length);if(cellGL.cv.width<need||cellGL.cv.height!==T){cellGL.cv.width=need;cellGL.cv.height=T}cellTile=T;
+  g.viewport(0,0,cellGL.cv.width,T);g.clearColor(0,0,0,0);g.clear(g.COLOR_BUFFER_BIT);
+  steps.forEach((s,i)=>{s.tile=i;const im=cellImgs[s.ti];g.bindTexture(g.TEXTURE_2D,cellGL.txs[s.ti]);g.uniform1f(cellGL.u.aspect,im.naturalWidth/im.naturalHeight);g.viewport(i*T,0,T,T);g.uniform1f(cellGL.u.t,cellClock+s.ct0);g.uniform2f(cellGL.u.off,s.off[0],s.off[1]);g.drawArrays(g.TRIANGLE_STRIP,0,4)})}
+function drawCell(s,cx,cy,D){
+  if(cellGL&&cellReady&&s.tile!=null){xL.drawImage(cellGL.cv,s.tile*cellTile,0,cellTile,cellTile,cx-D/2,cy-D/2,D,D);return}
+  if(cellReady){const cellImg=cellImgs[s.ti],iw=cellImg.naturalWidth,ih=cellImg.naturalHeight,sz=ih*.14;xL.save();xL.beginPath();xL.arc(cx,cy,D/2,0,6.2832);xL.clip();
+    xL.drawImage(cellImg,clamp(s.off[0]*iw-sz/2,0,iw-sz),clamp(s.off[1]*ih-sz/2,0,ih-sz),sz,sz,cx-D/2,cy-D/2,D,D);xL.restore()}}
+// each step in a chain takes a different texture, so the three windows never share a colour family
+function newStep(node,lines,k,c){const ti=nextTex(c?c.steps.map(s=>s.ti):[]);return{node,lines,t:0,k,ti,off:nextSpot(ti),ct0:-cellClock+Math.random()*2}}
+
 // ---- event chains: an engineering event lands on one node, wakes an agent on a second, alerts a person on a third
 const EVENTS=[
  [['// 01 trigger','jira: HYD-412 → in progress'],['// 02 wake','pm agent'],['// 03 alert','james in slack']],
@@ -497,10 +818,13 @@ const EVENTS=[
  [['// 01 trigger','release candidate tagged'],['// 02 wake','release agent'],['// 03 alert','#releases']],
  [['// 01 trigger','dependency cve published'],['// 02 wake','security agent'],['// 03 alert','#security-review']],
  [['// 01 trigger','design doc approved'],['// 02 wake','pm agent'],['// 03 alert','#eng-planning']]];
-let chain=null,chainOut=null,chainNext=0,evIdx=Math.floor(Math.random()*EVENTS.length),avoidExtra=[];
+let chain=null,chainOut=null,chainNext=0,evIdx=Math.floor(Math.random()*EVENTS.length),avoidExtra=[],avoidSegs=[];
 const ANN_FONT='10.5px "Atkinson Hyperlegible Mono", ui-monospace, monospace';
-const BP={x:12,dot:0,top:9,lh:15,bot:9,r:6};
-function annBox(lines){xL.font=ANN_FONT;return{bw:Math.ceil(Math.max(...lines.map(s=>xL.measureText(s).width)))+BP.x*2+BP.dot+6,bh:BP.top+lines.length*BP.lh+BP.bot}}
+// pill tag: the same 48px height as the old tag; the cell window sits at the end the leader comes in from
+const BP={top:9,lh:15,bot:9};
+const ANN={inset:4,D:40,gap:10,pad:16};
+function annBox(lines){xL.font=ANN_FONT;const tw=Math.ceil(Math.max(...lines.map(s=>xL.measureText(s).width)));
+  return{bw:ANN.inset+ANN.D+ANN.gap+tw+6+ANN.pad,bh:BP.top+lines.length*BP.lh+BP.bot}}
 // true when any point of the net sits inside the rectangle (with a little breathing room)
 function netIn(x0,y0,x1,y1){const m=10;x0-=m;y0-=m;x1+=m;y1+=m;
   for(let gx=Math.floor(x0/CELL);gx<=Math.floor(x1/CELL);gx++)for(let gy=Math.floor(y0/CELL);gy<=Math.floor(y1/CELL);gy++){
@@ -508,74 +832,92 @@ function netIn(x0,y0,x1,y1){const m=10;x0-=m;y0-=m;x1+=m;y1+=m;
 function netCount(x0,y0,x1,y1){const m=8;x0-=m;y0-=m;x1+=m;y1+=m;let c=0;
   for(let gx=Math.floor(x0/CELL);gx<=Math.floor(x1/CELL);gx++)for(let gy=Math.floor(y0/CELL);gy<=Math.floor(y1/CELL);gy++){
     const g=grid.get(key(gx,gy));if(!g)continue;for(const j of g)if(nx[j]>=x0&&nx[j]<=x1&&ny[j]>=y0&&ny[j]<=y1&&++c>40)return c}return c}
-function textRects(){const r=stage.getBoundingClientRect(),pad=14;
-  return [...document.querySelectorAll('h1,.sub,.cta')].map(e=>{const b=e.getBoundingClientRect();return[b.left-r.left-pad,b.top-r.top-pad,b.right-r.left+pad,b.bottom-r.top+pad]})}
+// keep-clear zones: a tight margin around the headline and subhead, a wide one around the CTA so tags never crowd it
+function textRects(){const r=stage.getBoundingClientRect();
+  return [...document.querySelectorAll('h1,.sub,.cta')].map(e=>{const b=e.getBoundingClientRect(),pad=e.classList.contains('cta')?56:14;return[b.left-r.left-pad,b.top-r.top-pad,b.right-r.left+pad,b.bottom-r.top+pad]})}
 // the corner crosses: neither the text nor the arms may touch them
 function markRects(){const r=stage.getBoundingClientRect(),pad=16;
   return [...document.querySelectorAll('.marks i')].filter(e=>e.offsetParent!==null).map(e=>{const b=e.getBoundingClientRect(),cx=(b.left+b.right)/2-r.left,cy=(b.top+b.bottom)/2-r.top;return[cx-pad,cy-pad,cx+pad,cy+pad]})}
 function segHits(ax,ay,bx,by,q){for(let k=0;k<=12;k++){const t=k/12,x=ax+(bx-ax)*t,y=ay+(by-ay)*t;if(x>q[0]&&x<q[2]&&y>q[1]&&y<q[3])return true}return false}
-function legsClear(x,y,kx,ky,ex,marks){return !marks.some(q=>segHits(x,y,kx,ky,q)||segHits(kx,ky,ex,ky,q))}
+// exact tests so no leader ever crosses another leader or runs through another tag
+function segX(a,b){const o=(p,q,r)=>Math.sign((q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0]));
+  const p1=[a[0],a[1]],p2=[a[2],a[3]],p3=[b[0],b[1]],p4=[b[2],b[3]];return o(p1,p2,p3)*o(p1,p2,p4)<0&&o(p3,p4,p1)*o(p3,p4,p2)<0}
+function segRect(s,q){const [ax,ay,bx,by]=s;let t0=0,t1=1;const dx=bx-ax,dy=by-ay;
+  for(const [p,v] of [[-dx,ax-q[0]],[dx,q[2]-ax],[-dy,ay-q[1]],[dy,q[3]-ay]]){if(p===0){if(v<0)return false}else{const r=v/p;if(p<0){if(r>t1)return false;if(r>t0)t0=r}else{if(r<t0)return false;if(r<t1)t1=r}}}return true}
+// a candidate placement is clear when its legs miss other tags and other leaders, and its box misses other leaders
+function clearOfOthers(x,y,kx,ky,ex,bx,by,bw,bh){const legs=[[x,y,kx,ky],[kx,ky,ex,ky]],box=[bx-6,by-6,bx+bw+6,by+bh+6];
+  for(const q of avoidExtra)for(const l of legs)if(segRect(l,q))return false;
+  for(const sg of avoidSegs){if(segRect(sg,box))return false;for(const l of legs)if(segX(l,sg))return false}
+  return true}
+function legsClear(x,y,kx,ky,ex,marks){return !marks.some(q=>segRect([x,y,kx,ky],q)||segRect([kx,ky,ex,ky],q))}   // exact, so a leader can't clip a corner of the copy
 // pick the nearest spot around the hover point (left, right, above or below) that keeps the text off the copy and, where possible, off the net
 function spotCost(x,y,bw,bh,sp,rects,marks){marks=marks||markRects();const kx=x+sp.dir*sp.L,ky=y+sp.up*sp.L,ex=kx+sp.dir*sp.R,bx=sp.dir>0?ex+9:ex-9-bw,by=ky-bh/2;
   if(bx<16||bx+bw>W-16||by<88||by+bh>H-44)return 1e9;
   if(rects.concat(marks,avoidExtra).some(q=>bx<q[2]&&bx+bw>q[0]&&by<q[3]&&by+bh>q[1]))return 1e9;
-  if(!legsClear(x,y,kx,ky,ex,marks))return 1e9;
+  if(!legsClear(x,y,kx,ky,ex,marks.concat(rects)))return 1e9;   // leaders stay off the copy and the CTA too
+  if(!clearOfOthers(x,y,kx,ky,ex,bx,by,bw,bh))return 1e9;
   return sp.L*1.41+sp.R*.45+netCount(bx,by,bx+bw,by+bh)*70}
 function bestSpot(x,y,bw,bh){const marks=markRects(),rects=textRects().concat(marks,avoidExtra);let best=null;
   for(const L of [26,46,70,100,135,175,220])for(const R of [90,120,155,200,250,300])for(const dir of [1,-1])for(const up of [-1,1]){
     const kx=x+dir*L,ky=y+up*L,ex=kx+dir*R,bx=dir>0?ex+9:ex-9-bw,by=ky-bh/2;
     if(bx<16||bx+bw>W-16||by<88||by+bh>H-44)continue;
     if(rects.some(q=>bx<q[2]&&bx+bw>q[0]&&by<q[3]&&by+bh>q[1]))continue;
-    if(!legsClear(x,y,kx,ky,ex,marks))continue;
+    if(!legsClear(x,y,kx,ky,ex,rects))continue;
+    if(!clearOfOthers(x,y,kx,ky,ex,bx,by,bw,bh))continue;
     const n=netCount(bx,by,bx+bw,by+bh),cost=L*1.41+R*.45+n*70;
     if(!best||cost<best.cost)best={L,R,dir,up,cost}}
   return best||{L:46,R:90,dir:x>=W/2?-1:1,up:-1,cost:1e9}}
 function annGeom(st){const x=nx[st.node],y=ny[st.node],{bw,bh}=annBox(st.lines);
   const t=performance.now();
-  if(!st.spot){st.spot=bestSpot(x,y,bw,bh);st.spotT=t}
-  else if(t-(st.spotT||0)>700){st.spotT=t;const cur=spotCost(x,y,bw,bh,st.spot,textRects()),nb=bestSpot(x,y,bw,bh);
-    if(cur>=1e9||nb.cost<cur*.55-30)st.spot=nb}
+  // a tag keeps its spot once placed; it only moves when that spot becomes blocked, and then it fades out, moves, and fades back in
+  if(!st.spot){st.spot=bestSpot(x,y,bw,bh);st.spotT=t;st.ok=st.spot.cost<1e9}
+  else if(st.ok&&t-(st.spotT||0)>80){st.spotT=t;if(spotCost(x,y,bw,bh,st.spot,textRects())>=1e9)st.ok=false}
+  else if(!st.ok&&(st.vis??0)<.04&&t-(st.spotT||0)>150){st.spotT=t;const nb=bestSpot(x,y,bw,bh);
+    if(nb.cost<1e9){st.spot=nb;st.ck=undefined;st.ok=true}}
   const sp=st.spot,tk=sp.dir*sp.L,tu=sp.up*sp.L,tr=sp.dir*sp.R;
   if(st.cdir!==sp.dir||st.ck===undefined){st.cdir=sp.dir;st.ck=tk;st.cu=tu;st.cr=tr}
   else{st.ck+=(tk-st.ck)*.06;st.cu+=(tu-st.cu)*.06;st.cr+=(tr-st.cr)*.06}
   return geomFrom(x,y,bw,bh,st.ck,st.cu,st.cr,st.cdir)}
 function geomFrom(x,y,bw,bh,dk,du,dr,dir){const kx=x+dk,ky=y+du,ex=kx+dr,right=dir>0,bx=right?ex+9:ex-9-bw;
   return{x,y,kx,ky,ex,right,dir,bw,bh,bx,by:ky-bh/2}}
-// tag: a solid rounded card tied to its node by a dotted line; the log lines type in as before
-function drawAnn(st,alpha,now){const t=st.t,g=annGeom(st);st.g=g;if(alpha<=0)return;
+// tag: a pill painted in the page background with a light keyline; the leader runs in to the cell window at its near end; the log lines type in as before
+function drawAnn(st,alpha,now){const t=st.t,g=annGeom(st);st.g=g;
+  st.vis=(st.vis??(st.ok?1:0))+(((st.ok?1:0))-(st.vis??0))*(st.ok?.18:.45);   // fade out fast, back in gentlyalpha*=st.vis;
+  if(alpha<=.01){st.segs=null;return}
   const dk=col.dark,ink=dk?[202,200,196]:[35,36,36],dim=col.muted;
-  const dot=sigCol(.84-(st.k||0)*.17);
   const pop=clamp((t-.46)/.18,0,1),sc=.94+.06*(1-(1-pop)**3);
+  const{bx,by,bw,bh}=g,R=bh/2,cx=g.right?bx+ANN.inset+ANN.D/2:bx+bw-ANN.inset-ANN.D/2;
+  const edge=g.right?bx+ANN.inset:bx+bw-ANN.inset;   // the leader lands on the cell window's outer edge
+  st.segs=[[g.x,g.y,g.kx,g.ky],[g.kx,g.ky,edge,g.ky]];
+  const leg=Math.hypot(g.kx-g.x,g.ky-g.y),run=Math.abs(edge-g.kx),P=leg+run,lt=clamp(t/.5,0,1),e=(1-(1-lt)**3)*P;
   xL.save();xL.globalAlpha=alpha;
-  // anchor + angled leader, drawn out from the node like before, ending at the tag's edge
-  const edge=g.right?g.bx:g.bx+g.bw,leg=Math.hypot(g.kx-g.x,g.ky-g.y),run=Math.abs(edge-g.kx),P=leg+run,lt=clamp(t/.5,0,1),e=(1-(1-lt)**3)*P;
+  // pill body first, so the leader can be drawn over its keyline and into the cell
+  if(pop>0){xL.save();xL.globalAlpha=alpha*pop;const ox=g.right?bx:bx+bw;xL.translate(ox,g.ky);xL.scale(sc,sc);xL.translate(-ox,-g.ky);
+    xL.beginPath();xL.roundRect(bx+.5,by+.5,bw-1,bh-1,R-.5);xL.fillStyle=rgba(col.bg,.94);xL.fill();
+    xL.strokeStyle=rgba(col.muted,dk?.45:.5);xL.lineWidth=1;xL.stroke();
+    xL.globalAlpha=alpha*clamp((t-.52)/.3,0,1);drawCell(st,cx,g.ky,ANN.D);
+    xL.restore()}
+  // anchor + angled leader, drawn out from the node like before, ending at the cell window
   xL.strokeStyle=rgba(col.muted,.7);xL.lineWidth=.8;xL.beginPath();xL.arc(g.x,g.y,3,0,6.2832);xL.stroke();
   xL.strokeStyle=rgba(col.muted,.55);xL.lineWidth=.7;xL.beginPath();xL.moveTo(g.x,g.y);
   if(e<=leg){const f=e/Math.max(leg,1);xL.lineTo(g.x+(g.kx-g.x)*f,g.y+(g.ky-g.y)*f)}else{xL.lineTo(g.kx,g.ky);xL.lineTo(g.kx+g.dir*(e-leg),g.ky)}xL.stroke();
-  if(pop>0){xL.globalAlpha=alpha*pop;const ox=g.right?g.bx:g.bx+g.bw;xL.translate(ox,g.ky);xL.scale(sc,sc);xL.translate(-ox,-g.ky);
-    const{bx,by,bw,bh}=g;
-    // no fill: the inside is just page background (it hides any net that slips underneath), with a light keyline
-    xL.beginPath();xL.roundRect(bx+.5,by+.5,bw-1,bh-1,BP.r);xL.fillStyle=rgba(col.bg,.94);xL.fill();
-    xL.strokeStyle=rgba(col.muted,dk?.45:.5);xL.lineWidth=1;xL.stroke();
-    // a small solid dot where the leader joins the tag
-    xL.fillStyle=rgba(col.muted,.95);xL.beginPath();xL.arc(g.right?bx+.5:bx+bw-.5,g.ky,2.2,0,6.2832);xL.fill();
-    // status dot, softly pulsing while the line is being written
-    const lines=st.lines,typed=Math.max(0,(t-.62)*42),total=lines.reduce((a,s)=>a+s.length,0),busy=typed<total;
-    const pr=busy?.75+.25*Math.sin(now/120):1;
+  // a small solid dot where the leader meets the cell
+  if(pop>0){xL.globalAlpha=alpha*pop;xL.fillStyle=rgba(col.muted,.95);xL.beginPath();xL.arc(edge,g.ky,2.2,0,6.2832);xL.fill();
+    // text: both lines fully left-aligned, typing in with a block cursor
+    const lines=st.lines,typed=Math.max(0,(t-.62)*42),total=lines.reduce((a,s)=>a+s.length,0);
     xL.font=ANN_FONT;xL.textAlign='left';xL.textBaseline='middle';
-    let left=typed,cur=null;const tx=bx+BP.x+BP.dot;
+    let left=typed,cur=null;const tx=g.right?bx+ANN.inset+ANN.D+ANN.gap:bx+ANN.pad;
     lines.forEach((s,k)=>{const n=Math.min(s.length,Math.floor(left));left-=s.length;if(n<=0)return;const ty=by+BP.top+BP.lh*k+BP.lh/2,shown=s.slice(0,n);
-      const lx=tx;
-      xL.fillStyle=rgba(k===0?dim:ink,1);xL.fillText(shown,lx,ty);
-      if(n<s.length||k===lines.length-1)cur={x:lx+xL.measureText(shown).width+2,y:ty,done:n>=s.length}});
-    if(cur&&(!cur.done||Math.floor(now/530)%2===0)){xL.fillStyle=rgba(ink,.75);xL.fillRect(cur.x,cur.y-5,5,10)}}
+      xL.fillStyle=rgba(k===0?dim:ink,1);xL.fillText(shown,tx,ty);
+      if(n<s.length||k===lines.length-1)cur={x:tx+xL.measureText(shown).width+1.5,y:ty,done:n>=s.length}});
+    if(cur&&(!cur.done||Math.floor(now/530)%2===0)){xL.fillStyle=rgba(ink,.75);xL.fillRect(cur.x,cur.y-6,2.5,12)}}
   xL.restore()}
 function lobeUnder(x,y){const c=near(x,y,48);if(!c.length)return -1;const cnt={};let best=-1,bc=0;
   for(const i of c){const k=lobeOf[i];cnt[k]=(cnt[k]||0)+1;if(cnt[k]>bc){bc=cnt[k];best=k}}return best}
 
-function boxOf(s){const g=s.g;return g?[Math.min(g.bx,g.ex)-8,g.by-8,Math.max(g.bx+g.bw,g.ex)+8,g.by+g.bh+8]:null}
+function boxOf(s){const g=s.g;return g&&(s.vis??1)>.01?[Math.min(g.bx,g.ex)-8,g.by-8,Math.max(g.bx+g.bw,g.ex)+8,g.by+g.bh+8]:null}
 function inRects(x,y,R){return R.some(q=>x>q[0]&&x<q[2]&&y>q[1]&&y<q[3])}
-function startChain(a,now){const ev=EVENTS[evIdx++%EVENTS.length];chain={ev,steps:[{node:a,lines:ev[0],t:0,k:0}],travel:null,end:0,a:1};fire(a,1,now)}
+function startChain(a,now){const ev=EVENTS[evIdx++%EVENTS.length];chain={ev,steps:[newStep(a,ev[0],0)],travel:null,end:0,a:1};fire(a,1,now)}
 // next hop: a node a short way off, further from the previous step (forward momentum), reached along the net's own links
 function pickNext(c){const tg=performance.now()-lastMove<1500&&lobeUnder(px,py)>=0?[px,py]:null;
   // a pointer resting on the net pulls the next hop toward it; otherwise keep forward momentum
@@ -592,26 +934,29 @@ function pickTry(c,dMin,dMax,cMin,tg){const A=c.steps[c.steps.length-1].node,P=c
     // short, direct routes; mostly sideways travel so the callouts don't stack; keep heading roughly where the last hop went
     cand.push([j,tg?Math.hypot(nx[j]-tg[0],ny[j]-tg[1])/40+pl[j]/d*.4+Math.random()*.3:pl[j]/d*1.2+Math.abs(dy)/d*.9-cosH*.6+Math.random()*.7])}
   cand.sort((a,b)=>a[1]-b[1]);
-  const lines=c.ev[c.steps.length],{bw,bh}=annBox(lines);avoidExtra=own;
+  const lines=c.ev[c.steps.length],{bw,bh}=annBox(lines);avoidExtra=own;avoidSegs=c.steps.flatMap(x=>x.segs||[]);
   for(const [j] of cand.slice(0,16)){const sp=bestSpot(nx[j],ny[j],bw,bh);if(sp.cost>=1e9)continue;
-    const path=[j];let i=j;while(par[i]>=0){i=par[i];path.push(i)}path.reverse();avoidExtra=[];return{path,i:0,f:0,lines}}
-  avoidExtra=[];return null}
+    const path=[j];let i=j;while(par[i]>=0){i=par[i];path.push(i)}path.reverse();avoidExtra=[];avoidSegs=[];return{path,i:0,f:0,lines}}
+  avoidExtra=[];avoidSegs=[];return null}
 function updChain(c,now,dt){if(!c)return;for(const s of c.steps)s.t+=dt/1000;
   const cur=c.steps[c.steps.length-1];
-  if(c.travel){const T=c.travel;let adv=dt*.36;
+  if(c.travel){const T=c.travel;let adv=dt*.62;
     while(adv>0&&T.i<T.path.length-1){const a=T.path[T.i],b=T.path[T.i+1],L=Math.max(1,Math.hypot(nx[b]-nx[a],ny[b]-ny[a])),rem=(1-T.f)*L;
       if(adv>=rem){adv-=rem;T.i++;T.f=0;const j=T.path[T.i];lit[j]=1;litEn[j]=.95;litList.add(j)}else{T.f+=adv/L;adv=0}}
-    if(T.i>=T.path.length-1){const b=T.path[T.path.length-1];refr[b]=0;fire(b,.95,now);c.steps.push({node:b,lines:T.lines,t:0,k:c.steps.length});c.travel=null}}
-  else if(!c.end&&c.steps.length<3&&cur.t>1.7){c.travel=pickNext(c);if(!c.travel)c.end=now+1800}
+    if(T.i>=T.path.length-1){const b=T.path[T.path.length-1];refr[b]=0;fire(b,.95,now);c.steps.push(newStep(b,T.lines,c.steps.length,c));c.travel=null}}
+  else if(!c.end&&c.steps.length<3&&cur.t>(c.steps.length===1?1.1:.9)){c.travel=pickNext(c);if(!c.travel)c.end=now+1800}
   else if(!c.end&&c.steps.length===3&&cur.t>1.4)c.end=now+(now-lastMove<1500?1100:2600);
   if(c.end&&now>c.end){c.a-=dt/(c.fast?240:520);if(c.a<=0){if(c===chainOut)chainOut=null;else{chain=null;chainNext=now+(now-lastMove<IDLE?500:2600)}}}}
 function drawChain(c,now){if(!c)return;
   if(c.travel){const T=c.travel,a=T.path[T.i],b=T.path[Math.min(T.i+1,T.path.length-1)],hx=nx[a]+(nx[b]-nx[a])*T.f,hy=ny[a]+(ny[b]-ny[a])*T.f;
     xL.globalAlpha=c.a;xL.strokeStyle=rgba(sigCol(1),.95);xL.lineWidth=1.1;xL.beginPath();xL.moveTo(nx[a],ny[a]);xL.lineTo(hx,hy);xL.stroke();
     xL.fillStyle=rgba(sigCol(1),1);xL.beginPath();xL.arc(hx,hy,1.8,0,6.2832);xL.fill();xL.globalAlpha=1}
-  c.steps.forEach((s,k)=>{avoidExtra=c.steps.filter(o=>o!==s).map(boxOf).filter(Boolean);drawAnn(s,c.a*clamp(s.t/.15,0,1),now)});avoidExtra=[]}
+  const all=[...(chainOut?chainOut.steps:[]),...(chain?chain.steps:[])];
+  c.steps.forEach((s,k)=>{const o=all.filter(x=>x!==s);avoidExtra=o.map(boxOf).filter(Boolean);avoidSegs=o.flatMap(x=>x.segs||[]);drawAnn(s,c.a*clamp(s.t/.15,0,1),now)});avoidExtra=[];avoidSegs=[]}
 function randomStart(){const tr=textRects();for(let k=0;k<60;k++){const i=Math.floor(Math.random()*N);if(dep[i]<0||inRects(nx[i],ny[i],tr))continue;
     if(nx[i]<W*.12||nx[i]>W*.88)continue;const{bw,bh}=annBox(EVENTS[evIdx%EVENTS.length][0]);if(bestSpot(nx[i],ny[i],bw,bh).cost<1e9)return i}return -1}
+// a hovered node only starts a chain when its first tag has somewhere clear to go
+function room(i){avoidExtra=[];avoidSegs=[];const{bw,bh}=annBox(EVENTS[evIdx%EVENTS.length][0]);return bestSpot(nx[i],ny[i],bw,bh).cost<1e9}
 let hov={node:-1,since:0};
 let px=-1,py=-1,lastMove=-1e9,lastPoke=0,nextAmbient=performance.now()+4500;chainNext=performance.now()+1400;
 const IDLE=4000;
@@ -621,9 +966,12 @@ stage.addEventListener('pointermove',ev=>{const r=stage.getBoundingClientRect();
 stage.addEventListener('pointerdown',ev=>{if(ev.target.closest('button'))return;const r=stage.getBoundingClientRect();px=ev.clientX-r.left;py=ev.clientY-r.top;lastMove=performance.now();poke(px,py,8,1);hint.style.opacity=0});
 stage.addEventListener('pointerleave',()=>{lastMove=-1e9});
 
-let last=performance.now();
+let last=performance.now(),heroOn=true,rafOn=true;
+// the hero only animates while some of it is on screen
+new IntersectionObserver(es=>{heroOn=es[0].isIntersecting;if(heroOn&&!rafOn){rafOn=true;last=performance.now();requestAnimationFrame(frame)}}).observe(stage);
 function frame(now){
   const dt=Math.min(64,now-last);last=now;
+  if(!reduce)cellClock+=dt/1000*1.8;
   if(Math.abs(formShown-CFG.form)>.0005){formShown+=(CFG.form-formShown)*(1-Math.exp(-dt/140));if(Math.abs(formShown-CFG.form)<.0005)formShown=CFG.form;project();drawStatic()}
   const active=now-lastMove<140;
   if(active&&now-lastPoke>65){lastPoke=now;poke(px,py,2,.8,28)}
@@ -637,8 +985,8 @@ function frame(now){
       if(bi!==hov.node&&(hov.node<0||Math.hypot(nx[bi]-nx[hov.node],ny[bi]-ny[hov.node])>30)){hov.node=bi;hov.since=now}}else hov.node=-1;
     if(chain&&!chainOut&&hov.node>=0&&now-hov.since>420&&chain.steps[0].t>.9){
       const far=[...chain.steps.map(s=>s.node),...(chain.travel?[chain.travel.path[chain.travel.path.length-1]]:[])].every(j=>Math.hypot(nx[j]-nx[hov.node],ny[j]-ny[hov.node])>150);
-      if(far){chainOut=chain;chainOut.travel=null;chainOut.fast=true;chainOut.end=now-1;chain=null;startChain(hov.node,now)}}
-    if(!chain&&now>chainNext){if(hov.node>=0&&now-hov.since>260)startChain(hov.node,now);
+      if(far&&room(hov.node)){chainOut=chain;chainOut.travel=null;chainOut.fast=true;chainOut.end=now-1;chain=null;startChain(hov.node,now)}}
+    if(!chain&&now>chainNext){if(hov.node>=0&&now-hov.since>260&&room(hov.node))startChain(hov.node,now);
       else if(now-lastMove>IDLE){const i=randomStart();if(i>=0)startChain(i,now);else chainNext=now+1000}}}
   updChain(chain,now,dt);updChain(chainOut,now,dt);
 
@@ -667,10 +1015,11 @@ function frame(now){
       xL.strokeStyle=rgba(sigCol((litEn[i]+litEn[j])/2),Math.min(1,m*(col.dark?1.5:2.2))**(col.dark?1.15:.9));xL.lineWidth=.45;xL.beginPath();xL.moveTo(nx[i],ny[i]);xL.lineTo(nx[j],ny[j]);xL.stroke()}
     }
   xL.globalCompositeOperation='source-over';
+  renderCells([...(chainOut?chainOut.steps:[]),...(chain?chain.steps:[])]);
   drawChain(chainOut,now);drawChain(chain,now);
   const idle=now-lastMove;
 
-  requestAnimationFrame(frame);
+  if(heroOn)requestAnimationFrame(frame);else rafOn=false;
 }
 
 (function(){const g=document.createElement('canvas');g.width=g.height=160;const x=g.getContext('2d'),d=x.createImageData(160,160);
@@ -690,31 +1039,142 @@ new MutationObserver(drawStatic).observe(document.documentElement,{attributes:tr
 let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(()=>{if(Math.abs(stage.clientWidth-W)>2||Math.abs(stage.clientHeight-H)>40)generate()},150)}).observe(stage);
 
 
-// ---- shape your net
-{const stg=document.getElementById('stage'),panel=document.getElementById('shapePanel'),openW=document.getElementById('shapeOpen'),openB=document.getElementById('openShape');
- [panel,openW].forEach(el=>['pointermove','pointerdown'].forEach(t=>el.addEventListener(t,ev=>ev.stopPropagation())));
- const D0={...CFG},map={Form:'form',Sprawl:'sprawl',Rough:'rough',Voids:'voids',Density:'density'};
- const fmt={form:v=>v<.05?'Organic':v>.95?'Geometric':Math.round(v*100)+'%',sprawl:v=>v.toFixed(1)+'x',rough:v=>v.toFixed(1)+'x',voids:v=>Math.round(v/.42*100)+'%',density:v=>v.toFixed(1)+'x'};
- const netId=document.getElementById('netId'),showId=()=>{netId.textContent=String(CFG.seed).padStart(4,'0')};
- const prev=document.getElementById('netPrev'),pctx=prev.getContext('2d');
- const snap=()=>{if(reduce)return;prev.width=cS.width;prev.height=cS.height;pctx.setTransform(1,0,0,1,0,0);pctx.drawImage(cS,0,0);prev.classList.add('show');void prev.offsetWidth;prev.classList.remove('show')};
- let t=0;const regen=(fade)=>{clearTimeout(t);t=setTimeout(()=>{if(fade&&!reduce){stg.classList.add('fading');setTimeout(()=>{rY=0;vY=0;generate();stg.classList.remove('fading');
-     setTimeout(()=>{const g=lobes[Math.floor(lobes.length/2)];if(g)fire(g.anchor,1,performance.now())},120)},300)}else{snap();const ry0=rY;generate();rY=ry0;project();drawStatic()}},fade?0:160)};
- const sync=()=>{for(const [id,k] of Object.entries(map)){document.getElementById('s'+id).value=CFG[k];document.getElementById('v'+id).textContent=fmt[k](CFG[k])}
-   document.querySelectorAll('.sw button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pal===CFG.palette)));showId()};
- for(const [id,k] of Object.entries(map)){const el=document.getElementById('s'+id);el.addEventListener('input',()=>{CFG[k]=+el.value;document.getElementById('v'+id).textContent=fmt[k](CFG[k]);if(k!=='form')regen(false)})}
- document.querySelectorAll('.sw button').forEach(b=>b.addEventListener('click',()=>{CFG.palette=b.dataset.pal;STOPS=PALETTES[CFG.palette];sync();
-   const g=lobes[Math.floor(Math.random()*lobes.length)];if(g)fire(g.anchor,1,performance.now())}));
- document.getElementById('growBtn').addEventListener('click',()=>{CFG.seed=1+Math.floor(Math.random()*9999);try{history.replaceState(null,'','#s'+CFG.seed)}catch(e){}sync();regen(true)});
- document.getElementById('resetBtn').addEventListener('click',()=>{Object.assign(CFG,D0);STOPS=PALETTES[CFG.palette];sync();regen(true)});
- const setOpen=o=>{stg.classList.toggle('shaping',o);openB.setAttribute('aria-expanded',String(o));if(o)setTimeout(()=>document.getElementById('sForm').focus({preventScroll:true}),60);else openB.focus({preventScroll:true})};
- openB.addEventListener('click',()=>setOpen(true));document.getElementById('closeShape').addEventListener('click',()=>setOpen(false));
- addEventListener('keydown',e=>{if(e.key==='Escape'&&stg.classList.contains('shaping'))setOpen(false)});
- const m=/^#s(\d{1,5})$/.exec(location.hash);if(m)CFG.seed=+m[1];
- if(location.hash==='#studio')stg.classList.add('shaping');
- sync()}
 generate();
 setTimeout(()=>{const l=lobes[Math.floor(lobes.length/2)];if(l)fire(l.anchor,1,performance.now())},300);
 requestAnimationFrame(frame);
 })();
 </script>
+
+
+<script>
+// ---- sticky nav: hidden over the hero, slides down once the hero has scrolled past, slides back up on return
+(()=>{const bar=document.getElementById('snav'),hero=document.getElementById('stage');if(!bar||!hero)return;
+const src=document.querySelector('.nav .brand svg'),b=bar.querySelector('.brand');if(src)b.appendChild(src.cloneNode(true));
+b.addEventListener('click',e=>{e.preventDefault();scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})});
+const set=on=>{bar.classList.toggle('on',on);bar.setAttribute('aria-hidden',String(!on));bar.querySelectorAll('a,button').forEach(el=>el.tabIndex=on?0:-1)};
+new IntersectionObserver(es=>{const e=es[0];set(!e.isIntersecting&&e.boundingClientRect.top<0)},{rootMargin:'-64px 0px 0px 0px'}).observe(hero)})();
+</script>
+<script src="assets/stats-net.js"></script>
+<script>
+
+// ---- 03b stats: numbers tick up with the hero's ease when the list scrolls in, then each label types at 42 cps; the net breathes with sparse mint pulses
+(()=>{
+const sec=document.getElementById('stats');if(!sec)return;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,EASE=t=>1-(1-t)**3;
+const stats=[...sec.querySelectorAll('.stat')];
+function fmt(v,el){return (+el.dataset.dec?v.toFixed(+el.dataset.dec):Math.round(v))+el.dataset.suf}
+if(!reduce){stats.forEach(s=>{const n=s.querySelector('.num'),l=s.querySelector('.lab');n.textContent=fmt(0,n);l.textContent=''})}
+function play(s,delay){const n=s.querySelector('.num'),l=s.querySelector('.lab'),to=+n.dataset.to,txt=l.dataset.txt,D=1400;
+  const t0=performance.now()+delay;
+  const tick=now=>{const t=Math.max(0,Math.min(1,(now-t0)/D));n.textContent=fmt(to*EASE(t),n);if(t<1)requestAnimationFrame(tick);else typeIn()};
+  const typeIn=()=>{const s0=performance.now();const ty=now=>{const k=Math.floor((now-s0)/1000*42);const shown=txt.slice(0,k);
+      l.innerHTML=shown.replace(/&/g,'&amp;').replace(/</g,'&lt;')+`<i class="cur${k>=txt.length?' blink':''}"></i>`;if(k<txt.length)requestAnimationFrame(ty);else setTimeout(()=>{const c=l.querySelector('.cur');if(c)c.remove()},3*1060)};requestAnimationFrame(ty)};
+  requestAnimationFrame(tick)}
+if(!reduce){const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting){io.disconnect();stats.forEach((s,i)=>play(s,i*220))}},{threshold:.35});io.observe(sec.querySelector('.stat-list'))}
+
+// net: a live cut of the hero's nerve net. Flat until the section arrives, then it rises into depth (ease-out cubic),
+// idles with slow drift and sparse mint pulses, and tilts a touch with scroll. Paused off-screen; reduced motion gets a still.
+const cv=sec.querySelector('.netc'),x=cv.getContext('2d'),D=window.STATS_NET;if(!D)return;
+const AL='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_',dc=c=>AL.indexOf(c),r2=(s,i)=>dc(s[i])*64+dc(s[i+1]);
+const N=D.n.length/7|0,E=D.e.length/5|0,NT=N*2;   // nodes [0,N) are the front skin, [N,2N) the faint rear side
+const nx=new Float32Array(NT),ny=new Float32Array(NT),nz=new Float32Array(NT),nr=new Float32Array(N),ph=new Float32Array(NT),
+  typ=new Uint8Array(N),nop=new Uint8Array(N),hid=new Uint8Array(N),px=new Float32Array(NT),py=new Float32Array(NT),pk=new Float32Array(NT);
+const ZD=190;
+for(let i=0;i<N;i++){const s=i*7,f=dc(D.n[s+5]);nx[i]=r2(D.n,s)/2-200;ny[i]=r2(D.n,s+2)/2;typ[i]=f/21|0;nop[i]=(f%21)/7|0;hid[i]=dc(D.n[s+6]);
+  const r=f%7,t=dc(D.n[s+4])/63;nr[i]=typ[i]===1?.4+r*.15:typ[i]===2?.35+r*.12:.55+(r-2)*.15;ph[i]=Math.random()*6.283;
+  nz[i]=typ[i]===2?(Math.random()-.5)*50:-ZD*Math.sqrt(t*(2-t))+(typ[i]===1?5*Math.sin(nx[i]*.021+ny[i]*.013):0)}
+const ea=new Uint16Array(E),eb=new Uint16Array(E),el=new Uint8Array(E),adj=Array.from({length:N},()=>[]);
+for(let e=0;e<E;e++){const s=e*5;ea[e]=r2(D.e,s);eb[e]=r2(D.e,s+2);el[e]=dc(D.e[s+4]);adj[ea[e]].push(e);adj[eb[e]].push(e)}
+// rear side: the same tissue mirrored behind the rim (a touch shallower, slightly shifted), seen faintly through the front like the hero
+for(let i=0;i<N;i++){const j=N+i;nx[j]=nx[i]+(Math.random()-.5)*6;ny[j]=ny[i]+(Math.random()-.5)*6;ph[j]=ph[i]+1.7;nz[j]=typ[i]===2?nz[i]:-nz[i]*.82}
+const BE=[];for(let e=0;e<E;e++){if(typ[ea[e]]===2||typ[eb[e]]===2||e%3===0)continue;BE.push(N+ea[e],N+eb[e])}
+const INK=[30,60,60],LVL=[.13,.22,.32],NOP=[.45,.8,.3],RAMP=[[1,[64,98,54]],[.75,[78,118,66]],[.5,[90,136,78]],[.25,[126,166,114]],[0,[166,196,156]]];
+const sig=en=>{for(let j=1;j<RAMP.length;j++){const [e0,c0]=RAMP[j-1],[e1,c1]=RAMP[j];if(en>=e1){const t=(e0-en)/(e0-e1);return c0.map((v,q)=>Math.round(v+(c1[q]-v)*t))}}return RAMP[RAMP.length-1][1]};
+const rgba=(c,a)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
+let W=0,H=0,S=1,OX=0,OY=0;const PX=0,PY=949,CAM=1800;   // pivot at the cropped corner: the cut edges stay put, the organic rim moves
+function size(){const r=cv.getBoundingClientRect(),DPR=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;const mob=W<=900;S=mob?W/430:Math.max(W/1440,H/1000);OX=mob?W*.97-600*S:0;OY=mob?H*.44-250*S:H-949*S;   // mobile: bigger, rim at the right, filling the lower half
+  cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);x.setTransform(DPR,0,0,DPR,0,0);if(!on||reduce)draw(performance.now())}
+// motion state
+let hY=0,hX=0,mx=-1,my=-1,lastMove=-1e9,lastPoke=0;const glow=new Float32Array(N),glowEn=new Float32Array(N);
+let rise=1,riseT0=-1,tilt=0,tiltT=0,on=false,rafOn=false,last=0,pulses=[],nextP=0;
+function project(now){const ry=rise,yaw=-.2*(1-ry)+(.08*Math.sin(now/7400)+hY)*ry,pitch=(.045*Math.sin(now/9300+1)+hX)*ry+tilt;
+  const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch),dz=reduce?0:1;
+  for(let i=0;i<NT;i++){const X=nx[i]-PX,Y=ny[i]-PY+dz*ry*2.4*Math.sin(now/2600+ph[i]),Z=nz[i]*ry;
+    const X1=X*cy+Z*sy,Z1=-X*sy+Z*cy,Y1=Y*cp-Z1*sp,Z2=Y*sp+Z1*cp,k=CAM/(CAM+Z2);
+    px[i]=OX+(PX+X1*k)*S;py[i]=OY+(PY+Y1*k)*S;pk[i]=Z2}}
+const shade=z=>Math.max(.55,Math.min(1.35,1-z/(ZD*1.6)));
+function draw(now){project(now);x.clearRect(0,0,W,H);x.lineWidth=.45;const fade=.6+.4*rise;
+  x.strokeStyle=rgba(INK,.095*fade);x.beginPath();for(let k=0;k<BE.length;k+=2){const a=BE[k],c=BE[k+1];x.moveTo(px[a],py[a]);x.lineTo(px[c],py[c])}x.stroke();
+  for(let l=0;l<3;l++)for(let b=0;b<3;b++){x.strokeStyle=rgba(INK,LVL[l]*[.7,1,1.3][b]*fade);x.beginPath();
+    for(let e=0;e<E;e++){if(el[e]!==l)continue;const a=ea[e],c=eb[e],z=(pk[a]+pk[c])/2,bb=z>-ZD*.25?0:z>-ZD*.7?1:2;if(bb!==b)continue;x.moveTo(px[a],py[a]);x.lineTo(px[c],py[c])}x.stroke()}
+  for(let i=0;i<N;i++){if(hid[i])continue;const sh=typ[i]===2?1:shade(pk[i]);x.fillStyle=rgba(INK,Math.min(1,NOP[nop[i]]*sh*fade));x.beginPath();x.arc(px[i],py[i],Math.max(.45,nr[i]*Math.min(S,1)*(1+(-pk[i])/CAM))   /* node size capped so a scaled-up net stays fine-grained */,0,6.2832);x.fill()}
+  return;x.lineWidth=1;   // pulses off for this section (engine kept)
+  for(const p of pulses){if(!p.done){const a=p.from,c=p.to,f=Math.min(1,p.f);x.strokeStyle=rgba(sig(p.en),.9);x.beginPath();x.moveTo(px[a],py[a]);x.lineTo(px[a]+(px[c]-px[a])*f,py[a]+(py[c]-py[a])*f);x.stroke()}
+    for(const q of p.lit){x.strokeStyle=rgba(sig(q.en),Math.min(1,q.a*1.6));x.beginPath();x.moveTo(px[ea[q.e]],py[ea[q.e]]);x.lineTo(px[eb[q.e]],py[eb[q.e]]);x.stroke()}}
+  for(let i=0;i<N;i++){if(glow[i]<.03)continue;x.fillStyle=rgba(sig(glowEn[i]),Math.min(1,glow[i]));x.beginPath();x.arc(px[i],py[i],(nr[i]+.9)*S*1.4,0,6.2832);x.fill()}}
+function fireAt(i,en){const ed=adj[i];if(!ed.length||pulses.length>22)return;const e=ed[Math.floor(Math.random()*ed.length)];glow[i]=1;glowEn[i]=en;pulses.push({e,from:i,to:ea[e]===i?eb[e]:ea[e],f:0,en,hops:0,lit:[]})}
+function poke(x0,y0,count,en,r){const c=[];for(let i=0;i<N;i++)if(typ[i]!==2&&Math.hypot(px[i]-x0,py[i]-y0)<r)c.push(i);for(let k=0;k<count&&c.length;k++)fireAt(c.splice(Math.floor(Math.random()*c.length),1)[0],en)}
+function spawn(now){const e=Math.floor(Math.random()*E);pulses.push({e,from:ea[e],to:eb[e],f:0,en:.85,hops:0,lit:[]});nextP=now+2400+Math.random()*1800}
+function adv(p,dt){const len=Math.hypot(nx[p.to]-nx[p.from],ny[p.to]-ny[p.from])||1;p.f+=dt*.2/len;
+  if(p.f<1)return;p.lit.push({e:p.e,a:1,en:p.en});if(p.en>glow[p.to]){glow[p.to]=p.en;glowEn[p.to]=p.en}const hx=(nx[p.to]-nx[p.from])/len,hy=(ny[p.to]-ny[p.from])/len;
+  const o=adj[p.to].filter(e=>e!==p.e).map(e=>{const nb=ea[e]===p.to?eb[e]:ea[e],dx=nx[nb]-nx[p.to],dy=ny[nb]-ny[p.to],L=Math.hypot(dx,dy)||1;return{e,nb,c:(dx*hx+dy*hy)/L}}).filter(q=>q.c>-.2).sort((a,b)=>b.c-a.c);
+  p.en*=.9;p.hops++;if(!o.length||p.en<.2||p.hops>34){p.done=true;return}const q=o[Math.random()<.7?0:Math.floor(Math.random()*o.length)];p.e=q.e;p.from=p.to;p.to=q.nb;p.f=0}
+function scrollTilt(){const r=sec.getBoundingClientRect(),vh=innerHeight,p=Math.max(0,Math.min(1,(vh-r.top)/(vh+r.height)));tiltT=(p-.5)*.18}
+function frame(now){const dt=Math.min(64,now-(last||now));last=now;
+  if(riseT0>=0&&rise<1){rise=EASE(Math.min(1,(now-riseT0)/1800))}
+  scrollTilt();tilt+=(tiltT-tilt)*Math.min(1,dt/220);
+  {const act=now-lastMove<1500,e=1-Math.exp(-dt/700),cx=W*.22;   // hover: the net leans toward the pointer and eases home when it leaves, like the hero
+   const tY=act?Math.max(-1,Math.min(1,(mx-cx)/(W*.35)))*.26:0,tX=act?-Math.max(-1,Math.min(1,(my-H*.55)/(H*.5)))*.07:0;hY+=(tY-hY)*e;hX+=(tX-hX)*e;
+   }
+  for(let i=0;i<N;i++)if(glow[i]>0)glow[i]*=Math.exp(-dt/520);
+  
+  draw(now);if(on)requestAnimationFrame(frame);else rafOn=false}
+if(!reduce){new IntersectionObserver(es=>{on=es[0].isIntersecting;if(on&&!rafOn){rafOn=true;last=0;requestAnimationFrame(frame)}}).observe(sec);
+  sec.addEventListener('pointermove',ev=>{const r=sec.getBoundingClientRect();mx=ev.clientX-r.left;my=ev.clientY-r.top;lastMove=performance.now()});
+  sec.addEventListener('pointerdown',ev=>{const r=sec.getBoundingClientRect();mx=ev.clientX-r.left;my=ev.clientY-r.top;lastMove=performance.now();});
+  sec.addEventListener('pointerleave',()=>{lastMove=-1e9});
+}
+new ResizeObserver(size).observe(sec);size();
+})();
+
+</script>
+<script>
+(()=>{
+// ---- 03: click (or Enter/Space) a row to select it; the product shot fades out and back in
+const rows=[...document.querySelectorAll('#rows .row')],shot=document.getElementById('howShot');
+let active=0;
+function setActive(i){if(i===active)return;active=i;rows.forEach((r,k)=>{r.classList.toggle('on',k===i);r.setAttribute('aria-pressed',String(k===i))});
+  if(shot&&!matchMedia('(prefers-reduced-motion: reduce)').matches){clearTimeout(shot._t);shot.classList.add('out');shot._t=setTimeout(()=>{const src=rows[i].dataset.img;if(src)shot.src=src;shot.classList.remove('out')},300)}
+  else if(shot&&rows[i].dataset.img)shot.src=rows[i].dataset.img}
+// mobile: the product shot travels into the row you tapped, so it sits right under that step instead of at the bottom of the section
+const vis=shot&&shot.closest('.visual'),home=vis&&vis.parentNode,homeNext=vis&&vis.nextSibling,mq=matchMedia('(max-width: 900px)');
+function place(keep){if(!vis)return;const r=rows[active],y0=keep?keep.getBoundingClientRect().top:0;
+  if(mq.matches){if(vis.parentNode!==r)r.appendChild(vis)}else if(vis.parentNode!==home)home.insertBefore(vis,homeNext);
+  if(keep){const dy=keep.getBoundingClientRect().top-y0;if(dy)window.scrollBy(0,dy)}}   // keep the tapped row where your finger was
+const _set=setActive;setActive=i=>{const was=active;_set(i);if(was!==active)place(rows[i])};
+mq.addEventListener('change',()=>place());place();
+rows.forEach((r,i)=>{r.addEventListener('click',()=>setActive(i));r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setActive(i)}})});
+
+// ---- 04: carousel arrows scroll one card; each fades out at its end
+const track=document.getElementById('track'),prev=document.getElementById('prev'),next=document.getElementById('next');
+const step=()=>{const c=track.querySelector('.card');return c?c.getBoundingClientRect().width+parseFloat(getComputedStyle(track).columnGap||56):480};
+function ends(){const max=track.scrollWidth-track.clientWidth-2;prev.disabled=track.scrollLeft<=2;next.disabled=track.scrollLeft>=max}
+prev.addEventListener('click',()=>track.scrollBy({left:-step()}));next.addEventListener('click',()=>track.scrollBy({left:step()}));
+track.addEventListener('scroll',ends,{passive:true});addEventListener('resize',ends);ends();
+track.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();track.scrollBy({left:step()})}if(e.key==='ArrowLeft'){e.preventDefault();track.scrollBy({left:-step()})}});
+
+// ---- 05: waitlist has nowhere to post yet; it checks the email and confirms in place
+const form=document.getElementById('wl'),pill=form.querySelector('.wl-pill');
+form.addEventListener('submit',e=>{e.preventDefault();const em=form.elements.email;
+  if(!em.value||!em.checkValidity()){pill.classList.add('err');em.focus();return}
+  pill.classList.remove('err');form.classList.add('sent');const b=form.querySelector('.submit');b.textContent='Signed up';b.disabled=true;em.readOnly=true});
+form.elements.email.addEventListener('input',()=>pill.classList.remove('err'));
+
+// ---- hero CTAs lead to the waitlist
+document.querySelectorAll('.cta,.nav-cta').forEach(b=>b.addEventListener('click',()=>{
+  document.getElementById('waitlist').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  setTimeout(()=>form.elements.email.focus({preventScroll:true}),600)}));
+})();
+</script>
+</body>
+</html>
