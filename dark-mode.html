@@ -358,10 +358,17 @@ html,body{overflow-x:clip}
 .lp .byo-card .chip b{font-weight:400}
 .lp .byo-card .sub{margin:0;padding:13px 12px 14px;font:400 12px/16px var(--f-mono);letter-spacing:.02em;color:#65625d}
 /* arrival: cards rise in one by one, each chip connects a beat later */
-.lp .byo.pre .byo-card{opacity:0;transform:translateY(10px)}
+.lp .byo.pre .byo-card{opacity:0;transform:translateY(28px) scale(.97)}
 .lp .byo.pre .byo-card .chip{background:#e4e7e0;color:#8d8a85}
 .lp .byo.pre .byo-card .chip i{background:#b9b6b0}
-.lp .byo-card{transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
+.lp .byo-card{transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1),box-shadow .5s ease,border-color .5s ease}
+.lp .byo-card .chip.wait{background:#e4e7e0;color:#77746f}
+.lp .byo-card .chip.wait i{background:#9a968f;animation:byoPulse .8s ease-in-out infinite}
+.lp .byo-card .chip.wait i::after{opacity:0}
+.lp .byo-card .chip.ok{animation:byoPop .45s cubic-bezier(.22,1,.36,1)}
+.lp .byo-card.lit{border-color:#a8e29c;box-shadow:0 0 0 3px rgba(168,226,156,.35)}
+@keyframes byoPulse{50%{transform:scale(.55);opacity:.5}}
+@keyframes byoPop{0%{transform:scale(.9)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
 @media (max-width:1240px){.lp .byo{grid-template-columns:minmax(0,38%) minmax(0,1fr)}.lp .byo-h{width:auto;max-width:440px;font-size:40px;line-height:50px}.lp .byo-copy{padding:96px 24px 56px 48px}.lp .byo-b{margin:48px 0 0;max-width:260px}.lp .byo-inset{padding:32px 24px}.lp .byo-grid{width:100%;grid-template-columns:repeat(auto-fit,minmax(264px,1fr));gap:16px}}
 @media (max-width:900px){
   .lp .byo-sec{padding:48px 24px}
@@ -397,6 +404,7 @@ html,body{overflow-x:clip}
 :root[data-theme="dark"] .lp .byo-card .sub{color:#9a968f}
 :root[data-theme="dark"] .lp .byo.pre .byo-card .chip{background:#3d3935;color:#8d8a85}
 :root[data-theme="dark"] .lp .byo.pre .byo-card .chip i{background:#55524e}
+:root[data-theme="dark"] .lp .byo-card .chip.wait{background:#3d3935;color:#8d8a85}
 @media (prefers-color-scheme: dark){
 :root:not([data-theme="light"]) .lp{--ink:#f2f1ef;--body:#cac8c4;--mut:#9a968f;--rule:#3a3b38;--mint:#282624;--arrow:#2c2a27;background:#151514;color:var(--ink)}
 :root:not([data-theme="light"]) .lp .row.on .ix{color:#151514}
@@ -420,6 +428,7 @@ html,body{overflow-x:clip}
 :root:not([data-theme="light"]) .lp .byo-card .sub{color:#9a968f}
 :root:not([data-theme="light"]) .lp .byo.pre .byo-card .chip{background:#3d3935;color:#8d8a85}
 :root:not([data-theme="light"]) .lp .byo.pre .byo-card .chip i{background:#55524e}
+:root:not([data-theme="light"]) .lp .byo-card .chip.wait{background:#3d3935;color:#8d8a85}
 }
 .lp,.lp .stats,.lp .feature,.lp .visual,.lp .byo-inset,.lp .byo-card,.snav{transition:background-color .35s ease,color .35s ease,border-color .35s ease}
 </style>
@@ -1152,11 +1161,15 @@ requestAnimationFrame(frame);
 </script>
 
 <script>
-// ---- 03c: agent cards rise in one by one as the panel scrolls in; each "Connected" chip lights a beat after its card
+// ---- 03c: when the cards come into view they rise in one by one, each chip reads "Connecting" with a pulsing dot,
+// then flips to "Connected" with a small pop and a mint flash on the card; one card after another so the eye follows it
 (()=>{const p=document.querySelector('.lp .byo');if(!p||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-const cards=[...p.querySelectorAll('.byo-card')];p.classList.add('pre');
+const grid=p.querySelector('.byo-grid'),cards=[...p.querySelectorAll('.byo-card')];p.classList.add('pre');
+cards.forEach(c=>{const b=c.querySelector('.chip b');b.dataset.done=b.textContent;b.textContent='Connecting'});
 new IntersectionObserver((es,io)=>{if(!es[0].isIntersecting)return;io.disconnect();p.classList.remove('pre');
-  cards.forEach((c,i)=>{c.style.transitionDelay=(i*90)+'ms';const ch=c.querySelector('.chip');ch.style.transitionDelay=(380+i*90)+'ms';ch.querySelector('i').style.transitionDelay=(380+i*90)+'ms'})},{threshold:.3}).observe(p)})();
+  cards.forEach((c,i)=>{c.style.transitionDelay=(i*130)+'ms';const ch=c.querySelector('.chip');ch.classList.add('wait');
+    setTimeout(()=>{ch.classList.remove('wait');ch.querySelector('b').textContent=ch.querySelector('b').dataset.done;ch.classList.add('ok');c.classList.add('lit');
+      setTimeout(()=>c.classList.remove('lit'),900)},900+i*260)})},{threshold:.45}).observe(grid)})();
 </script>
 
 <script>
