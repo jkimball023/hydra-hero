@@ -318,6 +318,8 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
 }
 @media (prefers-reduced-motion: reduce){.lp .track{scroll-behavior:auto}.lp .row,.lp .visual img{transition:none}}
 
+/* ---- no sideways scroll: full-bleed pieces use 100vw, which includes a classic scrollbar on some desktops */
+html,body{overflow-x:clip}
 /* ---- sticky nav: slides down once the hero has scrolled away */
 .snav{position:fixed;inset:0 0 auto;z-index:50;display:flex;justify-content:space-between;align-items:center;height:64px;
   padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));background:rgba(255,255,255,.86);   /* same side gutter as the hero nav */-webkit-backdrop-filter:blur(12px) saturate(1.2);backdrop-filter:blur(12px) saturate(1.2);
@@ -1093,6 +1095,11 @@ requestAnimationFrame(frame);
 })();
 </script>
 
+
+<script>
+// ---- measure the classic scrollbar (0 on overlay-scrollbar systems) so 100vw-based full-bleed pieces don't overhang it
+(()=>{const r=document.documentElement,f=()=>r.style.setProperty('--sbw',Math.max(0,innerWidth-r.clientWidth)+'px');f();addEventListener('resize',f);addEventListener('load',f)})();
+</script>
 
 <script>
 // ---- 03c: agent cards rise in one by one as the panel scrolls in; each "Connected" chip lights a beat after its card
