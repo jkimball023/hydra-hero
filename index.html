@@ -275,7 +275,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,5.6vw,76px)
 .lp .stat-list{list-style:none;margin:179px 0 0;padding:0}
 .lp .stat{display:grid;grid-template-columns:382px 1fr;align-items:center;padding:40px 0 40px 76px}
 .lp .stat+.stat{border-top:1px solid #aeaeae}
-.lp .stat .num{font:400 115px/120px var(--f-display);letter-spacing:-2px;color:#151514;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lp .stat .num{font:400 96px/100px var(--f-display);letter-spacing:-1.5px;color:#151514;font-variant-numeric:tabular-nums;white-space:nowrap}
 .lp .stat .lab{font:400 16px/24px var(--f-body);color:#4a4845;white-space:pre;min-height:48px}
 .lp .stat .lab .cur{display:inline-block;width:3px;height:1.15em;background:currentColor;opacity:.75;vertical-align:-.2em;margin-left:2px}
 .lp .stat .lab .cur.blink{animation:scur 1.06s steps(1) infinite}
@@ -1092,7 +1092,7 @@ const INK=[30,60,60],LVL=[.13,.22,.32],NOP=[.45,.8,.3],RAMP=[[1,[64,98,54]],[.75
 const sig=en=>{for(let j=1;j<RAMP.length;j++){const [e0,c0]=RAMP[j-1],[e1,c1]=RAMP[j];if(en>=e1){const t=(e0-en)/(e0-e1);return c0.map((v,q)=>Math.round(v+(c1[q]-v)*t))}}return RAMP[RAMP.length-1][1]};
 const rgba=(c,a)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
 let W=0,H=0,S=1,OX=0,OY=0;const PX=0,PY=949,CAM=1800;   // pivot at the cropped corner: the cut edges stay put, the organic rim moves
-function size(){const r=cv.getBoundingClientRect(),DPR=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;const mob=W<=900;S=mob?W/430:Math.max(W/1440,H/1000);OX=mob?W*.97-600*S:0;OY=mob?H*.44-250*S:H-949*S;   // mobile: bigger, rim at the right, filling the lower half
+function size(){const r=cv.getBoundingClientRect(),DPR=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;const mob=W<=900;S=mob?W/430:Math.max(W/1440,H/1000);OX=mob?W*.97-600*S:0;OY=mob?H*.44-250*S:Math.max(0,H-949*S);   // mobile: bigger, rim at the right, filling the lower half
   cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);x.setTransform(DPR,0,0,DPR,0,0);if(!on||reduce)draw(performance.now())}
 // motion state
 let hY=0,hX=0,mx=-1,my=-1,lastMove=-1e9,lastPoke=0;const glow=new Float32Array(N),glowEn=new Float32Array(N);
